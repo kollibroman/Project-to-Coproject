@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="Application/ProjectCowork.Core/ProjectCowork.Core.csproj" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Domain/ProjectCowork.Domain.Shared/ProjectCowork.Domain.Shared.csproj" />
+    <Project Path="Domain/ProjectCowork.Domain/ProjectCowork.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure.Abstractions/ProjectCowork.Infrastructure.Abstractions.csproj" />
+    <Project Path="Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="Web/ProjectCowork.Api/ProjectCowork.Api.csproj" />
+    <Project Path="Web/ProjectCowork.App/ProjectCowork.App.esproj" />
+  </Folder>
+</Solution>

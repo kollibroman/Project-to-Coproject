@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\ProjectCowork.Domain.Shared\ProjectCowork.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="10.0.10" />
+  </ItemGroup>
+
+</Project>
