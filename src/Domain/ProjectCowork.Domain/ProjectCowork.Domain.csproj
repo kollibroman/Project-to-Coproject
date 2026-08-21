@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
+    <PackageReference Include="AspNetCore.Identity.Stores" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@
     <Project Path="Application/ProjectCowork.Core/ProjectCowork.Core.csproj" />
   </Folder>
   <Folder Name="/Domain/">
+    <Project Path="Domain/ProjectCowork.Domain.Exceptions/ProjectCowork.Domain.Exceptions.csproj" />
     <Project Path="Domain/ProjectCowork.Domain.Shared/ProjectCowork.Domain.Shared.csproj" />
     <Project Path="Domain/ProjectCowork.Domain/ProjectCowork.Domain.csproj" />
   </Folder>
