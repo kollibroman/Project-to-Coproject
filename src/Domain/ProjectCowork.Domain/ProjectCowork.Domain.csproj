@@ -11,8 +11,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.12" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
 </Project>

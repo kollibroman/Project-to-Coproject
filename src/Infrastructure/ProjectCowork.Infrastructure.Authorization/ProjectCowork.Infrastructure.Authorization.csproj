@@ -7,8 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
-      <ProjectReference Include="..\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="10.0.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
     </ItemGroup>
 
 </Project>

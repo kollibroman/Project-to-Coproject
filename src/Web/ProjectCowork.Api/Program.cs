@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Api.Extensions;
 using ProjectCowork.Api.Utils;
 using ProjectCowork.Core;
 using ProjectCowork.Persistence;
@@ -12,6 +14,9 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); 
 });
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
         
 builder.Services.AddSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(builder.Configuration));
@@ -20,6 +25,7 @@ builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -32,6 +38,18 @@ if (app.Environment.IsDevelopment())
         .ExcludeFromDescription();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.AddControllers();
+
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ProjectCoworkDbContext>();
+    await context.Database.MigrateAsync();
+}
+
 app.Run();

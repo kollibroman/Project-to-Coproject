@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>ProjectCowork.Core.Features</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DispatchR.Mediator" Version="2.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\ProjectCowork.Domain.Shared\ProjectCowork.Domain.Shared.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Authorization\ProjectCowork.Infrastructure.Authorization.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>

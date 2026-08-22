@@ -8,6 +8,6 @@ public class UserEntity : IdentityUser<Guid>
     public Guid RoleId { get; set; }
     public RoleEntity Role { get; set; }
     
-    public ICollection<ProjectEntity> OwnedProjects { get; set; } = null!;
-    public ICollection<ProjectEntity> AssignedProjects { get; set; } = null!;
+    public ICollection<ProjectEntity> OwnedProjects { get; set; } = [];
+    public ICollection<ProjectEntity> AssignedProjects { get; set; } = [];
 }
