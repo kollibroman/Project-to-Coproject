@@ -1,4 +1,5 @@
 using DispatchR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProjectCowork.Api.Models;
 using ProjectCowork.Core.Features.Commands;
@@ -14,37 +15,42 @@ public static class ProjectsController
         var group = endpoints.MapGroup("/api/projects");
 
         group.MapGet("/", GetProjectsAsync);
-        group.MapGet("/projects/{projectId}", GetProjectAsync);
-        group.MapDelete("/api/projects/{projectId}", DeleteProjectAsync);
-        group.MapPost("/api/projects", CreateProjectAsync);
-        group.MapPost("/api/projects/{projectId}/edit", EditProjectAsync);
+        group.MapGet("/{projectId}", GetProjectAsync);
+        group.MapDelete("/{projectId}", DeleteProjectAsync);
+        group.MapPost("/", CreateProjectAsync);
+        group.MapPost("/{projectId}/edit", EditProjectAsync);
         
         return endpoints;
     }
 
-    private static IAsyncEnumerable<ProjectModel> GetProjectsAsync([FromServices] IMediator mediator, CancellationToken ct)
+    private static Ok<IAsyncEnumerable<ProjectModel>> GetProjectsAsync([FromServices] IMediator mediator, CancellationToken ct)
     {
-        return mediator.CreateStream(new GetProjectsQuery(), ct);
+        var stream = mediator.CreateStream(new GetProjectsQuery(), ct);
+        return TypedResults.Ok(stream);
     }
 
-    private static async Task<ProjectModel> GetProjectAsync([FromRoute] Guid projectId, [FromServices] IMediator mediator, CancellationToken ct)
+    private static async Task<Ok<ProjectModel>> GetProjectAsync([FromRoute] Guid projectId, [FromServices] IMediator mediator, CancellationToken ct)
     {
-        return await mediator.Send(new GetProjectQuery
+        var project = await mediator.Send(new GetProjectQuery
         {
             ProjectId = projectId
         }, ct);
+        
+        return TypedResults.Ok(project);
     }
 
-    private static async Task CreateProjectAsync([FromBody] CreateProjectRequest request, [FromServices] IMediator mediator, CancellationToken ct)
+    private static async Task<Created> CreateProjectAsync([FromBody] CreateProjectRequest request, [FromServices] IMediator mediator, CancellationToken ct)
     {
         await mediator.Send(new AddProjectCommand
         {
             Name = request.Name,
             Description = request.Description
         }, ct);
+
+        return TypedResults.Created();
     }
     
-    private static async Task EditProjectAsync([FromBody] EditProjectRequest request, [FromServices] IMediator mediator, CancellationToken ct)
+    private static async Task<NoContent> EditProjectAsync([FromBody] EditProjectRequest request, [FromServices] IMediator mediator, CancellationToken ct)
     {
         await mediator.Send(new EditProjectCommand
         {
@@ -52,13 +58,17 @@ public static class ProjectsController
             Name = request.Name,
             Description = request.Description
         }, ct);
+
+        return TypedResults.NoContent();
     }
     
-    private static async Task DeleteProjectAsync([FromRoute] Guid projectId, [FromServices] IMediator mediator, CancellationToken ct)
+    private static async Task<NoContent> DeleteProjectAsync([FromRoute] Guid projectId, [FromServices] IMediator mediator, CancellationToken ct)
     {
         await mediator.Send(new DeleteProjectCommand
         {
             ProjectId = projectId
         }, ct);
+
+        return TypedResults.NoContent();
     }
 }

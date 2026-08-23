@@ -7,6 +7,7 @@ public static class EndpointRouteBuilderExtensions
     public static IEndpointRouteBuilder AddControllers(this IEndpointRouteBuilder endpoints)
     {
         endpoints.AddProjects();
+        endpoints.AddAuth();
         
         return endpoints;
     }

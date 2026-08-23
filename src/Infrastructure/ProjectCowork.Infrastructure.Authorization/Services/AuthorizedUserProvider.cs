@@ -1,11 +1,27 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
 
 namespace ProjectCowork.Infrastructure.Authorization.Services;
 
-internal class AuthorizedUserProvider : IAuthorizedUserProvider
+internal sealed class AuthorizedUserProvider : IAuthorizedUserProvider
 {
-    public Task<Guid> GetAuthorizedUserId()
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public AuthorizedUserProvider(IHttpContextAccessor httpContextAccessor)
     {
-        throw new NotImplementedException();
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public Guid GetCurrentUserId()
+    { 
+        var currentUserId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        return currentUserId is not null ? Guid.Parse(currentUserId) : throw new UnauthorizedAccessException();
+    }
+
+    public IEnumerable<Claim>? GetCurrentUserClaims()
+    {
+        return _httpContextAccessor.HttpContext?.User.Claims;
     }
 }

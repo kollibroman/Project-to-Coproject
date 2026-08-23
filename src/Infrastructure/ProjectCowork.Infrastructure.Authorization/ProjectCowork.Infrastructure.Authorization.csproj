@@ -8,10 +8,16 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="10.0.11" />
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.22.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.22.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Abstractions\ProjectCowork.Infrastructure.Abstractions.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Configuration\ProjectCowork.Infrastructure.Configuration.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

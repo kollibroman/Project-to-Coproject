@@ -9,11 +9,16 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var assemblies = configuration.GetSection("DispatchR:FeatureAssemblies").Get<string[]>() ?? Array.Empty<string>();
+
         services.AddDispatchR(options =>
         {
-            options.Assemblies.Add(Assembly.Load(configuration["DispatchR:CoreAssembly"]));
+            foreach (var assemblyName in assemblies)
+            {
+                options.Assemblies.Add(Assembly.Load(assemblyName));
+            }
         });
-        
+    
         return services;
     }
 }

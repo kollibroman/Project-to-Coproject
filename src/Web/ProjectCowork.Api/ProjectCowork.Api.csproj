@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
@@ -23,8 +24,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\ProjectCowork.Core.Features.Project\ProjectCowork.Core.Features.Project.csproj" />
+    <ProjectReference Include="..\..\Application\ProjectCowork.Core.Features.User\ProjectCowork.Core.Features.User.csproj" />
     <ProjectReference Include="..\..\Application\ProjectCowork.Core\ProjectCowork.Core.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure\ProjectCowork.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

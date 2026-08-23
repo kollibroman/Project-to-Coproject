@@ -24,7 +24,7 @@ internal class AddProjectCommandHandler : IRequestHandler<AddProjectCommand, Tas
 
     public async Task Handle(AddProjectCommand request, CancellationToken cancellationToken)
     {
-        var ownerId = await _authorizedUserProvider.GetAuthorizedUserId();
+        var ownerId = _authorizedUserProvider.GetCurrentUserId();
 
         var entity = ProjectAggregate.Create(request.Name, request.Description, ownerId);
         

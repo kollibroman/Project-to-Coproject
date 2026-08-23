@@ -3,6 +3,7 @@
     <Project Path="Application/ProjectCowork.Core/ProjectCowork.Core.csproj" />
   </Folder>
   <Folder Name="/Application/Features/">
+    <Project Path="Application/ProjectCowork.Core.Features.User/ProjectCowork.Core.Features.User.csproj" />
     <Project Path="Application\ProjectCowork.Core.Features.Project\ProjectCowork.Core.Features.Project.csproj" />
   </Folder>
   <Folder Name="/Domain/">
@@ -13,6 +14,8 @@
   <Folder Name="/Infrastructure/">
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.Abstractions/ProjectCowork.Infrastructure.Abstractions.csproj" />
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.Authorization/ProjectCowork.Infrastructure.Authorization.csproj" />
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure.Configuration/ProjectCowork.Infrastructure.Configuration.csproj" />
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure/ProjectCowork.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Infrastructure/Persistence/">
     <Project Path="Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
