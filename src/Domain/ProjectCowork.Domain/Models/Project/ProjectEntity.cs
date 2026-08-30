@@ -1,3 +1,4 @@
+using ProjectCowork.Domain.Models.Posting;
 using ProjectCowork.Domain.Models.Users;
 
 namespace ProjectCowork.Domain.Models.Project;
@@ -11,5 +12,7 @@ public class ProjectEntity : BaseTrackedEntity
     public required Guid OwnerId { get; set; }
     public UserEntity Owner { get; set; }
 
+    public ICollection<ProjectPostingEntity> ProjectPostings { get; set; } = [];
+    
     public ICollection<UserEntity> Collaborators { get; set; } = [];
 }

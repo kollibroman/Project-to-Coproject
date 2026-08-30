@@ -16,6 +16,7 @@ internal class GetProjectsQueryHandler : IStreamRequestHandler<GetProjectsQuery,
         _context = context;
     }
 
+    // TODO: Pagination
     public IAsyncEnumerable<ProjectModel> Handle(GetProjectsQuery request, CancellationToken cancellationToken)
     {
         return _context.Projects

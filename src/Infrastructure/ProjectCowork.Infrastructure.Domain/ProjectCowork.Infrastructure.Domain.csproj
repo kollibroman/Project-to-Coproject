@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
+      <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.DomainEvents\ProjectCowork.Infrastructure.DomainEvents.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>

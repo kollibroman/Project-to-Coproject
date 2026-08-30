@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>ProjectCowork.Domain.Shared</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

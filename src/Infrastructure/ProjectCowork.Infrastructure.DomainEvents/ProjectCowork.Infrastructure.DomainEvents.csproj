@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
-      <ProjectReference Include="..\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+      <PackageReference Include="DispatchR.Mediator" Version="2.3.1" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using DispatchR.Abstractions.Send;
-using ProjectCowork.Domain.Shared.Aggregates;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
+using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Core.Features.Commands;

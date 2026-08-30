@@ -4,7 +4,7 @@ using ProjectCowork.Domain.Models.Permissions;
 
 namespace ProjectCowork.Persistence.Configuration;
 
-public class FeatureEntityConfiguration : IEntityTypeConfiguration<FeatureEntity>
+internal class FeatureEntityConfiguration : IEntityTypeConfiguration<FeatureEntity>
 {
     public void Configure(EntityTypeBuilder<FeatureEntity> builder)
     {
