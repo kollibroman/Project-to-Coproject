@@ -1,6 +1,6 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
-using ProjectCowork.Domain.Shared.Aggregates;
+using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Core.Features.Commands;

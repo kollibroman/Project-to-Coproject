@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectCowork.Persistence;
@@ -11,9 +12,11 @@ using ProjectCowork.Persistence;
 namespace ProjectCowork.Persistence.Migrations
 {
     [DbContext(typeof(ProjectCoworkDbContext))]
-    partial class ProjectCoworkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260830093727_ProjectPostingAndApplicationEntities")]
+    partial class ProjectPostingAndApplicationEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,6 +150,7 @@ namespace ProjectCowork.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("BlobUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -163,8 +167,8 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Property<Guid?>("ProjectApplicationId")
                         .HasColumnType("uuid");
 
-                    b.Property<long>("SizeInBytes")
-                        .HasColumnType("bigint");
+                    b.Property<int>("SizeInBytes")
+                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");

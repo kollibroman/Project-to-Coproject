@@ -1,7 +1,8 @@
+using System;
 using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Domain.Models.Project;
 
-namespace ProjectCowork.Domain.Shared.Aggregates;
+namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 
 public class ProjectAggregate
 {
