@@ -7,13 +7,17 @@ namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 public class AttachmentAggregate
 {
     private AttachmentEntity AttachmentEntity { get; }
+    private Stream AttachmentStream { get; }
+    private string ContentType { get; }
     
-    public AttachmentAggregate(AttachmentEntity attachmentEntity)
+    public AttachmentAggregate(AttachmentEntity attachmentEntity, Stream attachmentStream, string contentType)
     {
         AttachmentEntity = attachmentEntity;
+        AttachmentStream = attachmentStream;
+        ContentType = contentType;
     }
 
-    public static AttachmentEntity Create(string fileName, string persistedFileName, int sizeInBytes)
+    public static AttachmentEntity Create(string fileName, string persistedFileName, long sizeInBytes)
     {
         //TODO: validation and other things
         
@@ -34,7 +38,9 @@ public class AttachmentAggregate
     {
         await mediator.Publish(new AttachmentAddedEvent
         {
-
+            ContentStream = AttachmentStream,
+            FileName = AttachmentEntity.FileName,
+            ContentType = ContentType,
         }, ct);
     }
 }

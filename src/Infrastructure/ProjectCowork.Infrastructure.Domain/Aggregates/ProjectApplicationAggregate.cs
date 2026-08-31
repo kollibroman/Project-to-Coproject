@@ -1,8 +1,10 @@
 using System.Net;
+using DispatchR;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Exceptions.ProjectPostings;
 using ProjectCowork.Domain.Models.Attachments;
 using ProjectCowork.Domain.Models.Posting;
+using ProjectCowork.Infrastructure.DomainEvents.Attachments;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Infrastructure.Domain.Aggregates;
@@ -27,8 +29,7 @@ public class ProjectApplicationAggregate
 
         if (!postingExists)
         {
-            throw new ProjectApplicationToNonExistentPostingException(
-                $"Posting is inactive or doesn't exist {projectPostingId}", HttpStatusCode.BadRequest);
+            throw new ProjectApplicationToNonExistentPostingException($"Posting is inactive or doesn't exist {projectPostingId}", HttpStatusCode.BadRequest);
         }
 
         return new ProjectApplicationEntity
@@ -39,8 +40,8 @@ public class ProjectApplicationAggregate
         };
     }
 
-    public void SetApplicationAttachments()
+    public void SetApplicationAttachmentsAsync()
     {
-        
+        ProjectApplication.Attachments = Attachments;
     }
 }

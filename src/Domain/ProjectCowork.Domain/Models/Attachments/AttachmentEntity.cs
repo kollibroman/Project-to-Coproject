@@ -8,7 +8,7 @@ public class AttachmentEntity : BaseTrackedEntity
     
     public required string FileName { get; init; }
     public required string PersistedFileName { get; init; }
-    public required int SizeInBytes { get; init; }
+    public required long SizeInBytes { get; init; }
     public string? BlobUrl { get; set; }
     
     public Guid? ProjectApplicationId { get; set; }

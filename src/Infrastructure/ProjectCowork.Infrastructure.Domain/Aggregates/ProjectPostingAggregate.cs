@@ -43,4 +43,9 @@ public class ProjectPostingAggregate
     {
         ProjectPosting.ProjectDescription = projectDescription;
     }
+
+    public void SetActivityStatus(bool activityStatus)
+    {
+        ProjectPosting.IsActive =  activityStatus;
+    }
 }

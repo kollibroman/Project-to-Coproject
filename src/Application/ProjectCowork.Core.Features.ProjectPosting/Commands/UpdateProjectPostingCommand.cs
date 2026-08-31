@@ -11,6 +11,7 @@ public record UpdateProjectPostingCommand : IRequest<UpdateProjectPostingCommand
     public required Guid ProjectPostingId { get; init; }
     public required string JobDescription { get; init; }
     public required string ProjectDescription { get; init; }
+    public required bool IsActive { get; init; }
 }
 
 internal class UpdateProjectPostingCommandHandler : IRequestHandler<UpdateProjectPostingCommand, Task>
@@ -35,6 +36,7 @@ internal class UpdateProjectPostingCommandHandler : IRequestHandler<UpdateProjec
         
         aggregate.SetJobDescription(request.JobDescription);
         aggregate.SetProjectDescription(request.ProjectDescription);
+        aggregate.SetActivityStatus(request.IsActive);
         
         await _dbContext.SaveChangesAsync(ct);
     }

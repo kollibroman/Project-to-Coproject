@@ -1,3 +1,4 @@
+using DispatchR;
 using DispatchR.Abstractions.Send;
 using ProjectCowork.Domain.Models.Attachments;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
@@ -15,8 +16,9 @@ public record ApplyForPostingCommand : IRequest<ApplyForPostingCommand, Task>
     public record AttachmentModel
     {
         public required string FileName { get; init; }
-        public required int SizeInBytes { get; init; }
-        public required string BlobUrl { get; init; }
+        public required Stream ContentStream { get; init; }
+        public required long SizeInBytes { get; init; }
+        public required string ContentType { get; init; }
     }
 }
 
@@ -24,11 +26,13 @@ internal class ApplyForPostingCommandHandler : IRequestHandler<ApplyForPostingCo
 {
     private readonly ProjectCoworkDbContext _dbContext;
     private readonly IAuthorizedUserProvider _authorizedUserProvider;
-
-    public ApplyForPostingCommandHandler(ProjectCoworkDbContext dbContext, IAuthorizedUserProvider authorizedUserProvider)
+    private readonly IMediator _mediator;
+    
+    public ApplyForPostingCommandHandler(ProjectCoworkDbContext dbContext, IAuthorizedUserProvider authorizedUserProvider, IMediator mediator)
     {
         _dbContext = dbContext;
         _authorizedUserProvider = authorizedUserProvider;
+        _mediator = mediator;
     }
 
     public async Task Handle(ApplyForPostingCommand request, CancellationToken cancellationToken)
@@ -38,14 +42,22 @@ internal class ApplyForPostingCommandHandler : IRequestHandler<ApplyForPostingCo
         var entity = await ProjectApplicationAggregate.Create(_dbContext, request.Description, userId, request.ProjectPostingId);
 
         var attachmentList = new List<AttachmentEntity>();
-
+        var setBlobTasks = new List<Task>();
+        
         foreach (var attachment in request.Attachments)
         {
-            // TODO: Add attachmentName generator
-            attachmentList.Add(AttachmentAggregate.Create(attachment.FileName, attachment.FileName, attachment.SizeInBytes));
+            // TODO: Add attachment name generator
+            var file = AttachmentAggregate.Create(attachment.FileName, attachment.FileName, attachment.SizeInBytes);
+            attachmentList.Add(file);
+            
+            var attachmentAggregate = new AttachmentAggregate(file, attachment.ContentStream, attachment.ContentType);
+            setBlobTasks.Add(attachmentAggregate.SetBlobAsync(_mediator, cancellationToken));
         }
         
         var aggregate = new ProjectApplicationAggregate(entity, attachmentList);
+        aggregate.SetApplicationAttachmentsAsync();
+        await Task.WhenAll(setBlobTasks);
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

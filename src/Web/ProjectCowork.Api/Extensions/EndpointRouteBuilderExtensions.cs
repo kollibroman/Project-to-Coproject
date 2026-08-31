@@ -8,6 +8,7 @@ public static class EndpointRouteBuilderExtensions
     {
         endpoints.AddProjects();
         endpoints.AddAuth();
+        endpoints.MapPostings();
         
         return endpoints;
     }
