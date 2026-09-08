@@ -10,7 +10,8 @@ public class ProjectEntity : BaseTrackedEntity
     public required string Description { get; set; }
     
     public required Guid OwnerId { get; set; }
-    public UserEntity Owner { get; set; }
+
+    public UserEntity Owner { get; set; } = null!;
 
     public ICollection<ProjectPostingEntity> ProjectPostings { get; set; } = [];
     

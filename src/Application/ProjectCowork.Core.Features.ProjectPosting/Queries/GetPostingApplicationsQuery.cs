@@ -25,7 +25,9 @@ internal class GetPostingApplicationQueryHandler : IStreamRequestHandler<GetPost
             .Where(x => x.ProjectPostingId == request.ProjectPostingId)
             .Select(x => new ProjectApplicationDto
             {
-
+                Description = x.Description,
+                UserId = x.UserId,
+                Id = x.Id
             })
             .AsAsyncEnumerable();
     }

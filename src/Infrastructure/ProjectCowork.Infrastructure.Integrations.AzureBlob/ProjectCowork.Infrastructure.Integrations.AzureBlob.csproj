@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Azure.Storage.Blobs" Version="12.29.2" />
+      <PackageReference Include="Microsoft.Extensions.Azure" Version="1.14.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.12" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Abstractions\ProjectCowork.Infrastructure.Abstractions.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Configuration\ProjectCowork.Infrastructure.Configuration.csproj" />
+    </ItemGroup>
+
+</Project>

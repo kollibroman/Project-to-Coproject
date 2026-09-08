@@ -25,7 +25,10 @@ internal class GetProjectPostingQueryHandler : IRequestHandler<GetProjectPosting
             .Where(x => x.Id == request.ProjectPostingId)
             .Select(x => new ProjectPostingDto
             {
-
+                Id = x.Id,
+                JobDescription = x.JobDescription,
+                ProjectDescription = x.ProjectDescription,
+                ProjectId = x.ProjectId
             })
             .FirstAsync(ct);
     }

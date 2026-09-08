@@ -21,6 +21,10 @@
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.Domain/ProjectCowork.Infrastructure.Domain.csproj" />
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.DomainEvents/ProjectCowork.Infrastructure.DomainEvents.csproj" />
   </Folder>
+  <Folder Name="/Infrastructure/Integrations/">
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure.Integrations.AzureBlob/ProjectCowork.Infrastructure.Integrations.AzureBlob.csproj" />
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure.Integrations/ProjectCowork.Infrastructure.Integrations.csproj" />
+  </Folder>
   <Folder Name="/Infrastructure/Persistence/">
     <Project Path="Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
   </Folder>

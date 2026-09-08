@@ -28,7 +28,7 @@ internal class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectComman
         
         aggregate.DeleteProject();
 
-        _context.Remove(project);
+        _context.Remove(project!);
         await _context.SaveChangesAsync(ct);
     }
 }

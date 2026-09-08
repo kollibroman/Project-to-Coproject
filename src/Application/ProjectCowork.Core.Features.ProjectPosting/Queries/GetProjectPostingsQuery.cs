@@ -25,7 +25,10 @@ internal class GetProjectPostingsQueryHandler : IStreamRequestHandler<GetProject
             .Where(x => x.ProjectId == request.ProjectId)
             .Select(x => new ProjectPostingDto
             {
-
+                Id = x.Id,
+                JobDescription = x.JobDescription,
+                ProjectDescription = x.ProjectDescription,
+                ProjectId = x.ProjectId
             })
             .AsAsyncEnumerable();
     }

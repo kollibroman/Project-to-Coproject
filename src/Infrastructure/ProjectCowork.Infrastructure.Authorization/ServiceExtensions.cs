@@ -14,7 +14,7 @@ namespace ProjectCowork.Infrastructure.Authorization;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddAuthorizationServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthorizationServices(this IServiceCollection services)
     {
         services.AddMemoryCache();
         
@@ -28,7 +28,7 @@ public static class ServiceExtensions
         .AddSignInManager()
         .AddDefaultTokenProviders();
         
-        services.AddOptionsWithRequiredFieldsValidation<JwtSettings>(configuration);
+        services.AddOptionsWithRequiredFieldsValidation<JwtSettings>();
         
         services.AddScoped<IAuthorizedUserProvider, AuthorizedUserProvider>()
             .AddScoped<IPermissionService, PermissionService>()

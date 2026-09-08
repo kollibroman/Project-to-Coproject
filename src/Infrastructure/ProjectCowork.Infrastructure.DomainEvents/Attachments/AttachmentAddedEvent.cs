@@ -1,4 +1,7 @@
 using DispatchR.Abstractions.Notification;
+using Microsoft.Extensions.Logging;
+using ProjectCowork.Infrastructure.Integrations.AzureBlob.Abstractions;
+using ProjectCowork.Infrastructure.Integrations.AzureBlob.Models;
 
 namespace ProjectCowork.Infrastructure.DomainEvents.Attachments;
 
@@ -11,8 +14,32 @@ public record AttachmentAddedEvent : INotification
 
 internal class AttachmentAddedEventHandler : INotificationHandler<AttachmentAddedEvent>
 {
-    public ValueTask Handle(AttachmentAddedEvent request, CancellationToken cancellationToken)
+    private readonly IBlobService _blobService;
+    private readonly ILogger<AttachmentAddedEventHandler> _logger;
+
+    public AttachmentAddedEventHandler(IBlobService blobService, ILogger<AttachmentAddedEventHandler> logger)
     {
-        throw new NotImplementedException();
+        _blobService = blobService;
+        _logger = logger;
+    }
+
+    public async ValueTask Handle(AttachmentAddedEvent request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var saveFileRequest = new SaveFileRequest
+            {
+                // TODO: generic name
+                ContainerName = "Attachments",
+                FileName = request.FileName,
+                Content = request.ContentStream
+            };
+            
+            await _blobService.UploadFileASync(saveFileRequest, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+        }
     }
 }
