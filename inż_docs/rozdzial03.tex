@@ -1,0 +1,199 @@
+\chapter{Zalecenia dotyczące formatowania}
+Większa część niniejszego rozdziału ma charakter informacyjny. Zwrócono w nim uwagę na techniczne wymagania co do składu dokumentu. Rekomendacje co do tej kwestii można znaleźć na stronie Wydziału Informatyki i Teleinformatyki w punkcie ,,Rekomendowane wymagania edytorskie'' (\url{https://wit.pwr.edu.pl/studenci/dyplomanci/praca-dyplomowa}, dostęp 07.07.2026). Użytkownik niniejszego szablonu nie musi się kłopotać podanymi tam szczegółami. Za składanie tekstu odpowiada sam \LaTeX, co czyni zgodnie z odpowiednio ustawionymi parametrami w szablonie. Parametry te zapewniają oczekiwane wielkości znaków w tytułach rozdziałów i podrozdziałów, ustalają odpowiednie przestrzenie pomiędzy akapitami, odpowiadają za postać nagłówków i stopek itp. Niektóre z tych parametrów wymagają jednak atencji. Wyjaśnienia zamieszczono poniżej.
+
+\section{Rozmiar i układ treści na stronach dokumentu}
+Praca dyplomowa powinna być przygotowana do wydruku na papierze formatu A4 w orientacji pionowej, jednostronnie lub dwustronnie. Służy do tego odpowiednia opcja w definicji klasy dokumentu \verb|\documentclass[]| (tutaj ustawiona jest opcja jednostronna: \texttt{oneside}). Marginesy na stronach parzystych i nieparzystych powinny być jednakowe i mieć następujące wartości: lewy = 25mm, prawy = 25mm, górny = 10mm, dolny = 15mm, przy czym margines dolny powinien być mierzony do linii bazowej tekstu stopki. Dzięki temu, niezależnie od jedno czy dwustronnego składu, wydrukowane strony prezentować się będą dobrze (chodzi o to, że przy wydruku dwustronnym można manipulować marginesem od środka, potrzebnym na zbindowanie/zszycie pracy -- tu jednak marginesy lewe i prawe są takie same dla wszystkich stron).
+
+Szablon wymaga, by nagłówki, jaki i stopki stron były jednolinijkowe. \textbf{Należy więc zadbać, by tekst pojawiający się w nagłówkach i stopkach nie był za długi.} Wiąże się to z koniecznością zwracania uwagi na pewne komendy w \LaTeX{}-owym kodzie: \verb|\titleShort{}| -- w klamrowe nawiasy wpisuje się w tej komendzie początkowy fragment tytułu pracy z wykropkowaną końcówką (w pliku \texttt{Dyplom.tex}); \verb|\chapter[]{}|, \verb|\section[]{}| -- w kwadratowe nawiasy wpisuje się początkowy fragment nazwy rozdziału czy też sekcji (w plikach rozdziałów).
+
+
+\section{Strona tytułowa}
+Stronę tytułową przygotowano według zaleceń zamieszczonych na wspomnianej wcześniej stronie Wydziału Informatyki i Teleinformatyki. Zastosowano więc pakiet \texttt{ebgaramond}. Dostarcza on klonu wymaganej czcionki \texttt{garamond}, jednak bez kształtu \texttt{slanted} i z pewnymi brakami. Na przykład zamiast literki ,,ł'' w zbiorze \texttt{EBGaramond08 Italic} renderuje się samo ,,l'' (braku tego nie ma zbiór \texttt{EBGaramond12}).  Zaletą pakietu w porównaniu do innych jest to, że generalnie dobrze obsługiwane są w nim polskie znaki oraz że pakiet ten można znaleźć w różnych dystrybucjach latexa (\texttt{MikTeX} instaluje go automatycznie).
+
+Wielkości znaków użytych do wypełnienia strony tytułowej treścią są następujące:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,basewidth = {.55em}]
+Politechnika Wrocławska (Garamond Bold 20pt 22pt)
+Wydział Informatyki i Teleinformatyki (Garamond Bold 16pt 18pt)
+Kierunek: Jakiś kierunek (Garamond 14pt 16pt, Garamond Bold 14pt 16pt)
+Specjalność: Jakaś specjalność (Garamond 14pt 16pt, Garamond Bold 14pt 16pt)
+{P}RACA {D}YPLOMOWA (Garamond 26pt 28pt, Garamond 24pt 26pt)
+{I}NŻYNIERSKA (Garamond 26pt 28pt, Garamond 24pt 26pt)
+Tytuł pracy w języku polskim (Garamond Bold 18pt 20pt)
+Title in English (Garamond Bold 18pt 20pt)
+% AUTOR: (Garamond 16pt 18pt) - zamarkowane
+Imię Nazwisko (Garamond Bold 16pt 18pt)
+Opiekun pracy (Garamond 14pt 16pt)
+tytuł/stopień naukowy, Imię Nazwisko (Garamond 14pt 16pt)
+%OCENA PRACY: (Garamond 16pt 18pt) - zamarkowane
+WROCŁAW, 2021 (Garamond 14pt 16pt)
+\end{lstlisting}
+
+
+\section{Główny tekst}
+Główny tekst pracy powinien być zredagowany z wykorzystaniem czcionki \texttt{Times}, typ normalny, o wysokości 12pt, z odstępem między liniami równym 14.5pt. Istnieje możliwość zmiany odstępu między liniami za pomocą komendy \verb?\linespread?, jednak zaleca się pozostawienie tego odstępu jak w niniejszym dokumencie (\verb?\linespread{1}?). Wymagania odnośnie kroju pisma pozostałych elementów (nagłówków, stopek itp.) zamieszczono w tabeli~\ref{tab:secfonts}.
+
+W szablonie zastosowano czcionkę \texttt{texgyre-termes} (dostarcza ją pakiet \texttt{tgtermes}). Jest ona klonem czcionki \texttt{Times} wspierającym środkowoeuropejskie kodowanie znaków (podobnie jak w przypadku czcionki \texttt{ebgaramond} polskie literki nie są zlepkami dwóch znaków lecz pojedynczymi znakami).  
+Alternatywą może być czcionka \texttt{newtxtext} ze stowarzyszoną czcionką \texttt{newtxmath}. W kodzie szablonu zamieszczono zakomentowane polecenia włączające te czcionki.
+
+Wszelkie przykłady źródeł kodu, nazwy plików i uruchamianych programów powinny być pisane czcionką maszynową. W szablonie czcionką maszynową jest \texttt{t1xtt}. Czcionka ta obsługuje polskie znaki. Dostarcza ją pakiet \texttt{txfonts}. MiKTeX zainstaluje go automatycznie podczas pierwszej kompilacji szablonu.   
+
+% https://en.wikibooks.org/wiki/LaTeX/Lengths
+% there are two different point sizes.  A pdf point is 1/72 inch.  A LaTeX point is 1/72.27 inch.  Thus,
+% the LaTeX point is slightly smaller than a pdf point. 
+
+%\texttt{baselineskip}: \printlength{\baselineskip}\\
+%\texttt{beforesecskip}: \printlength{\beforesecskip}\\
+%\texttt{aftersecskip}: \printlength{\aftersecskip}\\
+%\texttt{topskip}: \printlength{\topskip}\\
+%\texttt{fontsize}: \showFontSize\\
+
+\begin{table}[htb]
+\centering
+\caption{Zestawienie czcionek elementów podziału dokumentu, tekstu wiodącego, nagłówka i stopki oraz podpisów (Rozm. -- rozmiar czcionki, Odst. -- \texttt{baselineskip})}
+\label{tab:secfonts}\small
+\begin{tabularx}{\linewidth}{|ll@{\hskip 5pt}l@{\hskip 5pt}lX|} \hline
+Element & Przykład & Czcionka & Rozm. & Odst. \\ \hline\hline
+Nr rozdziału & {\huge\bfseries Rozdział 1 } & \verb?\huge\bfseries? & 25pt & 30pt \\
+Tytuł rozdziału & {\Huge\bfseries Wstęp } & \verb?\Huge\bfseries? & 30pt & 37pt\\
+Nr i tytuł sekcji & {\Large\bfseries 1.1. Wprowadzenie } & \verb?\Large\bfseries? & 17pt & 22pt \\
+Nr i tytuł podsekcji & {\large\bfseries 1.1.1. Cel szczegółowy } & \verb?\large\bfseries? &14.5pt & 18pt\\
+Tytuł podpodsekcji  & {\normalsize\bfseries Założenia } & \verb?\normalsize\bfseries? & 12pt & 14.5pt\\
+Tytuł paragrafu & {\normalsize\bfseries  Podstawy } Opis ... &  \verb?\normalsize\bfseries? & 12pt & 14.5pt\\
+Tekst wiodący & {\normalsize Niniejszy dokument ... } & \verb?\normalsize? & 12pt & 14.5pt\\
+Nagłówek strony & {\small\itshape 3.2. Czcionka wiodąca ...} & \verb?\small\itshape? & 11pt & 13.6pt \\
+Stopka strony & {\small Imię Nazwisko: ...} & \verb?\small? & 11pt & 13.6pt\\
+Podpisy tabel & {\small Tab.~3.1: Zestawienie ...} & \verb?\small? & 11pt & 13.6pt \\
+Podpisy rysunków & {\small Rys.~3.1: Oficjalny ...} & \verb?\small? & 11pt & 13.6pt\\\hline
+\end{tabularx}
+\end{table}
+%\texttt{fontsize}: \showFontSize
+
+Jeśli w pracy zostaną użyte otoczenia matematyczne, to w dokumencie wynikowym pojawią się dodatkowe czcionki (domyślne latexowe czcionki do wyrażeń matematycznych). Dzięki zastosowaniu opcji \texttt{extrafontsizes} w klasie \texttt{memoir} nie dość, że otrzymuje się większe czcionki (30pt), to jeszcze zamiast \texttt{Computer Modern} do wzorów matematycznych jest stosowana czcionka \texttt{Latin Modern} (wywodząca się z \texttt{Computer Modern}).
+Stąd lista wszystkich użytych czcionek może być następująca:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,basewidth = {.55em}]
+EBGaramond12-Regular
+GaramondNo8-Reg-Norml
+TeXGyreTermes-Regular-Normalna
+TeXGyreTermes-Bold-Pogrubiona
+TeXGyreTermes-Italic-Normalna
+t1xtt-Nomal
+LMMathItalic12-Regular
+LMMathSymbols10-Regular
+LMMathExtension10-Regular
+LMRoman8-Regular
+\end{lstlisting}
+
+Aby skorzystać z tych czcionek poza systemem LaTeX wystarczy pobrać je spod adresów (ważnych na dzień
+07.07.2026): 
+\url{https://www.ctan.org/tex-archive/fonts/cm/ps-type1/bakoma/ttf/?lang=en}, \url{http://www.gust.org.pl/projects/e-foundry/latin-modern}, \url{http://www.gust.org.pl/projects/e-foundry/tex-gyre}, \url{https://bitbucket.org/georgd/eb-garamond/downloads}, a następnie zainstalować w~systemie. Dzięki temu można będzie np.~edytować rysunki używając dokładnie tych samych czcionek, co czcionki użyte w dokumencie.
+
+\section{Formatowanie bloków tekstu}
+Każdy rozdział pracy powinien rozpoczynać się od nowej strony. Jej wygląd jest kontrolowany odpowiednimi parametrami.
+W niniejszym szablonie przyjęto następujące ich wartości:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,basewidth = {.55em}]
+\beforechapskip (50.0pt) + \baselineskip of \huge (30.0pt) + \topskip (12.0pt) = 92.0pt (3.246cm)
+\midchapskip (20.0pt) + \baselineskip of \Huge (37.0pt) = 57.0 pt (2.011cm)
+\afterchapskip (40.0pt) + \baselineskip of \normalsize (14.5pt) = 54.5pt (1.923cm)
+\end{lstlisting}
+Nieco kłopotów może sprawić dobre ustawienie na stronie tytułów nienumerowanych rozdziałów oraz list generowanych automatycznie (Skróty, Spis treści, Spis rysunków, Spis tabel, Indeks rzeczowy). W tym celu zdefiniowano nowy styl rozdziału komendami jak niżej (w szablonie są to komendy zamarkowane)
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\newlength{\linespace}
+\setlength{\linespace}{-\beforechapskip-\topskip+\headheight+\topsep}
+\makechapterstyle{noNumbered}{%
+\renewcommand\chapterheadstart{\vspace*{\linespace}}
+}
+\end{lstlisting}
+oraz dokonano przełączenia stylów rozdziałów komendami \verb?\chapterstyle{nonumbered}? oraz \verb?\chapterstyle{default}? podczas dołączania do dokumentu wymienionych nienumerowanych rozdziałów i list. Aby ,,podnieść do góry'' tytuły nienumerowanych rozdziałów (gdy jest to rzeczywiście konieczne) wystarczy odmarkować wspomniane komendy.
+
+Tytuły rozdziałów, sekcji, podsekcji itd.\ nie powinny kończyć się kropką. Odległości pomiędzy tekstem wiodącym a tytułem sekcji są regulowane parametrami ustawionymi w szablonie.
+
+Rozmiar \verb?\baselineskip? zależy od rozmiaru czcionki (zobacz tabela~\ref{tab:secfonts}), zaś \texttt{beforeskip} i \texttt{secskip} od poziomu sekcji. W niniejszym szablonie przyjęto następujące wartości tych parametrów (są to wartości dobierane elastycznie podczas kompilacji):
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
+indent = 14.5pt
+parskip = (*@\printlength{\parskip}@*)
+beforesecskip = (*@\printlength{\beforesecskip}@*)
+aftersecskip = (*@\printlength{\aftersecskip}@*)
+beforesubsecskip = (*@\printlength{\beforesubsecskip}@*)
+aftersubsecskip = (*@\printlength{\aftersubsecskip}@*)
+beforesubsubsecskip = (*@\printlength{\beforesubsecskip}@*)
+aftersubsubsecskip = (*@\printlength{\aftersubsecskip}@*)
+\end{lstlisting}
+
+W szablonie obowiązują również następujące wartości parametrów odpowiedzialnych za odstępy pomiędzy pływającymi figurami, tekstami oraz tekstem i figurą:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
+floatsep = (*@\printlength{\floatsep}@*)
+intextsep = (*@\printlength{\intextsep}@*)
+textfloatsep = (*@\printlength{\textfloatsep}@*)
+\end{lstlisting}
+
+Pierwsza linia pierwszego akapitu w bloku (po tytule rozdziału, sekcji, podsekcji, podpodsekcji) nie może mieć wcięcia. Pierwsze linie w kolejnych akapitach już powinny mieć wcięcie równe \texttt{14.5pt}. Tekst w akapitach powinien być wyrównany z obu stron. 
+
+
+Strony powinny być numerowane numeracją ciągłą (sekwencja arabskich cyfr). Numery stron powinny być umieszczone w ich stopkach (tj.\ tak jak w niniejszym dokumencie). Wyjątkiem są tutaj pierwsze strony rozdziałów oraz strona tytułowa -- na nich numery nie powinny się pojawić.
+
+\section{Opisy tabel i rysunków}
+Podpisy powinny być umieszczane pod rysunkami lub nad tabelami wraz z etykietą składającą się ze skrótu Rys.\ lub Tab.\ oraz numeru. Podpisy te nie powinny mieć końcowej kropki. Numery występujący w podpisach powinny zaczynać się numerem rozdziału, po którym następuje kolejny numer rysunku lub tabeli w obrębie rozdziału. Etykieta powinna kończyć się dwukropkiem, po którym następuje tekst podpisu. Numer rozdziału powinien być rozdzielony kropką od kolejnego numeru w rysunku bądź tabeli w rozdziale (liczniki tabel i rysunków są rozłączne). Należy pamiętać o tym, żeby w całej pracy tabele miały podobny wygląd (rodzaj czcionki, ewentualne pogrubienia w nagłówku itp.). %Źródła należy podawać pod tabelą.
+
+\section{Przypisy dolne}
+Istnieje możliwość zamieszczania przypisów na dole strony, choć nie jest to zalecane (przykładowo\footnote{Tekst przypisu}). W szablonie wykorzystano następujące, domyślne wartości parametrów odpowiedzialnych za wygląd tych przypisów:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\footins = 12pt \footnotesep = 8pt
+\baselineskip = 10pt note separation = 40pt
+rule thickness = 0.4pt
+rule length = 0.25 times the \textwidth
+\end{lstlisting}
+
+
+\section{Formatowanie spisu treści}
+W klasie \texttt{memoir} istnieją komendy pozwalające dość dobrze zarządzać wyglądem spisu treści. W szablonie wykorzystano następujące, domyślne ich wartości:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+indent = 18pt 
+numwidth = 28pt
+\@tocrmarg = 31pt 
+\@pnumwidth = 19pt
+\@dotsep = 4.5
+\end{lstlisting}
+
+
+%\begin{figure}
+%\setlayoutscale{0.8}
+%\currenttoc
+%\drawparametersfalse
+%\drawtoc
+%\caption{Parametry definiujące postać spisu treści w niniejszym szablonie} \label{fig:thistoc}
+%\end{figure}
+
+\section{Formatowanie list wyliczeniowych i wypunktowań}
+Formatowania list można parametryzować. Jednak czasem trudno poradzić sobie z niektórymi rzeczami, jak np.~znakami wypunktowania. Dlatego w szablonie wykorzystano pakiet \texttt{enumi}. Pozwala on na łatwe zarządzanie wyglądem list. W szablonie zastosowano następujące globalne ustawienia dla tego pakietu:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\usepackage{enumitem} 
+\setlist{noitemsep,topsep=4pt,parsep=0pt,partopsep=4pt,leftmargin=*} 
+\setenumerate{labelindent=0pt,itemindent=0pt,leftmargin=!,label=\arabic*.} 
+\setlistdepth{4} 
+\setlist[itemize,1]{label=$\bullet$} 
+\setlist[itemize,2]{label=\normalfont\bfseries\textendash}
+\setlist[itemize,3]{label=$\ast$}
+\setlist[itemize,4]{label=$\cdot$}
+\renewlist{itemize}{itemize}{4}
+\end{lstlisting}
+
+W~podrozdziale~\ref{sec:Styl} pokazano przykład wykorzystania możliwości komend oferowanych w~pakiecie \texttt{enumi}.
+
+\section{Wzory matematyczne}
+Wzory matematyczne, jeśli mają być osobnymi formułami, powinny być wycentrowane, z~numeracją umieszczoną na końcu linii i ujętą w okrągłe nawiasy (zobacz równanie (\ref{eq:xdx})). Numery równań powinny zawierać numer rozdziału oraz kolejny numer równania w obrębie rozdziału (podobnie jak przy numerowaniu rysunków i tabel). Spełnienie tych warunków zapewnia otoczenie \verb?equation?. Nie wszystkie formuły trzeba numerować (nienumerowane wzory można osiągnąć stosując otoczenie \verb?\equation*?). Właściwie należy numerować tylko te, do których tworzy się jakieś odniesienia w tekście. Jeśli wzory umieszczane są w linijce tekstu, to można zastosować otoczenie matematyczne inline, jak w~przykładzie $\int_{0}^{10\nu\sum i}{x dx}$ (wyprodukowanym komendą \verb?$\int_{0}^{10\nu\sum i}{x dx}$?). Tylko że wtedy może dojść do rozszerzenia odstępów pomiędzy liniami tekstu (aby zmieścił się wzór).
+\begin{equation}\label{eq:xdx}
+\int_{0}^{10\nu\sum i}{x dx}
+\end{equation}
+
+\section{Wykorzystania narzędzi sztucznej inteligencji}
+Na stronie Wydziału Informatyki i Telekomunikacji zamieszczono wytyczne co do sposobu wykorzystania narzędzi sztucznej inteligencji podczas realizacji pracy oraz zaanonsowania tego faktu. Są one dostępne pod linkiem: \url{https://wit.pwr.edu.pl/wydzial/jakosc_ksztalcenia/wytyczne-dot-narzedzigenai}/ (dostęp 7.-07.2026).
+
+Jeśli faktycznie podczas realizacji pracy takie narzędzia zostały wykorzystane, należy jawnie opisać, jakie to były narzędzia oraz do czego je wykorzystano, np.\ do redakcji językowej, generowania tabel bądź ilustracji, generowania kodu programów. Fragmenty powstałe z udziałem sztucznej inteligencji powinny być jawnie wskazane. Jeśli dotyczy, w pracy powinna pojawić się odpowiednia formułka, np.:
+\begin{quotation}
+  W pracy korzystano z asystenta Copilot w wersji ... do wygenerowania ostylowania formularzy ... prezentowanych na graficznym interfejsie użytkownika zbudowanej aplikacji ... 
+\end{quotation}
+
+Formułkę tę należy umieścić w adekwatnym miejscu (w części związanej z opisem wykorzystanych technologii, zastosowaną metodyką pracy, podsumowaniem itp.).
+
+
+
