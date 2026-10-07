@@ -4,6 +4,7 @@
   </Folder>
   <Folder Name="/Application/Features/">
     <Project Path="Application/ProjectCowork.Core.Features.ProjectPosting/ProjectCowork.Core.Features.ProjectPosting.csproj" />
+    <Project Path="Application/ProjectCowork.Core.Features.Repositories/ProjectCowork.Core.Features.Repositories.csproj" />
     <Project Path="Application/ProjectCowork.Core.Features.User/ProjectCowork.Core.Features.User.csproj" />
     <Project Path="Application\ProjectCowork.Core.Features.Project\ProjectCowork.Core.Features.Project.csproj" />
   </Folder>
@@ -23,6 +24,7 @@
   </Folder>
   <Folder Name="/Infrastructure/Integrations/">
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.Integrations.AzureBlob/ProjectCowork.Infrastructure.Integrations.AzureBlob.csproj" />
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure.Integrations.Git/ProjectCowork.Infrastructure.Integrations.Git.csproj" />
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.Integrations/ProjectCowork.Infrastructure.Integrations.csproj" />
   </Folder>
   <Folder Name="/Infrastructure/Persistence/">
