@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ProjectCowork.Infrastructure.Integrations.AzureBlob\ProjectCowork.Infrastructure.Integrations.AzureBlob.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Integrations.Git\ProjectCowork.Infrastructure.Integrations.Git.csproj" />
     </ItemGroup>
 
 </Project>

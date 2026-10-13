@@ -17,7 +17,7 @@ namespace ProjectCowork.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -370,6 +370,36 @@ namespace ProjectCowork.Persistence.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Repositories.RepositoryEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RepoPath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RepositoryName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Repositories");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RoleEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -440,9 +470,6 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -461,8 +488,6 @@ namespace ProjectCowork.Persistence.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -636,15 +661,15 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ProjectCowork.Domain.Models.Users.UserEntity", b =>
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Repositories.RepositoryEntity", b =>
                 {
-                    b.HasOne("ProjectCowork.Domain.Models.Users.RoleEntity", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
+                        .WithMany("Repositories")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("ProjectEntityUserEntity", b =>
@@ -685,6 +710,8 @@ namespace ProjectCowork.Persistence.Migrations
             modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectEntity", b =>
                 {
                     b.Navigation("ProjectPostings");
+
+                    b.Navigation("Repositories");
                 });
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RoleEntity", b =>

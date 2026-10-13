@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Models.Permissions;
 using ProjectCowork.Domain.Models.Posting;
 using ProjectCowork.Domain.Models.Project;
+using ProjectCowork.Domain.Models.Repositories;
 using ProjectCowork.Domain.Models.Users;
 
 namespace ProjectCowork.Persistence;
@@ -25,7 +26,8 @@ public class ProjectCoworkDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     public virtual DbSet<RolePermissionEntity> RolePermissions => Set<RolePermissionEntity>();
     public virtual DbSet<ProjectPostingEntity> ProjectPostings => Set<ProjectPostingEntity>();
     public virtual DbSet<ProjectApplicationEntity> ProjectApplications => Set<ProjectApplicationEntity>();
-
+    public virtual DbSet<RepositoryEntity> Repositories => Set<RepositoryEntity>();
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(typeof(ProjectCoworkDbContext).Assembly);

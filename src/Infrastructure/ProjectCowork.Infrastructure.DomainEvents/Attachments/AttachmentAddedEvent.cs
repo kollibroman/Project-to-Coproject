@@ -35,7 +35,7 @@ internal class AttachmentAddedEventHandler : INotificationHandler<AttachmentAdde
                 Content = request.ContentStream
             };
             
-            await _blobService.UploadFileASync(saveFileRequest, cancellationToken);
+            await _blobService.UploadFileAsync(saveFileRequest, cancellationToken);
         }
         catch (Exception e)
         {

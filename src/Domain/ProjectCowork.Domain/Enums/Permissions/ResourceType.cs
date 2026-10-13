@@ -2,5 +2,8 @@ namespace ProjectCowork.Domain.Enums.Permissions;
 
 public enum ResourceType
 {
-    Projects
+    Projects,
+    Postings,
+    Repositories,
+    Applications
 }

@@ -16,7 +16,7 @@ internal class BlobService : IBlobService
         _logger = logger;
     }
 
-    public async Task UploadFileASync(SaveFileRequest request, CancellationToken ct)
+    public async Task UploadFileAsync(SaveFileRequest request, CancellationToken ct)
     {
         try
         {

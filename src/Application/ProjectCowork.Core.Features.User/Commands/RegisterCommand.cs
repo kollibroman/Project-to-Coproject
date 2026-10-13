@@ -30,19 +30,41 @@ internal sealed class RegisterCommandHandler : TokenCommandHandlerBase, IRequest
 
     public async Task<TokenDto> Handle(RegisterCommand request, CancellationToken ct)
     {
+        var roleName = request.UserRole.ToString();
+
+        if (!await _roleManager.RoleExistsAsync(roleName) && (request.UserRole != RoleNames.Admin &&  request.UserRole != RoleNames.User && request.UserRole != RoleNames.Business))
+        {
+            throw new InvalidOperationException($"Role '{roleName}' does not exist.");
+        }
+
+        if (!await _roleManager.RoleExistsAsync(roleName))
+        {
+            await _roleManager.CreateAsync(new RoleEntity
+            {
+                Name = roleName
+            });
+        }
+        
         var applicationUser = new UserEntity
         {
             Email = request.Email,
             UserName = request.Username,
         };
 
-        await _userManager.CreateAsync(applicationUser, request.Password);
+        var createResult = await _userManager.CreateAsync(applicationUser, request.Password);
+        if (!createResult.Succeeded)
+        {
+            throw new InvalidOperationException(
+                $"User creation failed: {string.Join("; ", createResult.Errors.Select(e => e.Description))}");
+        }
 
-        var role = await _roleManager.Roles
-            .Where(x => x.Name == request.UserRole.ToString())
-            .FirstAsync(ct);
+        var roleResult = await _userManager.AddToRoleAsync(applicationUser, roleName);
+        if (!roleResult.Succeeded)
+        {
+            throw new InvalidOperationException(
+                $"Assigning role failed: {string.Join("; ", roleResult.Errors.Select(e => e.Description))}");
+        }
         
-        await _userManager.AddToRoleAsync(applicationUser, role.Name);
         var currentRoles = await _userManager.GetRolesAsync(applicationUser);
         
         List<Claim> claims = 

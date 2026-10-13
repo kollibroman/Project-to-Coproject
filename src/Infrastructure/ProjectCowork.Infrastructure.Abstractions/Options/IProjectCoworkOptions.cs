@@ -2,5 +2,5 @@ namespace ProjectCowork.Infrastructure.Abstractions.Options;
 
 public interface IProjectCoworkOptions
 {
-    static abstract string SectionName { get; }
+    abstract static string SectionName { get; }
 }

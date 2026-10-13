@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Application\ProjectCowork.Core.Features.ProjectPosting\ProjectCowork.Core.Features.ProjectPosting.csproj" />
     <ProjectReference Include="..\..\Application\ProjectCowork.Core.Features.Project\ProjectCowork.Core.Features.Project.csproj" />
+    <ProjectReference Include="..\..\Application\ProjectCowork.Core.Features.Repositories\ProjectCowork.Core.Features.Repositories.csproj" />
     <ProjectReference Include="..\..\Application\ProjectCowork.Core.Features.User\ProjectCowork.Core.Features.User.csproj" />
     <ProjectReference Include="..\..\Application\ProjectCowork.Core\ProjectCowork.Core.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure\ProjectCowork.Infrastructure.csproj" />

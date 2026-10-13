@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Queries\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Domain\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
       <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
       <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Authorization\ProjectCowork.Infrastructure.Authorization.csproj" />

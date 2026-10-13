@@ -30,7 +30,7 @@ internal sealed class ManyAttachmentsAddedEventHandler : INotificationHandler<Ma
                 FileName = @event.FileName,
                 Content = @event.ContentStream
             })
-            .Select(saveFileRequest => _blobService.UploadFileASync(saveFileRequest, cancellationToken))
+            .Select(saveFileRequest => _blobService.UploadFileAsync(saveFileRequest, cancellationToken))
             .ToList();
 
         await Task.WhenAll(uploadTaskList);
