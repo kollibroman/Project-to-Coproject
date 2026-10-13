@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO.Pipelines;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using ProjectCowork.Infrastructure.Integrations.Git.Abstractions;
 
 namespace ProjectCowork.Infrastructure.Integrations.Git.Internal;
@@ -10,84 +11,100 @@ namespace ProjectCowork.Infrastructure.Integrations.Git.Internal;
 public class GitServerService : IGitServerService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILogger<GitServerService> _logger;
 
-    public GitServerService(IHttpContextAccessor httpContextAccessor)
+    public GitServerService(IHttpContextAccessor httpContextAccessor, ILogger<GitServerService> logger)
     {
         _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
     }
 
-    public async Task<string> UploadAndCreateRemoteRepositoryAsync(string name, CancellationToken ct)
+    public async Task<string> UploadAndCreateRemoteRepositoryAsync(Guid repositoryId, string name, string gitAction, CancellationToken ct)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
-        using var process = new Process();
+        var httpContext = _httpContextAccessor.HttpContext
+                          ?? throw new InvalidOperationException("No active HTTP context.");
 
-        var baseRepoFolder = Path.Combine(Directory.GetCurrentDirectory(), "Repos");
-        var gitPath = Path.Combine(baseRepoFolder, $"{name}.git");
-        
-        var requestPath = httpContext.Request.Path.Value ?? "";
-        var gitAction = requestPath.Contains(".git/") 
-            ? requestPath.Substring(requestPath.IndexOf(".git/") + 5) 
-            : "";
-        
+        // Must match the layout used by GitClientService.InitBareRepositoryAsync:
+        // Repos/{repositoryId}/{name}.git
+        var projectRoot = Path.Combine(Directory.GetCurrentDirectory(), "Repos", repositoryId.ToString());
+        var gitPath = Path.Combine(projectRoot, $"{name}.git");
+
+        // The repository is created via /api/git/repository/create (with a DB record).
+        // Don't silently create an orphan repo here.
         if (!Directory.Exists(gitPath))
         {
-            Directory.CreateDirectory(gitPath);
-            await Process.Start("git", $"init --bare \"{gitPath}\"").WaitForExitAsync(ct);
-            await Process.Start("git", $"-C \"{gitPath}\" config http.receivepack true").WaitForExitAsync(ct);
+            httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            return gitPath;
         }
-        
-        process.StartInfo = new ProcessStartInfo
+
+        // git http-backend is a CGI program: it takes no arguments, everything comes from env vars.
+        var startInfo = new ProcessStartInfo
         {
             FileName = "git",
-            Arguments = "http-backend --stateless-rpc --advertise-refs",
+            Arguments = "http-backend",
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true,
             WorkingDirectory = gitPath,
-            EnvironmentVariables =
-            {
-                { "GIT_HTTP_EXPORT_ALL", "1" },
-                { "HTTP_GIT_PROTOCOL", httpContext.Request.Headers["Git-Protocol"] },
-                { "REQUEST_METHOD", httpContext.Request.Method },
-                { "GIT_PROJECT_ROOT", baseRepoFolder },
-                { "PATH_INFO", $"/{name}.git/{gitAction}"},
-                { "QUERY_STRING", httpContext.Request.QueryString.ToUriComponent().TrimStart('?') },
-                { "CONTENT_TYPE", httpContext.Request.ContentType },
-                { "CONTENT_LENGTH", httpContext.Request.ContentLength?.ToString() },
-                { "HTTP_CONTENT_ENCODING", httpContext.Request.Headers["Content-Encoding"].ToString() },
-                { "REMOTE_USER", httpContext.User.Identity?.Name },
-                { "REMOTE_ADDR", httpContext.Connection.RemoteIpAddress?.ToString() },
-                { "GIT_COMMITTER_NAME", httpContext.User.Identity?.Name },
-            },
         };
-        
-        process.Start();
-        
-        var inputTask = Task.Run(async () => 
+
+        void SetEnv(string key, string? value)
         {
-            try 
+            if (!string.IsNullOrEmpty(value))
+                startInfo.Environment[key] = value;
+        }
+
+        var request = httpContext.Request;
+        SetEnv("GIT_HTTP_EXPORT_ALL", "1");
+        SetEnv("GIT_PROJECT_ROOT", projectRoot);
+        SetEnv("PATH_INFO", $"/{name}.git/{gitAction}");
+        SetEnv("REQUEST_METHOD", request.Method);
+        SetEnv("QUERY_STRING", request.QueryString.ToUriComponent().TrimStart('?'));
+        SetEnv("CONTENT_TYPE", request.ContentType);
+        SetEnv("CONTENT_LENGTH", request.ContentLength?.ToString());
+        SetEnv("HTTP_CONTENT_ENCODING", request.Headers["Content-Encoding"].ToString());
+        SetEnv("GIT_PROTOCOL", request.Headers["Git-Protocol"].ToString());
+        SetEnv("REMOTE_USER", httpContext.User.Identity?.Name);
+        SetEnv("REMOTE_ADDR", httpContext.Connection.RemoteIpAddress?.ToString());
+
+        using var process = new Process { StartInfo = startInfo };
+        process.Start();
+
+        // Drain stderr so the process can't block on a full pipe.
+        var stderrTask = process.StandardError.ReadToEndAsync(ct);
+
+        var inputTask = Task.Run(async () =>
+        {
+            try
             {
-                await httpContext.Request.Body.CopyToAsync(process.StandardInput.BaseStream, ct);
+                await request.Body.CopyToAsync(process.StandardInput.BaseStream, ct);
             }
-            finally 
+            finally
             {
                 process.StandardInput.Close();
             }
         }, ct);
-        
+
         var pipeReader = PipeReader.Create(process.StandardOutput.BaseStream);
         await ReadResponse(pipeReader, httpContext, ct);
         await pipeReader.CopyToAsync(httpContext.Response.Body, ct);
-        await pipeReader.CompleteAsync(); 
-        
+        await pipeReader.CompleteAsync();
+
         await inputTask;
         await process.WaitForExitAsync(ct);
 
+        var stderr = await stderrTask;
+        if (process.ExitCode != 0 || !string.IsNullOrWhiteSpace(stderr))
+        {
+            _logger.LogWarning("git http-backend exited with {ExitCode} for {GitPath}: {Stderr}",
+                process.ExitCode, gitPath, stderr);
+        }
+
         return gitPath;
     }
-    
+
     private static async Task ReadResponse(PipeReader pipeReader, HttpContext httpContext, CancellationToken cancellationToken)
     {
         while (true)
@@ -96,12 +113,12 @@ public class GitServerService : IGitServerService
             var buffer = result.Buffer;
             var (position, isFinished) = ReadHeaders(httpContext, buffer);
             pipeReader.AdvanceTo(position, buffer.End);
- 
+
             if (result.IsCompleted || isFinished)
                 break;
         }
     }
- 
+
     private static (SequencePosition Position, bool IsFinished) ReadHeaders(
         HttpContext httpContext,
         in ReadOnlySequence<byte> sequence)
@@ -111,19 +128,30 @@ public class GitServerService : IGitServerService
         {
             if (!reader.TryReadTo(out ReadOnlySpan<byte> line, (byte)'\n'))
                 break;
- 
-            if (line.Length == 1)
+
+            // Empty line ("\r" or "") terminates the CGI header block.
+            if (line.Length == 0 || (line.Length == 1 && line[0] == (byte)'\r'))
                 return (reader.Position, true);
- 
+
             var colon = line.IndexOf((byte)':');
             if (colon == -1)
                 break;
- 
+
             var headerName = Encoding.UTF8.GetString(line[..colon]);
             var headerValue = Encoding.UTF8.GetString(line[(colon + 1)..]).Trim();
+
+            // CGI "Status: 404 Not Found" must become the HTTP status code, not a header.
+            if (headerName.Equals("Status", StringComparison.OrdinalIgnoreCase))
+            {
+                var code = headerValue.Split(' ', 2)[0];
+                if (int.TryParse(code, out var statusCode))
+                    httpContext.Response.StatusCode = statusCode;
+                continue;
+            }
+
             httpContext.Response.Headers[headerName] = headerValue;
         }
- 
+
         return (reader.Position, false);
     }
 }

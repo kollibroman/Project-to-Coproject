@@ -5,7 +5,9 @@ namespace ProjectCowork.Core.Features.Repositories.Commands;
 
 public record PushToRepositoryCommand : IRequest<PushToRepositoryCommand, Task>
 {
+    public required Guid RepositoryId { get; init; }
     public required string Name { get; init; }
+    public required string GitAction { get; init; }
 }
 
 internal class PushToRepositoryCommandHandler : IRequestHandler<PushToRepositoryCommand, Task>
@@ -19,6 +21,6 @@ internal class PushToRepositoryCommandHandler : IRequestHandler<PushToRepository
 
     public async Task Handle(PushToRepositoryCommand request, CancellationToken ct)
     {
-        await _gitServerService.UploadAndCreateRemoteRepositoryAsync(request.Name, ct);
+        await _gitServerService.UploadAndCreateRemoteRepositoryAsync(request.RepositoryId, request.Name, request.GitAction, ct);
     }
 }
