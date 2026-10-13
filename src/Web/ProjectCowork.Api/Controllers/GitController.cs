@@ -14,7 +14,7 @@ public static class GitController
         
         group.MapPost("/repository/create", CreateRepositoryAsync);
         
-        group.MapMethods("/{repositoryId:guid}/{name}.git/{*path}", [HttpMethods.Get, HttpMethods.Post], PushToRepositoryAsync);
+        group.MapMethods("/{projectId:guid}/{name}.git/{*path}", [HttpMethods.Get, HttpMethods.Post], PushToRepositoryAsync);
         
         return endpoints;     
     }
@@ -30,11 +30,11 @@ public static class GitController
         return TypedResults.Ok(clonePath);
     }
 
-    private static async Task PushToRepositoryAsync([FromServices] IMediator mediator, [FromRoute] Guid repositoryId, [FromRoute] string name, [FromRoute] string? path, CancellationToken ct)
+    private static async Task PushToRepositoryAsync([FromServices] IMediator mediator, [FromRoute] Guid projectId, [FromRoute] string name, [FromRoute] string? path, CancellationToken ct)
     {
         await mediator.Send(new PushToRepositoryCommand
         {
-            RepositoryId = repositoryId,
+            ProjectId = projectId,
             Name = name,
             GitAction = path ?? string.Empty
         }, ct);

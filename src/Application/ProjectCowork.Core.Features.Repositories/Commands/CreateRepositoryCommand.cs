@@ -26,7 +26,7 @@ internal class CreateRepositoryCommandHandler : IRequestHandler<CreateRepository
     {
         var repository = RepositoryAggregate.Create(request.Name,string.Empty, request.ProjectId);
         
-        var clonePath = await _gitClientService.InitBareRepositoryAsync(request.Name, repository.Id);
+        var clonePath = await _gitClientService.InitBareRepositoryAsync(request.Name, request.ProjectId);
 
         repository.RepoPath = clonePath;
         _projectCoworkDbContext.Add(repository);

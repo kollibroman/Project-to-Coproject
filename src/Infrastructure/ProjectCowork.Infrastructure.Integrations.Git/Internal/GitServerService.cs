@@ -19,25 +19,23 @@ public class GitServerService : IGitServerService
         _logger = logger;
     }
 
-    public async Task<string> UploadAndCreateRemoteRepositoryAsync(Guid repositoryId, string name, string gitAction, CancellationToken ct)
+    public async Task<string> UploadAndCreateRemoteRepositoryAsync(Guid projectId, string name, string gitAction, CancellationToken ct)
     {
         var httpContext = _httpContextAccessor.HttpContext
                           ?? throw new InvalidOperationException("No active HTTP context.");
 
-        // Must match the layout used by GitClientService.InitBareRepositoryAsync:
-        // Repos/{repositoryId}/{name}.git
-        var projectRoot = Path.Combine(Directory.GetCurrentDirectory(), "Repos", repositoryId.ToString());
-        var gitPath = Path.Combine(projectRoot, $"{name}.git");
+        // Repos/{projectId}/{name}.git - same layout as GitClientService.
+        var projectRoot = GitRepositoryPaths.GetProjectRoot(projectId);
+        var gitPath = GitRepositoryPaths.IsValidName(name)
+            ? GitRepositoryPaths.GetRepositoryPath(projectId, name)
+            : null;
 
-        // The repository is created via /api/git/repository/create (with a DB record).
-        // Don't silently create an orphan repo here.
-        if (!Directory.Exists(gitPath))
+        if (gitPath is null || !Directory.Exists(gitPath))
         {
             httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            return gitPath;
+            return string.Empty;
         }
 
-        // git http-backend is a CGI program: it takes no arguments, everything comes from env vars.
         var startInfo = new ProcessStartInfo
         {
             FileName = "git",
@@ -72,7 +70,6 @@ public class GitServerService : IGitServerService
         using var process = new Process { StartInfo = startInfo };
         process.Start();
 
-        // Drain stderr so the process can't block on a full pipe.
         var stderrTask = process.StandardError.ReadToEndAsync(ct);
 
         var inputTask = Task.Run(async () =>
