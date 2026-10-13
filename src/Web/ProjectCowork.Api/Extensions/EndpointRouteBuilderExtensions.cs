@@ -10,6 +10,7 @@ public static class EndpointRouteBuilderExtensions
         endpoints.AddAuth();
         endpoints.MapPostings();
         endpoints.MapGitEndpoints();
+        endpoints.MapRepositories();
         
         return endpoints;
     }
