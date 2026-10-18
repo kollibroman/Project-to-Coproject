@@ -1,17 +1,39 @@
 \chapter{Wstęp}
 \section{Wprowadzenie}
 Studenci uczelni technicznych, chcąc rozwijać się i aktywnie uczestniczyć w życiu akademickim decydują się tworzenie projektów rozwiązujących realne problemy na jakie się natknęli.
-Środowisko akademickie sprzyja powstawaniu takich projektów i pozwala też na ich rozwój, napędzając innowację w danym obszarze i w efekcie mogą przyczynić się do rozwoju  całego społeczeństwa. \\
+Środowisko akademickie sprzyja powstawaniu takich projektów i pozwala też na ich rozwój, napędzając innowację w danym obszarze i w efekcie mogą przyczynić się do rozwoju  całego społeczeństwa. 
+
+% TO DO: Proszę, w miarę możliwości, w ciągłym tekście nie stosować \\ (to komenda, która kończy akapit, wstawiając "rozciągliwą" pustą przerwę). Zamiast tego proszę wstawiać w latexowym kodzie pustą linię (akapit się skończy, ale bez "rozciągliwej" pustej przerwy
+
+
 Niestety, w wielu przypadkach pomimo chęci poszczególnych osób, takie inicjatywy kończą się na etapie koncepcji ze względu na niedobór osób o pożądanych kwalifikacjach, lub braku finansowania na dalsze prace. Ten problem
 po części jest rozwiązywany poprzez inicjatywy Kół Naukowych, które zrzeszają podobnie myślących studentów, jednakże nie zawsze pomysłodawcom udaje się dotrzeć do takich organizacji lub dana organizacja nie ma odpowiednich zasobów do realizacji koncepcji.
 Koła Naukowe ograniczają się też tylko i wyłącznie do jednej uczelni i brakuje im możliwości żeby dotrzeć do osób zewnętrznych. Problemy te ograniczają możliwości takich osób i wiele dobrych pomysłów w ten sposób przepada.
-Zagadnienie to Autor chce rozwiązac poprzez poprzez stworzenie międzyuczelnianego systemu informatycznego, który połączyłby osoby z uczelni Polskich i zagranicznych, napędzając innowację.
+
+% TO DO: Proszę nieco rozwinąć wstęp.
+% - może Pan dodać parę zdań o Crowdsourcing (gdzie chodzi o robienie projektów w grupach wykonawców dobierających się ze społeczności), linkedin (portalach, na których umieszcza się portfolio i łączy specjalistów) itp. Chodzi o to, by dać szerszy kontekst, by pokazać, że znane są inne inicjatywy o "podobnym" zastosowaniu.
+% - przy okazji proszę dołożyć jakieś cytowania
+% - może Pan odnieść się do tego, co podpowiada chat:
+		%Key Collaboration Models
+		%• Industry-Integrated Curricula: Software engineering and computer science programs (such as at the University of Gothenburg) embed industry partners directly into course design, thesis projects, and live hackathons (e.g., prototyping software on real-world machinery or trucks).
+		%• Open Source & Foundation Partnerships: Programs like the OpenInfra Foundation’s University Partnership Program connect university labs and students with global open-source communities for non-NDA real-world development.
+		%• University-Software Industry Collaboration (USIC): Joint R&D and research units partner with software firms, though studies note that success depends heavily on bridging informal communication and formal knowledge management.
+
+
+
+Zagadnienie to Autor chce rozwiązać poprzez poprzez stworzenie międzyuczelnianego systemu informatycznego, który połączyłby osoby z uczelni Polskich i zagranicznych, napędzając innowację.
+
 \section{Cel i zakres pracy}
 Celem niniejszej pracy jest stworzenie zintegrowanego systemu informatycznego mającego na celu wspomaganie studentów uczelni technicznych w
 efektywnym tworzeniu zespołów projektowych, zarządzania projektami oraz pozyskiwania potencjalnych inwestorów dla swoich projektów.
-Główną grupą docelową systemu na potrzeby tej pracy będą studenci kierunków informatycznych oraz pokrewnych, których projekty wymagają systemu kontroli wersji. \\
-Jako zakres pracy przyjęto stworzenie aplikacji serwerowej, oferującej interfejs REST API oferujący funkcjonalności systemu, oraz aplikacji klienckiej w postaci strony internetowej, umożliwiającej korzystanie z systemu przez użytkowników końcowych. \\
+Główną grupą docelową systemu na potrzeby tej pracy będą studenci kierunków informatycznych oraz pokrewnych, których projekty wymagają systemu kontroli wersji. 
+
+Jako zakres pracy przyjęto stworzenie aplikacji serwerowej, oferującej interfejs REST API oferujący funkcjonalności systemu, oraz aplikacji klienckiej w postaci strony internetowej, umożliwiającej korzystanie z systemu przez użytkowników końcowych. 
+
 Do realizacji powyższego celu zostaną wykorzystane technologie takie jak: $ASP.NET$, $Entity$ $Framework$ $Core$, $React.js$, $PostgreSQL$ oraz $Docker$ jako silnik konteneryzacji. Aplikacja serwerowa docelowo będzie hostowana w chmurze, razem z aplikacją kliencką,
-która będzie dostępna dla użytkowników końcowych poprzez przeglądarkę internetową. \\
+która będzie dostępna dla użytkowników końcowych poprzez przeglądarkę internetową. 
+
 \section{Układ pracy}
 Praca będzie składała się ze wstępu, analizy wymagań, organizacji projektu, opisu architektury systemu i implementacji, testów akceptacyjnych, integracyjnych i jednostkowych, a także opisu konteneryzacji i hostowania aplikacji.
+
+% TO DO: proszę "wyczyścić" szablon pracy (tj. zamiast tekstu z oryginalnego szablonu proszę umieścić własny tekst - mogą to być same nagłówki sekcji i podsekcji w kolejnych rodziałach - chodzi o to, by było widać konspekt pracy
