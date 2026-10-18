@@ -1,7 +1,7 @@
-import { useState, type ReactNode } from 'react';
 import {
   AppShell,
   Burger,
+  Button,
   Group,
   NavLink,
   ScrollArea,
@@ -9,26 +9,27 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { Outlet, useLocation, useNavigate } from 'react-router';
+import { useAuth } from '../hooks';
 
 type NavItem = {
   label: string;
+  path: string;
 };
 
 const navItems: NavItem[] = [
-  { label: 'Pulpit' },
-  { label: 'Projekty' },
-  { label: 'Ustawienia' },
+  { label: 'Pulpit', path: '/' },
+  { label: 'Projekty', path: '/projects' },
+  { label: 'Ustawienia', path: '/settings' },
 ];
 
-type AppLayoutProps = {
-  children: ReactNode;
-};
-
-export function AppLayout({ children }: AppLayoutProps) {
+export function AppLayout() {
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure(false);
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-  const [active, setActive] = useState('Pulpit');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { logout } = useAuth();
 
   return (
     <AppShell
@@ -41,20 +42,25 @@ export function AppLayout({ children }: AppLayoutProps) {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md" gap="sm">
-          <Burger
-            opened={mobileOpened}
-            onClick={toggleMobile}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Burger
-            opened={desktopOpened}
-            onClick={toggleDesktop}
-            visibleFrom="sm"
-            size="sm"
-          />
-          <Title order={3}>ProjectCowork</Title>
+        <Group h="100%" px="md" gap="sm" justify="space-between">
+          <Group gap="sm">
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Burger
+              opened={desktopOpened}
+              onClick={toggleDesktop}
+              visibleFrom="sm"
+              size="sm"
+            />
+            <Title order={3}>ProjectCowork</Title>
+          </Group>
+          <Button variant="subtle" size="sm" onClick={logout}>
+            Wyloguj
+          </Button>
         </Group>
       </AppShell.Header>
 
@@ -62,11 +68,15 @@ export function AppLayout({ children }: AppLayoutProps) {
         <AppShell.Section grow component={ScrollArea}>
           {navItems.map((item) => (
             <NavLink
-              key={item.label}
+              key={item.path}
               label={item.label}
-              active={item.label === active}
+              active={
+                item.path === '/'
+                  ? location.pathname === '/'
+                  : location.pathname.startsWith(item.path)
+              }
               onClick={() => {
-                setActive(item.label);
+                navigate(item.path);
                 closeMobile();
               }}
             />
@@ -79,7 +89,9 @@ export function AppLayout({ children }: AppLayoutProps) {
         </AppShell.Section>
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   );
 }

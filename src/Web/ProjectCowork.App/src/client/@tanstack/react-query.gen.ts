@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { deleteApiProjectsByProjectId, getApiProjects, getApiProjectsByProjectId, type Options, postApiAuthLogin, postApiAuthRegisterBusiness, postApiAuthRegisterUser, postApiProjects, postApiProjectsByProjectIdEdit } from '../sdk.gen';
-import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdResponse, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdResponse, GetApiProjectsData, GetApiProjectsResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponse, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponse, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponse, PostApiProjectsData } from '../types.gen';
+import { deleteApiProjectsByProjectId, deleteApiRepositoryByRepositoryId, getApiGitByProjectIdByNameGitByPath, getApiPostingsByProjectId, getApiPostingsPostingByProjectPostingId, getApiProjects, getApiProjectsByProjectId, getApiRepositoryByRepositoryId, getApiRepositoryProjectByProjectId, type Options, postApiAuthLogin, postApiAuthRegisterBusiness, postApiAuthRegisterUser, postApiGitByProjectIdByNameGitByPath, postApiGitRepositoryCreate, postApiPostingsPostingAdd, postApiPostingsPostingApply, postApiPostingsPostingByProjectPostingIdApplications, postApiProjects, postApiProjectsByProjectIdEdit, putApiPostingsPostingUpdate } from '../sdk.gen';
+import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdResponse, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponse, GetApiGitByProjectIdByNameGitByPathData, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponse, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponse, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdResponse, GetApiProjectsData, GetApiProjectsResponse, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponse, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponse, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponse, PostApiGitByProjectIdByNameGitByPathData, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponse, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponse, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponse, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponse, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponse, PostApiProjectsData, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -152,3 +152,176 @@ export const postApiAuthRegisterBusinessMutation = (options?: Partial<Options<Po
     };
     return mutationOptions;
 };
+
+export const getApiPostingsByProjectIdQueryKey = (options: Options<GetApiPostingsByProjectIdData>) => createQueryKey('getApiPostingsByProjectId', options);
+
+export const getApiPostingsByProjectIdOptions = (options: Options<GetApiPostingsByProjectIdData>) => queryOptions<GetApiPostingsByProjectIdResponse, DefaultError, GetApiPostingsByProjectIdResponse, ReturnType<typeof getApiPostingsByProjectIdQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiPostingsByProjectId({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiPostingsByProjectIdQueryKey(options)
+});
+
+export const getApiPostingsPostingByProjectPostingIdQueryKey = (options: Options<GetApiPostingsPostingByProjectPostingIdData>) => createQueryKey('getApiPostingsPostingByProjectPostingId', options);
+
+export const getApiPostingsPostingByProjectPostingIdOptions = (options: Options<GetApiPostingsPostingByProjectPostingIdData>) => queryOptions<GetApiPostingsPostingByProjectPostingIdResponse, DefaultError, GetApiPostingsPostingByProjectPostingIdResponse, ReturnType<typeof getApiPostingsPostingByProjectPostingIdQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiPostingsPostingByProjectPostingId({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiPostingsPostingByProjectPostingIdQueryKey(options)
+});
+
+export const postApiPostingsPostingAddMutation = (options?: Partial<Options<PostApiPostingsPostingAddData>>): UseMutationOptions<PostApiPostingsPostingAddResponse, DefaultError, Options<PostApiPostingsPostingAddData>> => {
+    const mutationOptions: UseMutationOptions<PostApiPostingsPostingAddResponse, DefaultError, Options<PostApiPostingsPostingAddData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiPostingsPostingAdd({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const putApiPostingsPostingUpdateMutation = (options?: Partial<Options<PutApiPostingsPostingUpdateData>>): UseMutationOptions<PutApiPostingsPostingUpdateResponse, DefaultError, Options<PutApiPostingsPostingUpdateData>> => {
+    const mutationOptions: UseMutationOptions<PutApiPostingsPostingUpdateResponse, DefaultError, Options<PutApiPostingsPostingUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await putApiPostingsPostingUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const postApiPostingsPostingApplyMutation = (options?: Partial<Options<PostApiPostingsPostingApplyData>>): UseMutationOptions<PostApiPostingsPostingApplyResponse, DefaultError, Options<PostApiPostingsPostingApplyData>> => {
+    const mutationOptions: UseMutationOptions<PostApiPostingsPostingApplyResponse, DefaultError, Options<PostApiPostingsPostingApplyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiPostingsPostingApply({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const postApiPostingsPostingByProjectPostingIdApplicationsMutation = (options?: Partial<Options<PostApiPostingsPostingByProjectPostingIdApplicationsData>>): UseMutationOptions<PostApiPostingsPostingByProjectPostingIdApplicationsResponse, DefaultError, Options<PostApiPostingsPostingByProjectPostingIdApplicationsData>> => {
+    const mutationOptions: UseMutationOptions<PostApiPostingsPostingByProjectPostingIdApplicationsResponse, DefaultError, Options<PostApiPostingsPostingByProjectPostingIdApplicationsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiPostingsPostingByProjectPostingIdApplications({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const postApiGitRepositoryCreateMutation = (options?: Partial<Options<PostApiGitRepositoryCreateData>>): UseMutationOptions<PostApiGitRepositoryCreateResponse, DefaultError, Options<PostApiGitRepositoryCreateData>> => {
+    const mutationOptions: UseMutationOptions<PostApiGitRepositoryCreateResponse, DefaultError, Options<PostApiGitRepositoryCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiGitRepositoryCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getApiGitByProjectIdByNameGitByPathQueryKey = (options: Options<GetApiGitByProjectIdByNameGitByPathData>) => createQueryKey('getApiGitByProjectIdByNameGitByPath', options);
+
+export const getApiGitByProjectIdByNameGitByPathOptions = (options: Options<GetApiGitByProjectIdByNameGitByPathData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getApiGitByProjectIdByNameGitByPathQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiGitByProjectIdByNameGitByPath({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiGitByProjectIdByNameGitByPathQueryKey(options)
+});
+
+export const postApiGitByProjectIdByNameGitByPathMutation = (options?: Partial<Options<PostApiGitByProjectIdByNameGitByPathData>>): UseMutationOptions<unknown, DefaultError, Options<PostApiGitByProjectIdByNameGitByPathData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGitByProjectIdByNameGitByPathData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiGitByProjectIdByNameGitByPath({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getApiRepositoryProjectByProjectIdQueryKey = (options: Options<GetApiRepositoryProjectByProjectIdData>) => createQueryKey('getApiRepositoryProjectByProjectId', options);
+
+export const getApiRepositoryProjectByProjectIdOptions = (options: Options<GetApiRepositoryProjectByProjectIdData>) => queryOptions<GetApiRepositoryProjectByProjectIdResponse, DefaultError, GetApiRepositoryProjectByProjectIdResponse, ReturnType<typeof getApiRepositoryProjectByProjectIdQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiRepositoryProjectByProjectId({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiRepositoryProjectByProjectIdQueryKey(options)
+});
+
+export const deleteApiRepositoryByRepositoryIdMutation = (options?: Partial<Options<DeleteApiRepositoryByRepositoryIdData>>): UseMutationOptions<DeleteApiRepositoryByRepositoryIdResponse, DefaultError, Options<DeleteApiRepositoryByRepositoryIdData>> => {
+    const mutationOptions: UseMutationOptions<DeleteApiRepositoryByRepositoryIdResponse, DefaultError, Options<DeleteApiRepositoryByRepositoryIdData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await deleteApiRepositoryByRepositoryId({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getApiRepositoryByRepositoryIdQueryKey = (options: Options<GetApiRepositoryByRepositoryIdData>) => createQueryKey('getApiRepositoryByRepositoryId', options);
+
+export const getApiRepositoryByRepositoryIdOptions = (options: Options<GetApiRepositoryByRepositoryIdData>) => queryOptions<GetApiRepositoryByRepositoryIdResponse, DefaultError, GetApiRepositoryByRepositoryIdResponse, ReturnType<typeof getApiRepositoryByRepositoryIdQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiRepositoryByRepositoryId({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiRepositoryByRepositoryIdQueryKey(options)
+});
