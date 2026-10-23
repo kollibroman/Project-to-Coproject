@@ -1,12 +1,31 @@
-import { Alert, Loader, Stack, Table, Text, Title } from '@mantine/core';
+import { Alert, Button, Group, Loader, Stack, Text, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { Link } from 'react-router';
 import { useProjects } from '../hooks';
+import type { ProjectModel } from '../client';
+import { ProjectUserPaper } from '../components/Projects/ProjectUserPaper.tsx';
+import { CreateProjectDialog } from '../components/Projects/Dialogs/CreateProjectDialog.tsx';
 
 export const ProjectsPage = () => {
   const { data, isLoading, isError, error } = useProjects();
 
+  // Stan otwarcia dialogu trzyma strona, dialog dostaje go przez propsy.
+  const [opened, { open, close }] = useDisclosure(false);
+
   return (
     <Stack gap="md">
-      <Title order={1}>Projekty</Title>
+      <Group justify="space-between">
+        <Title order={1}>Projekty</Title>
+        <Group>
+          {/* Przycisk-link: renderuje się jako <a>, nawigacja przez react-router */}
+          <Button variant="default" component={Link} to="/settings">
+            Ustawienia
+          </Button>
+          <Button onClick={open}>Nowy projekt</Button>
+        </Group>
+      </Group>
+
+      <CreateProjectDialog opened={opened} onClose={close} />
 
       {isLoading && <Loader />}
 
@@ -19,22 +38,9 @@ export const ProjectsPage = () => {
       {!isLoading && !isError && (
         <>
           {data && data.length > 0 ? (
-            <Table striped highlightOnHover>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Nazwa</Table.Th>
-                  <Table.Th>Opis</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {data.map((project) => (
-                  <Table.Tr key={project.id}>
-                    <Table.Td>{project.name}</Table.Td>
-                    <Table.Td>{project.description}</Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
+            data.map((project: ProjectModel) => (
+              <ProjectUserPaper key={project.id} project={project} />
+            ))
           ) : (
             <Text c="dimmed">Brak projektów.</Text>
           )}

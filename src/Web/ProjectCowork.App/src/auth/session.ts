@@ -4,7 +4,7 @@ const STORAGE_KEY = 'projectcowork.accessToken';
 
 // Bazowy adres API. Nadpisywalny przez zmienną środowiskową Vite VITE_API_URL.
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? 'https://localhost:7214';
+  import.meta.env.VITE_API_URL ?? 'http://localhost:5298';
 
 client.setConfig({ baseUrl: API_BASE_URL });
 
