@@ -6,6 +6,10 @@ import { createTheme, MantineProvider } from '@mantine/core'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router'
 import { Routings } from './components/Routings'
+import { initSession } from './auth/session'
+
+// Odtwarzamy sesję z ciasteczka HttpOnly (access token nie przeżywa przeładowania strony).
+void initSession()
 
 const theme = createTheme({
     defaultRadius: "lg",

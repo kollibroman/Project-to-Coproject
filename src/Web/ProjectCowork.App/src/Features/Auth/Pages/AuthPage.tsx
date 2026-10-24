@@ -1,7 +1,7 @@
 import { Center, Container, Paper, Tabs, Title } from '@mantine/core';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { LoginForm, RegisterForm } from '../components/auth';
+import { LoginForm, RegisterForm } from '../Components';
 
 export const AuthPage = () => {
   const [tab, setTab] = useState<string | null>('login');

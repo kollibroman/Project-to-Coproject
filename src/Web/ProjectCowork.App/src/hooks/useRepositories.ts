@@ -7,9 +7,9 @@ import {
   postApiGitRepositoryCreateMutation,
 } from '../client/@tanstack/react-query.gen';
 
-export const useRepositories = (projectId: string) =>
+export const useRepositories = (projectId: string | undefined) =>
   useQuery({
-    ...getApiRepositoryProjectByProjectIdOptions({ path: { projectId } }),
+    ...getApiRepositoryProjectByProjectIdOptions({ path: { projectId: projectId ?? '' } }),
     enabled: Boolean(projectId),
   });
 

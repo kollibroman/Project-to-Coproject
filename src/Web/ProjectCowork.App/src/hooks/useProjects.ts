@@ -3,9 +3,11 @@ import {
   deleteApiProjectsByProjectIdMutation,
   getApiProjectsByProjectIdOptions,
   getApiProjectsByProjectIdQueryKey,
+  getApiProjectsDiscoverOptions,
   getApiProjectsOptions,
   getApiProjectsQueryKey,
   postApiProjectsByProjectIdEditMutation,
+  postApiProjectsByProjectIdInviteMutation,
   postApiProjectsMutation,
 } from '../client/@tanstack/react-query.gen';
 import type { Options } from '../client';
@@ -19,6 +21,9 @@ export const useProject = (projectId: string) =>
     ...getApiProjectsByProjectIdOptions({ path: { projectId } }),
     enabled: Boolean(projectId),
   });
+
+export const useDiscoverProjects = () =>
+  useQuery(getApiProjectsDiscoverOptions());
 
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
@@ -47,6 +52,20 @@ export const useEditProject = () => {
       void queryClient.invalidateQueries({
         queryKey: getApiProjectsByProjectIdQueryKey({
           path: { projectId: variables.body.projectId },
+        }),
+      });
+    },
+  });
+};
+
+export const useInviteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...postApiProjectsByProjectIdInviteMutation(),
+    onSuccess: (_data, variables) => {
+      void queryClient.invalidateQueries({
+        queryKey: getApiProjectsByProjectIdQueryKey({
+          path: { projectId: variables.path.projectId },
         }),
       });
     },

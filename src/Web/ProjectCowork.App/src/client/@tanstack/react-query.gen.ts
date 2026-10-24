@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { deleteApiProjectsByProjectId, deleteApiRepositoryByRepositoryId, getApiGitByProjectIdByNameGitByPath, getApiPostingsByProjectId, getApiPostingsPostingByProjectPostingId, getApiProjects, getApiProjectsByProjectId, getApiRepositoryByRepositoryId, getApiRepositoryProjectByProjectId, type Options, postApiAuthLogin, postApiAuthRegisterBusiness, postApiAuthRegisterUser, postApiGitByProjectIdByNameGitByPath, postApiGitRepositoryCreate, postApiPostingsPostingAdd, postApiPostingsPostingApply, postApiPostingsPostingByProjectPostingIdApplications, postApiProjects, postApiProjectsByProjectIdEdit, putApiPostingsPostingUpdate } from '../sdk.gen';
-import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdResponse, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponse, GetApiGitByProjectIdByNameGitByPathData, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponse, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponse, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdResponse, GetApiProjectsData, GetApiProjectsResponse, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponse, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponse, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponse, PostApiGitByProjectIdByNameGitByPathData, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponse, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponse, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponse, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponse, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponse, PostApiProjectsData, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponse } from '../types.gen';
+import { deleteApiProjectsByProjectId, deleteApiRepositoryByRepositoryId, getApiGitByProjectIdByNameGitByPath, getApiPostingsActive, getApiPostingsByProjectId, getApiPostingsPostingByProjectPostingId, getApiProjects, getApiProjectsByProjectId, getApiProjectsDiscover, getApiRepositoryByRepositoryId, getApiRepositoryProjectByProjectId, type Options, postApiAuthLogin, postApiAuthLogout, postApiAuthRegisterBusiness, postApiAuthRegisterUser, postApiAuthTokenRefresh, postApiGitByProjectIdByNameGitByPath, postApiGitRepositoryCreate, postApiPostingsPostingAdd, postApiPostingsPostingApply, postApiPostingsPostingByProjectPostingIdApplications, postApiProjects, postApiProjectsByProjectIdEdit, postApiProjectsByProjectIdInvite, putApiPostingsPostingUpdate } from '../sdk.gen';
+import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdResponse, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponse, GetApiGitByProjectIdByNameGitByPathData, GetApiPostingsActiveData, GetApiPostingsActiveResponse, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponse, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponse, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdResponse, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponse, GetApiProjectsResponse, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponse, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutResponse, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponse, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponse, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponse, PostApiGitByProjectIdByNameGitByPathData, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponse, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponse, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponse, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponse, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponse, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponse, PostApiProjectsData, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -68,6 +68,21 @@ export const postApiProjectsMutation = (options?: Partial<Options<PostApiProject
     return mutationOptions;
 };
 
+export const getApiProjectsDiscoverQueryKey = (options?: Options<GetApiProjectsDiscoverData>) => createQueryKey('getApiProjectsDiscover', options);
+
+export const getApiProjectsDiscoverOptions = (options?: Options<GetApiProjectsDiscoverData>) => queryOptions<GetApiProjectsDiscoverResponse, DefaultError, GetApiProjectsDiscoverResponse, ReturnType<typeof getApiProjectsDiscoverQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiProjectsDiscover({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiProjectsDiscoverQueryKey(options)
+});
+
 export const deleteApiProjectsByProjectIdMutation = (options?: Partial<Options<DeleteApiProjectsByProjectIdData>>): UseMutationOptions<DeleteApiProjectsByProjectIdResponse, DefaultError, Options<DeleteApiProjectsByProjectIdData>> => {
     const mutationOptions: UseMutationOptions<DeleteApiProjectsByProjectIdResponse, DefaultError, Options<DeleteApiProjectsByProjectIdData>> = {
         mutationFn: async (fnOptions) => {
@@ -101,6 +116,20 @@ export const postApiProjectsByProjectIdEditMutation = (options?: Partial<Options
     const mutationOptions: UseMutationOptions<PostApiProjectsByProjectIdEditResponse, DefaultError, Options<PostApiProjectsByProjectIdEditData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await postApiProjectsByProjectIdEdit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const postApiProjectsByProjectIdInviteMutation = (options?: Partial<Options<PostApiProjectsByProjectIdInviteData>>): UseMutationOptions<PostApiProjectsByProjectIdInviteResponse, DefaultError, Options<PostApiProjectsByProjectIdInviteData>> => {
+    const mutationOptions: UseMutationOptions<PostApiProjectsByProjectIdInviteResponse, DefaultError, Options<PostApiProjectsByProjectIdInviteData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiProjectsByProjectIdInvite({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -152,6 +181,49 @@ export const postApiAuthRegisterBusinessMutation = (options?: Partial<Options<Po
     };
     return mutationOptions;
 };
+
+export const postApiAuthTokenRefreshMutation = (options?: Partial<Options<PostApiAuthTokenRefreshData>>): UseMutationOptions<PostApiAuthTokenRefreshResponse, DefaultError, Options<PostApiAuthTokenRefreshData>> => {
+    const mutationOptions: UseMutationOptions<PostApiAuthTokenRefreshResponse, DefaultError, Options<PostApiAuthTokenRefreshData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiAuthTokenRefresh({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const postApiAuthLogoutMutation = (options?: Partial<Options<PostApiAuthLogoutData>>): UseMutationOptions<PostApiAuthLogoutResponse, DefaultError, Options<PostApiAuthLogoutData>> => {
+    const mutationOptions: UseMutationOptions<PostApiAuthLogoutResponse, DefaultError, Options<PostApiAuthLogoutData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiAuthLogout({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getApiPostingsActiveQueryKey = (options?: Options<GetApiPostingsActiveData>) => createQueryKey('getApiPostingsActive', options);
+
+export const getApiPostingsActiveOptions = (options?: Options<GetApiPostingsActiveData>) => queryOptions<GetApiPostingsActiveResponse, DefaultError, GetApiPostingsActiveResponse, ReturnType<typeof getApiPostingsActiveQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiPostingsActive({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiPostingsActiveQueryKey(options)
+});
 
 export const getApiPostingsByProjectIdQueryKey = (options: Options<GetApiPostingsByProjectIdData>) => createQueryKey('getApiPostingsByProjectId', options);
 

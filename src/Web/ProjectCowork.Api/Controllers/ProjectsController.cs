@@ -15,10 +15,12 @@ public static class ProjectsController
         var group = endpoints.MapGroup("/api/projects");
 
         group.MapGet("/", GetProjectsAsync);
+        group.MapGet("/discover", GetDiscoverProjectsAsync);
         group.MapGet("/{projectId}", GetProjectAsync);
         group.MapDelete("/{projectId}", DeleteProjectAsync);
         group.MapPost("/", CreateProjectAsync);
         group.MapPost("/{projectId}/edit", EditProjectAsync);
+        group.MapPost("/{projectId}/invite", InviteUserAsync);
         
         return endpoints;
     }
@@ -26,6 +28,12 @@ public static class ProjectsController
     private static Ok<IAsyncEnumerable<ProjectModel>> GetProjectsAsync([FromServices] IMediator mediator, CancellationToken ct)
     {
         var stream = mediator.CreateStream(new GetProjectsQuery(), ct);
+        return TypedResults.Ok(stream);
+    }
+
+    private static Ok<IAsyncEnumerable<ProjectModel>> GetDiscoverProjectsAsync([FromServices] IMediator mediator, CancellationToken ct)
+    {
+        var stream = mediator.CreateStream(new GetDiscoverProjectsQuery(), ct);
         return TypedResults.Ok(stream);
     }
 
@@ -62,6 +70,17 @@ public static class ProjectsController
         return TypedResults.NoContent();
     }
     
+    private static async Task<NoContent> InviteUserAsync([FromRoute] Guid projectId, [FromBody] InviteUserRequest request, [FromServices] IMediator mediator, CancellationToken ct)
+    {
+        await mediator.Send(new InviteUserToProjectCommand
+        {
+            ProjectId = projectId,
+            Email = request.Email
+        }, ct);
+
+        return TypedResults.NoContent();
+    }
+
     private static async Task<NoContent> DeleteProjectAsync([FromRoute] Guid projectId, [FromServices] IMediator mediator, CancellationToken ct)
     {
         await mediator.Send(new DeleteProjectCommand

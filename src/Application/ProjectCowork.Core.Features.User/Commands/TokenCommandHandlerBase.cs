@@ -15,12 +15,16 @@ internal abstract class TokenCommandHandlerBase
 
     protected async Task<TokenDto> GenerateAndSaveTokensAsync(Guid userId, IEnumerable<Claim> claims)
     {
-        // TODO: token refreshing
         var accessToken = await _tokenService.GenerateAccessToken(claims);
+        var (refreshToken, expiryDateTime) = await _tokenService.GenerateRefreshToken();
+
+        await _tokenService.SaveRefreshTokenAsync(refreshToken, userId, expiryDateTime);
         
         return new TokenDto
         {
-            AccessToken = accessToken
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiresAt = expiryDateTime
         };
     }
 }

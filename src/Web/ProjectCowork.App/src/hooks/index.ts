@@ -1,8 +1,10 @@
 export {
   useProjects,
   useProject,
+  useDiscoverProjects,
   useCreateProject,
   useEditProject,
+  useInviteUser,
   useDeleteProject,
 } from './useProjects';
 export {
@@ -13,6 +15,7 @@ export {
 } from './useAuth';
 export {
   usePostings,
+  useActivePostings,
   usePosting,
   useAddPosting,
   useUpdatePosting,

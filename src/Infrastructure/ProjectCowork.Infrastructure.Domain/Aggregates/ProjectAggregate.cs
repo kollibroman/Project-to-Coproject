@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Domain.Models.Project;
+using ProjectCowork.Domain.Models.Users;
 
 namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 
@@ -46,6 +48,38 @@ public class ProjectAggregate
         }
 
         Project.Description = description;
+    }
+
+    public void AddCollaborator(UserEntity user)
+    {
+        if (user is null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        if (Project.OwnerId == user.Id)
+        {
+            throw new InvalidOperationException("Owner is already part of the project.");
+        }
+
+        if (Project.Collaborators.Any(x => x.Id == user.Id))
+        {
+            throw new InvalidOperationException("User is already a collaborator of the project.");
+        }
+
+        Project.Collaborators.Add(user);
+    }
+
+    public void RemoveCollaborator(Guid userId)
+    {
+        var collaborator = Project.Collaborators.FirstOrDefault(x => x.Id == userId);
+
+        if (collaborator is null)
+        {
+            return;
+        }
+
+        Project.Collaborators.Remove(collaborator);
     }
 
     public void DeleteProject()

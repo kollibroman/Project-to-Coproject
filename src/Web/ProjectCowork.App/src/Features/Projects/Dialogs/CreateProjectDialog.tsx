@@ -4,9 +4,7 @@ import { useCreateProject } from '../../../hooks';
 import type { CreateProjectRequest } from '../../../client';
 
 interface Props {
-    /** Czy dialog jest widoczny – sterowane przez rodzica. */
     opened: boolean;
-    /** Wywoływane przy zamknięciu (X, klik w tło, Esc, Anuluj, sukces). */
     onClose: () => void;
 }
 

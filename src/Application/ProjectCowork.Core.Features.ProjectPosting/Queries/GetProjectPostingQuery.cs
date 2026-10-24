@@ -28,7 +28,8 @@ internal class GetProjectPostingQueryHandler : IRequestHandler<GetProjectPosting
                 Id = x.Id,
                 JobDescription = x.JobDescription,
                 ProjectDescription = x.ProjectDescription,
-                ProjectId = x.ProjectId
+                ProjectId = x.ProjectId,
+                IsActive = x.IsActive
             })
             .FirstAsync(ct);
     }

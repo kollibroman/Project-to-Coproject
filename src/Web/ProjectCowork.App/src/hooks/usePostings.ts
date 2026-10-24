@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  getApiPostingsActiveOptions,
   getApiPostingsByProjectIdOptions,
   getApiPostingsByProjectIdQueryKey,
   getApiPostingsPostingByProjectPostingIdOptions,
@@ -10,11 +11,17 @@ import {
   putApiPostingsPostingUpdateMutation,
 } from '../client/@tanstack/react-query.gen';
 
-export const usePostings = (projectId: string) =>
+export const usePostings = (projectId: string, isActive?: boolean) =>
   useQuery({
-    ...getApiPostingsByProjectIdOptions({ path: { projectId } }),
+    ...getApiPostingsByProjectIdOptions({
+      path: { projectId },
+      query: isActive === undefined ? undefined : { isActive },
+    }),
     enabled: Boolean(projectId),
   });
+
+export const useActivePostings = () =>
+  useQuery(getApiPostingsActiveOptions());
 
 export const usePosting = (projectPostingId: string) =>
   useQuery({

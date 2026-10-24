@@ -57,6 +57,33 @@
         ]
       }
     },
+    "/api/projects/discover": {
+      "get": {
+        "tags": [
+          "ProjectsController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
     "/api/projects/{projectId}": {
       "get": {
         "tags": [
@@ -145,6 +172,44 @@
         ]
       }
     },
+    "/api/projects/{projectId}/invite": {
+      "post": {
+        "tags": [
+          "ProjectsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
     "/api/auth/login": {
       "post": {
         "tags": [
@@ -166,7 +231,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenDto"
+                  "$ref": "#/components/schemas/AccessTokenResponse"
                 }
               }
             }
@@ -200,7 +265,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenDto"
+                  "$ref": "#/components/schemas/AccessTokenResponse"
                 }
               }
             }
@@ -234,7 +299,75 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenDto"
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/auth/token/refresh": {
+      "post": {
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/postings/active": {
+      "get": {
+        "tags": [
+          "PostingController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectPostingDto"
+                  }
                 }
               }
             }
@@ -260,6 +393,13 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -661,6 +801,17 @@
   },
   "components": {
     "schemas": {
+      "AccessTokenResponse": {
+        "required": [
+          "accessToken"
+        ],
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
       "AddPostingRequest": {
         "required": [
           "projectId",
@@ -759,6 +910,22 @@
         "type": "string",
         "format": "binary"
       },
+      "InviteUserRequest": {
+        "required": [
+          "projectId",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
       "LoginRequest": {
         "required": [
           "email",
@@ -825,7 +992,8 @@
           "id",
           "jobDescription",
           "projectDescription",
-          "projectId"
+          "projectId",
+          "isActive"
         ],
         "type": "object",
         "properties": {
@@ -842,6 +1010,9 @@
           "projectId": {
             "type": "string",
             "format": "uuid"
+          },
+          "isActive": {
+            "type": "boolean"
           }
         }
       },
@@ -866,22 +1037,20 @@
       },
       "RepositoryDto": {
         "required": [
-          "name"
+          "id",
+          "name",
+          "repoUrl"
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "name": {
             "type": "string"
-          }
-        }
-      },
-      "TokenDto": {
-        "required": [
-          "accessToken"
-        ],
-        "type": "object",
-        "properties": {
-          "accessToken": {
+          },
+          "repoUrl": {
             "type": "string"
           }
         }

@@ -25,7 +25,9 @@ internal class GetRepositoriesQueryHandler : IRequestHandler<GetRepositoriesQuer
             .Where(x => x.ProjectId == request.ProjectId)
             .Select(x => new RepositoryDto
             {
-                Name = x.RepositoryName
+                Name = x.RepositoryName,
+                Id = x.Id,
+                RepoUrl = x.RepoPath
             })
             .ToListAsync(cancellationToken);
     }

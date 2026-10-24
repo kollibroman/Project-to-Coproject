@@ -25,7 +25,9 @@ internal class GetRepositoryQueryHandler : IRequestHandler<GetRepositoryQuery, T
             .Where(x => x.Id == request.RepositoryId)
             .Select(x => new RepositoryDto
             {
-                Name = x.RepositoryName
+                Name = x.RepositoryName,
+                Id = x.Id,
+                RepoUrl = x.RepoPath
             })
             .FirstAsync(cancellationToken);
     }

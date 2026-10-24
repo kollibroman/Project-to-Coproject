@@ -27,6 +27,7 @@ public class ProjectCoworkDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     public virtual DbSet<ProjectPostingEntity> ProjectPostings => Set<ProjectPostingEntity>();
     public virtual DbSet<ProjectApplicationEntity> ProjectApplications => Set<ProjectApplicationEntity>();
     public virtual DbSet<RepositoryEntity> Repositories => Set<RepositoryEntity>();
+    public virtual DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

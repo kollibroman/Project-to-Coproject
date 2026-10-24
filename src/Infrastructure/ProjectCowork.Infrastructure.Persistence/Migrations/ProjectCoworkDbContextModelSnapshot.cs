@@ -400,6 +400,36 @@ namespace ProjectCowork.Persistence.Migrations
                     b.ToTable("Repositories");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RefreshTokenEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RoleEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -672,6 +702,17 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RefreshTokenEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Users.UserEntity", "User")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("ProjectCowork.Domain.Models.Users.RefreshTokenEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProjectEntityUserEntity", b =>
                 {
                     b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", null)
@@ -724,6 +765,9 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("ProjectApplications");
+
+                    b.Navigation("RefreshToken")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

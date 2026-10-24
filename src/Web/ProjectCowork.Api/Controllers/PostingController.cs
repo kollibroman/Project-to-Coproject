@@ -14,6 +14,7 @@ public static class PostingController
     {
         var group = endpoints.MapGroup("/api/postings");
 
+        group.MapGet("/active", GetActivePostingsAsync);
         group.MapGet("/{projectId:Guid}", GetProjectPostingsAsync);
         group.MapGet("/posting/{projectPostingId:Guid}", GetProjectPostingAsync);
         group.MapPost("/posting/add", AddProjectPostingAsync);
@@ -24,11 +25,19 @@ public static class PostingController
         return endpoints;
     }
 
-    private static Ok<IAsyncEnumerable<ProjectPostingDto>> GetProjectPostingsAsync([FromRoute] Guid projectId, [FromServices] IMediator mediator, CancellationToken ct)
+    private static Ok<IAsyncEnumerable<ProjectPostingDto>> GetActivePostingsAsync([FromServices] IMediator mediator, CancellationToken ct)
+    {
+        var result = mediator.CreateStream(new GetActivePostingsQuery(), ct);
+
+        return TypedResults.Ok(result);
+    }
+
+    private static Ok<IAsyncEnumerable<ProjectPostingDto>> GetProjectPostingsAsync([FromRoute] Guid projectId, [FromQuery] bool? isActive, [FromServices] IMediator mediator, CancellationToken ct)
     {
         var result = mediator.CreateStream(new GetProjectPostingsQuery
         {
-            ProjectId = projectId
+            ProjectId = projectId,
+            IsActive = isActive
         }, ct);
         
         return TypedResults.Ok(result);

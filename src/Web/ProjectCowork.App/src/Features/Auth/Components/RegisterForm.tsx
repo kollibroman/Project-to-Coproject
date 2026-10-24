@@ -8,7 +8,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
-import { useRegisterBusiness, useRegisterUser } from '../../hooks';
+import { useRegisterBusiness, useRegisterUser } from '../../../hooks';
 
 type AccountType = 'user' | 'business';
 

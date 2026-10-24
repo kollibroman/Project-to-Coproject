@@ -4,6 +4,10 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AccessTokenResponse = {
+    accessToken: string;
+};
+
 export type AddPostingRequest = {
     projectId: string;
     jobDescription: string;
@@ -34,6 +38,11 @@ export type EditProjectRequest = {
 
 export type IFormFile = Blob | File;
 
+export type InviteUserRequest = {
+    projectId: string;
+    email: string;
+};
+
 export type LoginRequest = {
     email: string;
     password: string;
@@ -57,6 +66,7 @@ export type ProjectPostingDto = {
     jobDescription: string;
     projectDescription: string;
     projectId: string;
+    isActive: boolean;
 };
 
 export type RegisterRequest = {
@@ -66,11 +76,9 @@ export type RegisterRequest = {
 };
 
 export type RepositoryDto = {
+    id: string;
     name: string;
-};
-
-export type TokenDto = {
-    accessToken: string;
+    repoUrl: string;
 };
 
 export type UpdatePostingRequest = {
@@ -109,6 +117,22 @@ export type PostApiProjectsResponses = {
      */
     201: unknown;
 };
+
+export type GetApiProjectsDiscoverData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/projects/discover';
+};
+
+export type GetApiProjectsDiscoverResponses = {
+    /**
+     * OK
+     */
+    200: Array<ProjectModel>;
+};
+
+export type GetApiProjectsDiscoverResponse = GetApiProjectsDiscoverResponses[keyof GetApiProjectsDiscoverResponses];
 
 export type DeleteApiProjectsByProjectIdData = {
     body?: never;
@@ -162,6 +186,24 @@ export type PostApiProjectsByProjectIdEditResponses = {
 
 export type PostApiProjectsByProjectIdEditResponse = PostApiProjectsByProjectIdEditResponses[keyof PostApiProjectsByProjectIdEditResponses];
 
+export type PostApiProjectsByProjectIdInviteData = {
+    body: InviteUserRequest;
+    path: {
+        projectId: string;
+    };
+    query?: never;
+    url: '/api/projects/{projectId}/invite';
+};
+
+export type PostApiProjectsByProjectIdInviteResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type PostApiProjectsByProjectIdInviteResponse = PostApiProjectsByProjectIdInviteResponses[keyof PostApiProjectsByProjectIdInviteResponses];
+
 export type PostApiAuthLoginData = {
     body: LoginRequest;
     path?: never;
@@ -173,7 +215,7 @@ export type PostApiAuthLoginResponses = {
     /**
      * OK
      */
-    200: TokenDto;
+    200: AccessTokenResponse;
 };
 
 export type PostApiAuthLoginResponse = PostApiAuthLoginResponses[keyof PostApiAuthLoginResponses];
@@ -189,7 +231,7 @@ export type PostApiAuthRegisterUserResponses = {
     /**
      * OK
      */
-    200: TokenDto;
+    200: AccessTokenResponse;
 };
 
 export type PostApiAuthRegisterUserResponse = PostApiAuthRegisterUserResponses[keyof PostApiAuthRegisterUserResponses];
@@ -205,17 +247,67 @@ export type PostApiAuthRegisterBusinessResponses = {
     /**
      * OK
      */
-    200: TokenDto;
+    200: AccessTokenResponse;
 };
 
 export type PostApiAuthRegisterBusinessResponse = PostApiAuthRegisterBusinessResponses[keyof PostApiAuthRegisterBusinessResponses];
+
+export type PostApiAuthTokenRefreshData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/auth/token/refresh';
+};
+
+export type PostApiAuthTokenRefreshResponses = {
+    /**
+     * OK
+     */
+    200: AccessTokenResponse;
+};
+
+export type PostApiAuthTokenRefreshResponse = PostApiAuthTokenRefreshResponses[keyof PostApiAuthTokenRefreshResponses];
+
+export type PostApiAuthLogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/auth/logout';
+};
+
+export type PostApiAuthLogoutResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type PostApiAuthLogoutResponse = PostApiAuthLogoutResponses[keyof PostApiAuthLogoutResponses];
+
+export type GetApiPostingsActiveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/postings/active';
+};
+
+export type GetApiPostingsActiveResponses = {
+    /**
+     * OK
+     */
+    200: Array<ProjectPostingDto>;
+};
+
+export type GetApiPostingsActiveResponse = GetApiPostingsActiveResponses[keyof GetApiPostingsActiveResponses];
 
 export type GetApiPostingsByProjectIdData = {
     body?: never;
     path: {
         projectId: string;
     };
-    query?: never;
+    query?: {
+        isActive?: boolean;
+    };
     url: '/api/postings/{projectId}';
 };
 

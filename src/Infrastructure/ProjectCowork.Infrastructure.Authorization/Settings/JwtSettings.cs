@@ -18,4 +18,7 @@ public record JwtSettings : IProjectCoworkOptions
     
     [Required]
     public required int ExpiresInMinutes { get; init; }
+    
+    [Required] 
+    public required int RefreshTokenExpiresInDays { get; init; }
 }

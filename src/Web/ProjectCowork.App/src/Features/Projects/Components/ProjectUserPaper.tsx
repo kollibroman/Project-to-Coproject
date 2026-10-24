@@ -1,7 +1,7 @@
-import {ActionIcon, Flex, Grid, Paper, Stack, Text, Title} from "@mantine/core";
-import type {ProjectModel} from "../../client";
+import {ActionIcon, Grid, Paper, Stack, Text, Title} from "@mantine/core";
+import type {ProjectModel} from "../../../client";
 import {ArrowRightIcon} from "@phosphor-icons/react";
-import {useDisclosure} from "@mantine/hooks";
+import { Link } from "react-router";
 
 interface Props {
     project: ProjectModel;
@@ -28,7 +28,7 @@ export const ProjectUserPaper = ({ project: { id, name, description } }: Props) 
                         </Stack>
                     </Grid.Col>
                     <Grid.Col span={1}>
-                        <ActionIcon variant="filled" size="lg" radius="sm">
+                        <ActionIcon variant="filled" size="lg" radius="sm" component={Link} to={`/project/${id}`}>
                             <ArrowRightIcon style={{ width: '70%', height: '70%' }}/>
                         </ActionIcon>
                     </Grid.Col>

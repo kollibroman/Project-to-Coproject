@@ -6,4 +6,5 @@ public class ProjectPostingDto
     public required string JobDescription { get; init; }
     public required string ProjectDescription { get; init; }
     public required Guid ProjectId { get; init; }
+    public required bool IsActive { get; init; }
 }

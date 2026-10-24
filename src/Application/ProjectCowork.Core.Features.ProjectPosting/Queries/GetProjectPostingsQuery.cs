@@ -8,6 +8,8 @@ namespace ProjectCowork.Core.Features.ProjectPosting.Queries;
 public record GetProjectPostingsQuery : IStreamRequest<GetProjectPostingsQuery, ProjectPostingDto>
 {
     public required Guid ProjectId { get; init; }
+
+    public bool? IsActive { get; init; }
 }
 
 internal class GetProjectPostingsQueryHandler : IStreamRequestHandler<GetProjectPostingsQuery, ProjectPostingDto>
@@ -23,12 +25,14 @@ internal class GetProjectPostingsQueryHandler : IStreamRequestHandler<GetProject
     {
         return _dbContext.ProjectPostings
             .Where(x => x.ProjectId == request.ProjectId)
+            .Where(x => !request.IsActive.HasValue || x.IsActive == request.IsActive.Value)
             .Select(x => new ProjectPostingDto
             {
                 Id = x.Id,
                 JobDescription = x.JobDescription,
                 ProjectDescription = x.ProjectDescription,
-                ProjectId = x.ProjectId
+                ProjectId = x.ProjectId,
+                IsActive = x.IsActive
             })
             .AsAsyncEnumerable();
     }

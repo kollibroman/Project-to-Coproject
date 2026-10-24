@@ -32,7 +32,8 @@ public static class ServiceExtensions
         
         services.AddScoped<IAuthorizedUserProvider, AuthorizedUserProvider>()
             .AddScoped<IPermissionService, PermissionService>()
-            .AddScoped<ITokenService, TokenService>();
+            .AddScoped<ITokenService, TokenService>()
+            .AddScoped<IRefreshTokenValidationService, RefreshTokenValidationService>();
         
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         

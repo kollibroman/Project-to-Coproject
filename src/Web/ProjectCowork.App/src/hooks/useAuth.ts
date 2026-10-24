@@ -5,16 +5,21 @@ import {
   postApiAuthRegisterBusinessMutation,
   postApiAuthRegisterUserMutation,
 } from '../client/@tanstack/react-query.gen';
-import { getToken, setToken, subscribe } from '../auth/session';
+import { getAuthState, logout, setAccessToken, subscribe } from '../auth/session';
 
 export const useAuth = () => {
-  const token = useSyncExternalStore(subscribe, getToken, getToken);
+  const { status, token } = useSyncExternalStore(subscribe, getAuthState, getAuthState);
+  const queryClient = useQueryClient();
 
   return {
     token,
-    isAuthenticated: Boolean(token),
-    setToken,
-    logout: () => setToken(null),
+    status,
+    isAuthenticated: status === 'authenticated',
+    isLoading: status === 'unknown',
+    logout: async () => {
+      await logout();
+      queryClient.clear();
+    },
   };
 };
 
@@ -24,7 +29,7 @@ export const useLogin = () => {
     ...postApiAuthLoginMutation(),
     onSuccess: (data) => {
       if (data?.accessToken) {
-        setToken(data.accessToken);
+        setAccessToken(data.accessToken);
       }
       void queryClient.invalidateQueries();
     },
@@ -37,7 +42,7 @@ export const useRegisterUser = () => {
     ...postApiAuthRegisterUserMutation(),
     onSuccess: (data) => {
       if (data?.accessToken) {
-        setToken(data.accessToken);
+        setAccessToken(data.accessToken);
       }
       void queryClient.invalidateQueries();
     },
@@ -50,7 +55,7 @@ export const useRegisterBusiness = () => {
     ...postApiAuthRegisterBusinessMutation(),
     onSuccess: (data) => {
       if (data?.accessToken) {
-        setToken(data.accessToken);
+        setAccessToken(data.accessToken);
       }
       void queryClient.invalidateQueries();
     },

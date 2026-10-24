@@ -14,3 +14,9 @@ public record EditProjectRequest : ProjectRequestBase
 {
     public required Guid ProjectId { get; init; }
 }
+
+public record InviteUserRequest
+{
+    public required Guid ProjectId { get; init; }
+    public required string Email { get; init; }
+}
