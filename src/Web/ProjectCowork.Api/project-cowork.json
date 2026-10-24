@@ -945,7 +945,8 @@
         "required": [
           "id",
           "description",
-          "userId"
+          "userId",
+          "userEmail"
         ],
         "type": "object",
         "properties": {
@@ -959,6 +960,12 @@
           "userId": {
             "type": "string",
             "format": "uuid"
+          },
+          "userEmail": {
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       },

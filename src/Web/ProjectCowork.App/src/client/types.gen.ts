@@ -52,6 +52,7 @@ export type ProjectApplicationDto = {
     id: string;
     description: string;
     userId: string;
+    userEmail: null | string;
 };
 
 export type ProjectModel = {

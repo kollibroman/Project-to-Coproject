@@ -27,7 +27,8 @@ internal class GetPostingApplicationQueryHandler : IStreamRequestHandler<GetPost
             {
                 Description = x.Description,
                 UserId = x.UserId,
-                Id = x.Id
+                Id = x.Id,
+                UserEmail = x.User.Email
             })
             .AsAsyncEnumerable();
     }

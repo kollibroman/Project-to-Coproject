@@ -57,6 +57,8 @@ internal class ApplyForPostingCommandHandler : IRequestHandler<ApplyForPostingCo
         var aggregate = new ProjectApplicationAggregate(entity, attachmentList);
         aggregate.SetApplicationAttachmentsAsync();
         await Task.WhenAll(setBlobTasks);
+
+        _dbContext.Add(entity);
         
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
