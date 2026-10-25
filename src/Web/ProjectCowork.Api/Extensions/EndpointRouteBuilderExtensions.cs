@@ -11,6 +11,8 @@ public static class EndpointRouteBuilderExtensions
         endpoints.MapPostings();
         endpoints.MapGitEndpoints();
         endpoints.MapRepositories();
+        endpoints.MapSprints();
+        endpoints.MapTasks();
         
         return endpoints;
     }

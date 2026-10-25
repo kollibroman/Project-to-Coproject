@@ -1,8 +1,4 @@
-using System.Net;
-using Microsoft.EntityFrameworkCore;
-using ProjectCowork.Domain.Exceptions.ProjectPostings;
 using ProjectCowork.Domain.Models.Posting;
-using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 
@@ -12,20 +8,12 @@ public class ProjectPostingAggregate
     
     public ProjectPostingAggregate(ProjectPostingEntity projectPosting)
     {
+        ArgumentNullException.ThrowIfNull(projectPosting);
         ProjectPosting = projectPosting;
     }
 
-    public static async Task<ProjectPostingEntity> Create(ProjectCoworkDbContext context, Guid projectId, string jobDescription, string projectDescription)
+    public static ProjectPostingEntity Create(Guid projectId, string jobDescription, string projectDescription)
     {
-        var projectExists = await context.Projects
-            .AsNoTracking()
-            .AnyAsync(x => x.Id == projectId);
-
-        if (!projectExists)
-        {
-            throw new ProjectPostingWihWrongProjectException("Project doesn't exist", HttpStatusCode.BadRequest);
-        }
-
         return new ProjectPostingEntity
         {
             JobDescription = jobDescription,

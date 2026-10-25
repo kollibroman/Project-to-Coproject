@@ -15,6 +15,8 @@ public class ProjectEntity : BaseTrackedEntity
 
     public UserEntity Owner { get; set; } = null!;
 
+    public required long LastTaskFriendlyId { get; set; } = 0;
+    
     public ICollection<SprintEntity> Sprints { get; set; } = [];
     public ICollection<TaskEntity> Tasks { get; set; } = [];
     public ICollection<ProjectPostingEntity> ProjectPostings { get; set; } = [];

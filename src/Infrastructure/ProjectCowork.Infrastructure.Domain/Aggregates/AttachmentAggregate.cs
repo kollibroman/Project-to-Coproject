@@ -1,10 +1,10 @@
-using DispatchR;
 using ProjectCowork.Domain.Models.Attachments;
+using ProjectCowork.Infrastructure.Domain.Abstractions;
 using ProjectCowork.Infrastructure.DomainEvents.Attachments;
 
 namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 
-public class AttachmentAggregate
+public class AttachmentAggregate : AggregateRoot
 {
     private AttachmentEntity AttachmentEntity { get; }
     private Stream AttachmentStream { get; }
@@ -12,6 +12,7 @@ public class AttachmentAggregate
     
     public AttachmentAggregate(AttachmentEntity attachmentEntity, Stream attachmentStream, string contentType)
     {
+        ArgumentNullException.ThrowIfNull(attachmentEntity);
         AttachmentEntity = attachmentEntity;
         AttachmentStream = attachmentStream;
         ContentType = contentType;
@@ -34,13 +35,13 @@ public class AttachmentAggregate
         AttachmentEntity.ProjectApplicationId = projectApplicationId;
     }
 
-    public async Task SetBlobAsync(IMediator mediator, CancellationToken ct)
+    public void ScheduleBlobUpload()
     {
-        await mediator.Publish(new AttachmentAddedEvent
+        RaiseDomainEvent(new AttachmentAddedEvent
         {
             ContentStream = AttachmentStream,
             FileName = AttachmentEntity.FileName,
             ContentType = ContentType,
-        }, ct);
+        });
     }
 }

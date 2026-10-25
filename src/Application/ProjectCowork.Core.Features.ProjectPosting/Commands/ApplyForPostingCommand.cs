@@ -1,7 +1,11 @@
+using System.Net;
 using DispatchR;
 using DispatchR.Abstractions.Send;
+using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Exceptions.ProjectPostings;
 using ProjectCowork.Domain.Models.Attachments;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
+using ProjectCowork.Infrastructure.Domain.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -38,11 +42,21 @@ internal class ApplyForPostingCommandHandler : IRequestHandler<ApplyForPostingCo
     public async Task Handle(ApplyForPostingCommand request, CancellationToken cancellationToken)
     {
         var userId = _authorizedUserProvider.GetCurrentUserId();
-        
-        var entity = await ProjectApplicationAggregate.Create(_dbContext, request.Description, userId, request.ProjectPostingId);
+
+        var posting = await _dbContext.ProjectPostings
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == request.ProjectPostingId, cancellationToken);
+
+        if (posting is null)
+        {
+            throw new ProjectApplicationToNonExistentPostingException(
+                $"Posting {request.ProjectPostingId} doesn't exist", HttpStatusCode.BadRequest);
+        }
+
+        var entity = ProjectApplicationAggregate.Create(posting, request.Description, userId);
 
         var attachmentList = new List<AttachmentEntity>();
-        var setBlobTasks = new List<Task>();
+        var attachmentAggregates = new List<AttachmentAggregate>();
         
         foreach (var attachment in request.Attachments)
         {
@@ -51,15 +65,16 @@ internal class ApplyForPostingCommandHandler : IRequestHandler<ApplyForPostingCo
             attachmentList.Add(file);
             
             var attachmentAggregate = new AttachmentAggregate(file, attachment.ContentStream, attachment.ContentType);
-            setBlobTasks.Add(attachmentAggregate.SetBlobAsync(_mediator, cancellationToken));
+            attachmentAggregate.ScheduleBlobUpload();
+            attachmentAggregates.Add(attachmentAggregate);
         }
         
         var aggregate = new ProjectApplicationAggregate(entity, attachmentList);
-        aggregate.SetApplicationAttachmentsAsync();
-        await Task.WhenAll(setBlobTasks);
+        aggregate.SetApplicationAttachments();
 
         _dbContext.Add(entity);
-        
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _mediator.PublishDomainEventsAsync(attachmentAggregates, cancellationToken);
     }
 }

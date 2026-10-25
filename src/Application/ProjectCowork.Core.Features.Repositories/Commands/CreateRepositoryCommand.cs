@@ -24,11 +24,10 @@ internal class CreateRepositoryCommandHandler : IRequestHandler<CreateRepository
 
     public async Task<string> Handle(CreateRepositoryCommand request, CancellationToken ct)
     {
-        var repository = RepositoryAggregate.Create(request.Name,string.Empty, request.ProjectId);
-        
         var clonePath = await _gitClientService.InitBareRepositoryAsync(request.Name, request.ProjectId);
 
-        repository.RepoPath = clonePath;
+        var repository = RepositoryAggregate.Create(request.Name, clonePath, request.ProjectId);
+
         _projectCoworkDbContext.Add(repository);
         await _projectCoworkDbContext.SaveChangesAsync(ct);
 

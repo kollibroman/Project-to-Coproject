@@ -1,7 +1,9 @@
 using DispatchR.Abstractions.Stream;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Core.Features.Management.Models;
+using ProjectCowork.Domain.Enums.Management;
 using ProjectCowork.Persistence;
+using TaskStatus = ProjectCowork.Domain.Enums.Management.TaskStatus;
 
 namespace ProjectCowork.Core.Features.Management.Queries;
 
@@ -25,7 +27,14 @@ internal class GetTasksFromProjectQueryHandler : IStreamRequestHandler<GetTasksF
             .Where(x => x.ProjectId == request.ProjectId)
             .Select(x => new TaskDto
             {
-
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Status = x.Status,
+                Priority = x.Priority,
+                FinishedDate = x.FinishedDate,
+                SprintId = x.SprintId,
+                AssignedUserId = x.AssignedUserId
             })
             .AsAsyncEnumerable();
     }

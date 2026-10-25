@@ -1,11 +1,7 @@
 using System.Net;
-using DispatchR;
-using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Exceptions.ProjectPostings;
 using ProjectCowork.Domain.Models.Attachments;
 using ProjectCowork.Domain.Models.Posting;
-using ProjectCowork.Infrastructure.DomainEvents.Attachments;
-using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 
@@ -16,31 +12,30 @@ public class ProjectApplicationAggregate
     
     public ProjectApplicationAggregate(ProjectApplicationEntity projectApplication, ICollection<AttachmentEntity> attachments)
     {
+        ArgumentNullException.ThrowIfNull(projectApplication);
         ProjectApplication = projectApplication;
         Attachments = attachments;
     }
 
-    public static async Task<ProjectApplicationEntity> Create(ProjectCoworkDbContext context, string description,
-        Guid userId, Guid projectPostingId)
+    public static ProjectApplicationEntity Create(ProjectPostingEntity posting, string description, Guid userId)
     {
-        var postingExists = await context.ProjectPostings
-            .AsNoTracking()
-            .AnyAsync(x => x.IsActive && x.Id == projectPostingId);
+        ArgumentNullException.ThrowIfNull(posting);
 
-        if (!postingExists)
+        if (!posting.IsActive)
         {
-            throw new ProjectApplicationToNonExistentPostingException($"Posting is inactive or doesn't exist {projectPostingId}", HttpStatusCode.BadRequest);
+            throw new ProjectApplicationToNonExistentPostingException($"Posting {posting.Id} is inactive",
+                HttpStatusCode.BadRequest);
         }
 
         return new ProjectApplicationEntity
         {
             Description = description,
             UserId = userId,
-            ProjectPostingId = projectPostingId
+            ProjectPostingId = posting.Id
         };
     }
 
-    public void SetApplicationAttachmentsAsync()
+    public void SetApplicationAttachments()
     {
         ProjectApplication.Attachments = Attachments;
     }

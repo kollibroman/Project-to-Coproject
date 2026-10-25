@@ -214,6 +214,9 @@ namespace ProjectCowork.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -223,6 +226,9 @@ namespace ProjectCowork.Persistence.Migrations
 
                     b.Property<DateOnly?>("FinishedDate")
                         .HasColumnType("date");
+
+                    b.Property<long>("FriendlyId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -244,6 +250,8 @@ namespace ProjectCowork.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("ProjectId");
 
@@ -428,6 +436,9 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<long>("LastTaskFriendlyId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -701,6 +712,10 @@ namespace ProjectCowork.Persistence.Migrations
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Management.TaskEntity", b =>
                 {
+                    b.HasOne("ProjectCowork.Domain.Models.Users.UserEntity", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId");
+
                     b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
@@ -710,6 +725,8 @@ namespace ProjectCowork.Persistence.Migrations
                     b.HasOne("ProjectCowork.Domain.Models.Management.SprintEntity", "Sprint")
                         .WithMany("Tasks")
                         .HasForeignKey("SprintId");
+
+                    b.Navigation("AssignedUser");
 
                     b.Navigation("Project");
 

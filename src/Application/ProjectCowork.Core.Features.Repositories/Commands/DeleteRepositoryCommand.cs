@@ -1,7 +1,9 @@
 using System.Net;
+using DispatchR;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Domain.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -15,17 +17,17 @@ public record DeleteRepositoryCommand : IRequest<DeleteRepositoryCommand, Task>
 internal class DeleteRepositoryCommandHandler : IRequestHandler<DeleteRepositoryCommand, Task>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IMediator _mediator;
 
-    public DeleteRepositoryCommandHandler(ProjectCoworkDbContext dbContext)
+    public DeleteRepositoryCommandHandler(ProjectCoworkDbContext dbContext, IMediator mediator)
     {
         _dbContext = dbContext;
+        _mediator = mediator;
     }
 
     public async Task Handle(DeleteRepositoryCommand request, CancellationToken cancellationToken)
     {
         var repository = await _dbContext.Repositories
-            .Include(x => x.Project)
-            .ThenInclude(x => x.Repositories)
             .FirstOrDefaultAsync(x => x.Id == request.RepositoryId, cancellationToken);
 
         if (repository == null)
@@ -33,10 +35,12 @@ internal class DeleteRepositoryCommandHandler : IRequestHandler<DeleteRepository
             throw new EntityNotFoundException("Entity not found", HttpStatusCode.NotFound);
         }
 
-        var aggregate = new RepositoryAggregate(repository, repository.Project);
-        aggregate.DeleteRepositoryAsync();
+        var aggregate = new RepositoryAggregate(repository);
+        aggregate.DeleteRepository();
         
         _dbContext.Remove(repository);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _mediator.PublishDomainEventsAsync(aggregate, cancellationToken);
     }
 }

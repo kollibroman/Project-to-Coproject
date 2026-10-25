@@ -28,3 +28,16 @@ export {
   useCreateRepository,
   useDeleteRepository,
 } from './useRepositories';
+export {
+  useSprints,
+  useCreateSprint,
+  useEditSprint,
+  useDeleteSprint,
+} from './useSprints';
+export {
+  useProjectTasks,
+  useSprintTasks,
+  useCreateTask,
+  useEditTask,
+  useDeleteTask,
+} from './useTasks';

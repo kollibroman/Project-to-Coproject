@@ -1,4 +1,7 @@
+using System.Net;
 using DispatchR.Abstractions.Send;
+using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Exceptions.ProjectPostings;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -22,7 +25,16 @@ internal class AddProjectPostingCommandHandler : IRequestHandler<AddProjectPosti
 
     public async Task Handle(AddProjectPostingCommand request, CancellationToken cancellationToken)
     {
-        var entity = await ProjectPostingAggregate.Create(_dbContext, request.ProjectId, request.JobDescription,
+        var projectExists = await _dbContext.Projects
+            .AsNoTracking()
+            .AnyAsync(x => x.Id == request.ProjectId, cancellationToken);
+
+        if (!projectExists)
+        {
+            throw new ProjectPostingWihWrongProjectException("Project doesn't exist", HttpStatusCode.BadRequest);
+        }
+
+        var entity = ProjectPostingAggregate.Create(request.ProjectId, request.JobDescription,
             request.ProjectDescription);
         
         _dbContext.ProjectPostings.Add(entity);

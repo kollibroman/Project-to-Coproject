@@ -4,6 +4,7 @@ import {Navigate, useParams} from "react-router";
 import { RepositoryTab } from "../Components/RepositoryTab.tsx";
 import { PostingsTab } from "../../Postings/Components/PostingsTab.tsx";
 import { ProjectUsersTab } from "../Components/ProjectUsersTab.tsx";
+import { SprintsTab } from "../../Management/Components/SprintsTab.tsx";
 
 export const ProjectPage = () => {
 
@@ -39,11 +40,15 @@ export const ProjectPage = () => {
                 <Tabs defaultValue={"repositories"}>
                     <Tabs.List>
                         <Tabs.Tab value="repositories">Repozytoria</Tabs.Tab>
+                        <Tabs.Tab value="sprints">Sprinty i zadania</Tabs.Tab>
                         <Tabs.Tab value="postings">Ogłoszenia</Tabs.Tab>
                         <Tabs.Tab value="users">Użytkownicy</Tabs.Tab>
                     </Tabs.List>
                     <Tabs.Panel value="repositories">
                        <RepositoryTab projectId={projectId} />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="sprints">
+                        <SprintsTab projectId={projectId} />
                     </Tabs.Panel>
                     <Tabs.Panel value="postings">
                         <PostingsTab projectId={projectId} />
