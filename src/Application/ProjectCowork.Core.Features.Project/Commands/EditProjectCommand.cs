@@ -1,5 +1,6 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -25,6 +26,11 @@ internal class EditProjectCommandHandler : IRequestHandler<EditProjectCommand, T
     {
         var project = await _context.Projects
             .FirstOrDefaultAsync(x => x.Id == request.ProjectId, ct);
+
+        if (project is null)
+        {
+            throw new EntityNotFoundException("Project not found");
+        }
 
         var aggregate = new ProjectAggregate(project);
         

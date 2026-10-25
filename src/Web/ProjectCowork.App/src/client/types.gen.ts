@@ -14,6 +14,23 @@ export type AddPostingRequest = {
     projectDescription: string;
 };
 
+export type AddSprintRequest = {
+    projectId: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+};
+
+export type AddTaskRequest = {
+    projectId: string;
+    status?: TaskStatus;
+    name: string;
+    description: string;
+    priority: TaskPriority;
+    sprintId?: null | string;
+    assignedUserId?: null | string;
+};
+
 export type ApplyForProjectRequest = {
     projectPostingId: string;
     description: string;
@@ -34,6 +51,21 @@ export type EditProjectRequest = {
     projectId: string;
     name: string;
     description: string;
+};
+
+export type EditSprintRequest = {
+    name: string;
+    startDate: string;
+    endDate: string;
+};
+
+export type EditTaskRequest = {
+    status: TaskStatus;
+    name: string;
+    description: string;
+    priority: TaskPriority;
+    sprintId?: null | string;
+    assignedUserId?: null | string;
 };
 
 export type IFormFile = Blob | File;
@@ -81,6 +113,28 @@ export type RepositoryDto = {
     name: string;
     repoUrl: string;
 };
+
+export type SprintDto = {
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+};
+
+export type TaskDto = {
+    id: string;
+    name: string;
+    description: string;
+    status: TaskStatus;
+    priority: TaskPriority;
+    finishedDate?: null | string;
+    sprintId?: null | string;
+    assignedUserId?: null | string;
+};
+
+export type TaskPriority = number;
+
+export type TaskStatus = number;
 
 export type UpdatePostingRequest = {
     projectPostingId: string;
@@ -510,3 +564,193 @@ export type GetApiRepositoryByRepositoryIdResponses = {
 };
 
 export type GetApiRepositoryByRepositoryIdResponse = GetApiRepositoryByRepositoryIdResponses[keyof GetApiRepositoryByRepositoryIdResponses];
+
+export type GetApiSprintsProjectByProjectIdData = {
+    body?: never;
+    path: {
+        projectId: string;
+    };
+    query?: never;
+    url: '/api/sprints/project/{projectId}';
+};
+
+export type GetApiSprintsProjectByProjectIdResponses = {
+    /**
+     * OK
+     */
+    200: Array<SprintDto>;
+};
+
+export type GetApiSprintsProjectByProjectIdResponse = GetApiSprintsProjectByProjectIdResponses[keyof GetApiSprintsProjectByProjectIdResponses];
+
+export type DeleteApiSprintsBySprintIdData = {
+    body?: never;
+    path: {
+        sprintId: string;
+    };
+    query?: never;
+    url: '/api/sprints/{sprintId}';
+};
+
+export type DeleteApiSprintsBySprintIdResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type DeleteApiSprintsBySprintIdResponse = DeleteApiSprintsBySprintIdResponses[keyof DeleteApiSprintsBySprintIdResponses];
+
+export type GetApiSprintsBySprintIdData = {
+    body?: never;
+    path: {
+        sprintId: string;
+    };
+    query?: never;
+    url: '/api/sprints/{sprintId}';
+};
+
+export type GetApiSprintsBySprintIdResponses = {
+    /**
+     * OK
+     */
+    200: SprintDto;
+};
+
+export type GetApiSprintsBySprintIdResponse = GetApiSprintsBySprintIdResponses[keyof GetApiSprintsBySprintIdResponses];
+
+export type PutApiSprintsBySprintIdData = {
+    body: EditSprintRequest;
+    path: {
+        sprintId: string;
+    };
+    query?: never;
+    url: '/api/sprints/{sprintId}';
+};
+
+export type PutApiSprintsBySprintIdResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type PutApiSprintsBySprintIdResponse = PutApiSprintsBySprintIdResponses[keyof PutApiSprintsBySprintIdResponses];
+
+export type GetApiSprintsBySprintIdTasksData = {
+    body?: never;
+    path: {
+        sprintId: string;
+    };
+    query?: never;
+    url: '/api/sprints/{sprintId}/tasks';
+};
+
+export type GetApiSprintsBySprintIdTasksResponses = {
+    /**
+     * OK
+     */
+    200: Array<TaskDto>;
+};
+
+export type GetApiSprintsBySprintIdTasksResponse = GetApiSprintsBySprintIdTasksResponses[keyof GetApiSprintsBySprintIdTasksResponses];
+
+export type PostApiSprintsData = {
+    body: AddSprintRequest;
+    path?: never;
+    query?: never;
+    url: '/api/sprints';
+};
+
+export type PostApiSprintsResponses = {
+    /**
+     * Created
+     */
+    201: unknown;
+};
+
+export type GetApiTasksProjectByProjectIdData = {
+    body?: never;
+    path: {
+        projectId: string;
+    };
+    query?: never;
+    url: '/api/tasks/project/{projectId}';
+};
+
+export type GetApiTasksProjectByProjectIdResponses = {
+    /**
+     * OK
+     */
+    200: Array<TaskDto>;
+};
+
+export type GetApiTasksProjectByProjectIdResponse = GetApiTasksProjectByProjectIdResponses[keyof GetApiTasksProjectByProjectIdResponses];
+
+export type DeleteApiTasksByTaskIdData = {
+    body?: never;
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/tasks/{taskId}';
+};
+
+export type DeleteApiTasksByTaskIdResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type DeleteApiTasksByTaskIdResponse = DeleteApiTasksByTaskIdResponses[keyof DeleteApiTasksByTaskIdResponses];
+
+export type GetApiTasksByTaskIdData = {
+    body?: never;
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/tasks/{taskId}';
+};
+
+export type GetApiTasksByTaskIdResponses = {
+    /**
+     * OK
+     */
+    200: TaskDto;
+};
+
+export type GetApiTasksByTaskIdResponse = GetApiTasksByTaskIdResponses[keyof GetApiTasksByTaskIdResponses];
+
+export type PutApiTasksByTaskIdData = {
+    body: EditTaskRequest;
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/tasks/{taskId}';
+};
+
+export type PutApiTasksByTaskIdResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type PutApiTasksByTaskIdResponse = PutApiTasksByTaskIdResponses[keyof PutApiTasksByTaskIdResponses];
+
+export type PostApiTasksData = {
+    body: AddTaskRequest;
+    path?: never;
+    query?: never;
+    url: '/api/tasks';
+};
+
+export type PostApiTasksResponses = {
+    /**
+     * Created
+     */
+    201: unknown;
+};

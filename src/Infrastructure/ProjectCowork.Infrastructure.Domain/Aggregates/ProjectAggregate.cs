@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Domain.Models.Project;
 using ProjectCowork.Domain.Models.Users;
 
@@ -10,9 +9,10 @@ public class ProjectAggregate
 {
     private ProjectEntity Project { get; }
 
-    public ProjectAggregate(ProjectEntity? project)
+    public ProjectAggregate(ProjectEntity project)
     {
-        Project = project ?? throw new EntityNotFoundException("Project not found");
+        ArgumentNullException.ThrowIfNull(project);
+        Project = project;
     }
 
     public static ProjectEntity Create(string name, string description, Guid ownerId)
@@ -24,7 +24,8 @@ public class ProjectAggregate
         {
             Name = name,
             Description = description,
-            OwnerId = ownerId
+            OwnerId = ownerId,
+            LastTaskFriendlyId = 0
         };
 
         return project;

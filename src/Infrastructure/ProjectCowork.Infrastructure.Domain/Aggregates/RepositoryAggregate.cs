@@ -1,17 +1,17 @@
-using ProjectCowork.Domain.Models.Project;
 using ProjectCowork.Domain.Models.Repositories;
+using ProjectCowork.Infrastructure.Domain.Abstractions;
+using ProjectCowork.Infrastructure.DomainEvents.Repositories;
 
 namespace ProjectCowork.Infrastructure.Domain.Aggregates;
 
-public class RepositoryAggregate
+public class RepositoryAggregate : AggregateRoot
 {
     private RepositoryEntity Repository { get; }
-    private ProjectEntity Project { get; }
     
-    public RepositoryAggregate(RepositoryEntity repositoryEntity, ProjectEntity project)
+    public RepositoryAggregate(RepositoryEntity repositoryEntity)
     {
+        ArgumentNullException.ThrowIfNull(repositoryEntity);
         Repository = repositoryEntity;
-        Project = project;
     }
 
     public static RepositoryEntity Create(string repositoryName, string repoPath, Guid projectId)
@@ -25,19 +25,13 @@ public class RepositoryAggregate
         };
     }
     
-    public void DeleteRepositoryAsync()
+    public void DeleteRepository()
     {
-        Project.Repositories.Remove(Repository);
-
-        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Repos", $"{Repository.ProjectId}");
-        
-        var directoryExists = Directory.Exists(folderPath);
-
-        if (!directoryExists)
+        RaiseDomainEvent(new RepositoryDeletedEvent
         {
-            return;
-        }
-        
-        Directory.Delete(folderPath, true);
+            RepositoryId = Repository.Id,
+            ProjectId = Repository.ProjectId,
+            RepositoryName = Repository.RepositoryName
+        });
     }
 }

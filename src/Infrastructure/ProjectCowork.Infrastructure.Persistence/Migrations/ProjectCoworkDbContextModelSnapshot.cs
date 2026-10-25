@@ -17,7 +17,7 @@ namespace ProjectCowork.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -174,6 +174,90 @@ namespace ProjectCowork.Persistence.Migrations
                     b.HasIndex("ProjectApplicationId");
 
                     b.ToTable("AttachmentEntity");
+                });
+
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Sprints");
+                });
+
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.TaskEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("FinishedDate")
+                        .HasColumnType("date");
+
+                    b.Property<long>("FriendlyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("SprintId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("SprintId");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.ActionEntity", b =>
@@ -352,6 +436,9 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<long>("LastTaskFriendlyId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -612,6 +699,40 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("ProjectApplication");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
+                        .WithMany("Sprints")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.TaskEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Users.UserEntity", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId");
+
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectCowork.Domain.Models.Management.SprintEntity", "Sprint")
+                        .WithMany("Tasks")
+                        .HasForeignKey("SprintId");
+
+                    b.Navigation("AssignedUser");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Sprint");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.FeatureActionEntity", b =>
                 {
                     b.HasOne("ProjectCowork.Domain.Models.Permissions.ActionEntity", "Action")
@@ -728,6 +849,11 @@ namespace ProjectCowork.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.ActionEntity", b =>
                 {
                     b.Navigation("Features");
@@ -753,6 +879,10 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("ProjectPostings");
 
                     b.Navigation("Repositories");
+
+                    b.Navigation("Sprints");
+
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RoleEntity", b =>
