@@ -1,3 +1,4 @@
+using ProjectCowork.Domain.Models.Management;
 using ProjectCowork.Domain.Models.Posting;
 using ProjectCowork.Domain.Models.Repositories;
 using ProjectCowork.Domain.Models.Users;
@@ -14,8 +15,9 @@ public class ProjectEntity : BaseTrackedEntity
 
     public UserEntity Owner { get; set; } = null!;
 
+    public ICollection<SprintEntity> Sprints { get; set; } = [];
+    public ICollection<TaskEntity> Tasks { get; set; } = [];
     public ICollection<ProjectPostingEntity> ProjectPostings { get; set; } = [];
-    
     public ICollection<UserEntity> Collaborators { get; set; } = [];
     public ICollection<RepositoryEntity> Repositories { get; set; } = [];
 }

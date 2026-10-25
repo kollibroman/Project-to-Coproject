@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Models.Management;
 using ProjectCowork.Domain.Models.Permissions;
 using ProjectCowork.Domain.Models.Posting;
 using ProjectCowork.Domain.Models.Project;
@@ -28,6 +29,8 @@ public class ProjectCoworkDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     public virtual DbSet<ProjectApplicationEntity> ProjectApplications => Set<ProjectApplicationEntity>();
     public virtual DbSet<RepositoryEntity> Repositories => Set<RepositoryEntity>();
     public virtual DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
+    public virtual DbSet<TaskEntity> Tasks => Set<TaskEntity>();
+    public virtual DbSet<SprintEntity> Sprints => Set<SprintEntity>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
