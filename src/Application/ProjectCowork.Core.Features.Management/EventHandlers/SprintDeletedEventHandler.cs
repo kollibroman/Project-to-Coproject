@@ -21,6 +21,7 @@ internal class SprintDeletedEventHandler : INotificationHandler<SprintDeletedEve
             .Where(x => x.SprintId == request.SprintId)
             .ToListAsync(cancellationToken);
 
+        // TODO: Moze nie dzialac
         foreach (var task in tasks)
         {
             new TaskAggregate(task).MoveToBacklog();
