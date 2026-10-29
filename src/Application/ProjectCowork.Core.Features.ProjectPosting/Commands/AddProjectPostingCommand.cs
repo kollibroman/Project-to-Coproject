@@ -1,7 +1,9 @@
 using System.Net;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.ProjectPostings;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -17,14 +19,19 @@ public record AddProjectPostingCommand : IRequest<AddProjectPostingCommand, Task
 internal class AddProjectPostingCommandHandler : IRequestHandler<AddProjectPostingCommand, Task>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public AddProjectPostingCommandHandler(ProjectCoworkDbContext dbContext)
+    public AddProjectPostingCommandHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(AddProjectPostingCommand request, CancellationToken cancellationToken)
     {
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Postings,
+            ActionType.Create, cancellationToken);
+
         var projectExists = await _dbContext.Projects
             .AsNoTracking()
             .AnyAsync(x => x.Id == request.ProjectId, cancellationToken);

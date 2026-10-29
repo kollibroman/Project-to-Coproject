@@ -2,7 +2,9 @@ using System.Net;
 using DispatchR;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
@@ -18,11 +20,13 @@ internal class DeleteRepositoryCommandHandler : IRequestHandler<DeleteRepository
 {
     private readonly ProjectCoworkDbContext _dbContext;
     private readonly IMediator _mediator;
+    private readonly IPermissionService _permissionService;
 
-    public DeleteRepositoryCommandHandler(ProjectCoworkDbContext dbContext, IMediator mediator)
+    public DeleteRepositoryCommandHandler(ProjectCoworkDbContext dbContext, IMediator mediator, IPermissionService permissionService)
     {
         _dbContext = dbContext;
         _mediator = mediator;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(DeleteRepositoryCommand request, CancellationToken cancellationToken)
@@ -34,6 +38,9 @@ internal class DeleteRepositoryCommandHandler : IRequestHandler<DeleteRepository
         {
             throw new EntityNotFoundException("Entity not found", HttpStatusCode.NotFound);
         }
+
+        await _permissionService.EnsureProjectPermissionAsync(repository.ProjectId, ResourceType.Repositories,
+            ActionType.Delete, cancellationToken);
 
         var aggregate = new RepositoryAggregate(repository);
         aggregate.DeleteRepository();

@@ -26,7 +26,7 @@ internal class GetDiscoverProjectsQueryHandler : IStreamRequestHandler<GetDiscov
 
         return _context.Projects
             .Where(x => x.OwnerId != userId)
-            .Where(x => x.Collaborators.All(c => c.Id != userId))
+            .Where(x => x.ProjectMembers.All(m => m.UserId != userId))
             .Select(x => new ProjectModel
             {
                 Id = x.Id,

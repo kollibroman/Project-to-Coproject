@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
+      <ProjectReference Include="..\..\Domain\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
       <ProjectReference Include="..\ProjectCowork.Infrastructure.Abstractions\ProjectCowork.Infrastructure.Abstractions.csproj" />
       <ProjectReference Include="..\ProjectCowork.Infrastructure.Configuration\ProjectCowork.Infrastructure.Configuration.csproj" />
       <ProjectReference Include="..\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />

@@ -37,6 +37,21 @@ namespace ProjectCowork.Persistence.Migrations
                     b.ToTable("ApplicationModuleEntityFeatureEntity");
                 });
 
+            modelBuilder.Entity("FeatureActionEntityProjectRoleEntity", b =>
+                {
+                    b.Property<int>("FeatureActionsId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProjectRolesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FeatureActionsId", "ProjectRolesId");
+
+                    b.HasIndex("ProjectRolesId");
+
+                    b.ToTable("FeatureActionEntityProjectRoleEntity");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -337,29 +352,6 @@ namespace ProjectCowork.Persistence.Migrations
                     b.ToTable("Features");
                 });
 
-            modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.RolePermissionEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FeatureActionId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FeatureActionId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RolePermissions");
-                });
-
             modelBuilder.Entity("ProjectCowork.Domain.Models.Posting.ProjectApplicationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -455,6 +447,55 @@ namespace ProjectCowork.Persistence.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectMemberEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProjectRoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectRoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectMembers");
+                });
+
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectRoleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectRoles");
                 });
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Repositories.RepositoryEntity", b =>
@@ -609,21 +650,6 @@ namespace ProjectCowork.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectEntityUserEntity", b =>
-                {
-                    b.Property<Guid>("AssignedProjectsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CollaboratorsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("AssignedProjectsId", "CollaboratorsId");
-
-                    b.HasIndex("CollaboratorsId");
-
-                    b.ToTable("ProjectCollaborators", (string)null);
-                });
-
             modelBuilder.Entity("ApplicationModuleEntityFeatureEntity", b =>
                 {
                     b.HasOne("ProjectCowork.Domain.Models.Permissions.FeatureEntity", null)
@@ -635,6 +661,21 @@ namespace ProjectCowork.Persistence.Migrations
                     b.HasOne("ProjectCowork.Domain.Models.Permissions.ApplicationModuleEntity", null)
                         .WithMany()
                         .HasForeignKey("ModulesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FeatureActionEntityProjectRoleEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Permissions.FeatureActionEntity", null)
+                        .WithMany()
+                        .HasForeignKey("FeatureActionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectRoleEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectRolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -752,25 +793,6 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Feature");
                 });
 
-            modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.RolePermissionEntity", b =>
-                {
-                    b.HasOne("ProjectCowork.Domain.Models.Permissions.FeatureActionEntity", "FeatureAction")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("FeatureActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProjectCowork.Domain.Models.Users.RoleEntity", "Role")
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FeatureAction");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("ProjectCowork.Domain.Models.Posting.ProjectApplicationEntity", b =>
                 {
                     b.HasOne("ProjectCowork.Domain.Models.Posting.ProjectPostingEntity", "ProjectPosting")
@@ -812,6 +834,44 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectMemberEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
+                        .WithMany("ProjectMembers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectRoleEntity", "ProjectRole")
+                        .WithMany()
+                        .HasForeignKey("ProjectRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectCowork.Domain.Models.Users.UserEntity", "User")
+                        .WithMany("AssignedProjects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ProjectRole");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectRoleEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
+                        .WithMany("ProjectRoles")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Repositories.RepositoryEntity", b =>
                 {
                     b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
@@ -834,21 +894,6 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProjectEntityUserEntity", b =>
-                {
-                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", null)
-                        .WithMany()
-                        .HasForeignKey("AssignedProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProjectCowork.Domain.Models.Users.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("CollaboratorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>
                 {
                     b.Navigation("Tasks");
@@ -857,11 +902,6 @@ namespace ProjectCowork.Persistence.Migrations
             modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.ActionEntity", b =>
                 {
                     b.Navigation("Features");
-                });
-
-            modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.FeatureActionEntity", b =>
-                {
-                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Posting.ProjectApplicationEntity", b =>
@@ -876,7 +916,11 @@ namespace ProjectCowork.Persistence.Migrations
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectEntity", b =>
                 {
+                    b.Navigation("ProjectMembers");
+
                     b.Navigation("ProjectPostings");
+
+                    b.Navigation("ProjectRoles");
 
                     b.Navigation("Repositories");
 
@@ -885,13 +929,10 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("ProjectCowork.Domain.Models.Users.RoleEntity", b =>
-                {
-                    b.Navigation("Permissions");
-                });
-
             modelBuilder.Entity("ProjectCowork.Domain.Models.Users.UserEntity", b =>
                 {
+                    b.Navigation("AssignedProjects");
+
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("ProjectApplications");

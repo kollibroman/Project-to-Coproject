@@ -1,6 +1,9 @@
+using System.Runtime.CompilerServices;
 using DispatchR.Abstractions.Stream;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Core.Features.Management.Models;
+using ProjectCowork.Domain.Enums.Permissions;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Core.Features.Management.Queries;
@@ -13,15 +16,21 @@ public class GetProjectSprintsQuery : IStreamRequest<GetProjectSprintsQuery, Spr
 internal class GetProjectSprintsQueryHandler : IStreamRequestHandler<GetProjectSprintsQuery, SprintDto>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public GetProjectSprintsQueryHandler(ProjectCoworkDbContext dbContext)
+    public GetProjectSprintsQueryHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
-    public IAsyncEnumerable<SprintDto> Handle(GetProjectSprintsQuery request, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<SprintDto> Handle(GetProjectSprintsQuery request,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        return _dbContext.Sprints
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Management,
+            ActionType.View, cancellationToken);
+
+        var sprints = _dbContext.Sprints
             .Where(x => x.ProjectId == request.ProjectId)
             .Select(x => new SprintDto
             {
@@ -31,5 +40,10 @@ internal class GetProjectSprintsQueryHandler : IStreamRequestHandler<GetProjectS
                 EndDate = x.EndDate
             })
             .AsAsyncEnumerable();
+
+        await foreach (var sprint in sprints.WithCancellation(cancellationToken))
+        {
+            yield return sprint;
+        }
     }
 }

@@ -1,7 +1,9 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Core.Features.Models;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Core.Features.Queries;
@@ -14,14 +16,18 @@ public record GetProjectQuery : IRequest<GetProjectQuery, Task<ProjectModel>>
 internal class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, Task<ProjectModel>>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public GetProjectQueryHandler(ProjectCoworkDbContext dbContext)
+    public GetProjectQueryHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task<ProjectModel> Handle(GetProjectQuery request, CancellationToken ct)
     {
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Projects, ActionType.View, ct);
+
         var project = await _dbContext.Projects
             .Where(x => x.Id == request.ProjectId)
             .Select(x => new ProjectModel

@@ -1,6 +1,9 @@
+using System.Runtime.CompilerServices;
 using DispatchR.Abstractions.Stream;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Core.Features.ProjectPosting.Models;
+using ProjectCowork.Domain.Enums.Permissions;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Core.Features.ProjectPosting.Queries;
@@ -13,15 +16,32 @@ public record GetPostingApplicationsQuery : IStreamRequest<GetPostingApplication
 internal class GetPostingApplicationQueryHandler : IStreamRequestHandler<GetPostingApplicationsQuery, ProjectApplicationDto>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public GetPostingApplicationQueryHandler(ProjectCoworkDbContext dbContext)
+    public GetPostingApplicationQueryHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
-    public IAsyncEnumerable<ProjectApplicationDto> Handle(GetPostingApplicationsQuery request, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<ProjectApplicationDto> Handle(GetPostingApplicationsQuery request,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        return _dbContext.ProjectApplications
+        var projectId = await _dbContext.ProjectPostings
+            .Where(x => x.Id == request.ProjectPostingId)
+            .Select(x => (Guid?)x.ProjectId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        // Nieistniejące ogłoszenie daje pustą listę, tak jak wcześniej.
+        if (projectId is null)
+        {
+            yield break;
+        }
+
+        await _permissionService.EnsureProjectPermissionAsync(projectId.Value, ResourceType.Applications,
+            ActionType.View, cancellationToken);
+
+        var applications = _dbContext.ProjectApplications
             .Where(x => x.ProjectPostingId == request.ProjectPostingId)
             .Select(x => new ProjectApplicationDto
             {
@@ -31,5 +51,10 @@ internal class GetPostingApplicationQueryHandler : IStreamRequestHandler<GetPost
                 UserEmail = x.User.Email
             })
             .AsAsyncEnumerable();
+
+        await foreach (var application in applications.WithCancellation(cancellationToken))
+        {
+            yield return application;
+        }
     }
 }

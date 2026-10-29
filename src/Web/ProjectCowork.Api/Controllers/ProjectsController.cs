@@ -58,11 +58,11 @@ public static class ProjectsController
         return TypedResults.Created();
     }
     
-    private static async Task<NoContent> EditProjectAsync([FromBody] EditProjectRequest request, [FromServices] IMediator mediator, CancellationToken ct)
+    private static async Task<NoContent> EditProjectAsync([FromRoute] Guid projectId, [FromBody] EditProjectRequest request, [FromServices] IMediator mediator, CancellationToken ct)
     {
         await mediator.Send(new EditProjectCommand
         {
-            ProjectId =  request.ProjectId,
+            ProjectId = projectId,
             Name = request.Name,
             Description = request.Description
         }, ct);
@@ -75,7 +75,8 @@ public static class ProjectsController
         await mediator.Send(new InviteUserToProjectCommand
         {
             ProjectId = projectId,
-            Email = request.Email
+            Email = request.Email,
+            RoleId = request.RoleId
         }, ct);
 
         return TypedResults.NoContent();
