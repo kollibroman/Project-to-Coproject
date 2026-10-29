@@ -16,9 +16,9 @@ import type { GetApiProjectsData } from '../client';
 export const useProjects = (options?: Options<GetApiProjectsData>) =>
   useQuery(getApiProjectsOptions(options));
 
-export const useProject = (projectId: string) =>
+export const useProject = (projectId: string | undefined) =>
   useQuery({
-    ...getApiProjectsByProjectIdOptions({ path: { projectId } }),
+    ...getApiProjectsByProjectIdOptions({ path: { projectId: projectId ?? '' } }),
     enabled: Boolean(projectId),
   });
 

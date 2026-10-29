@@ -5,5 +5,4 @@ namespace ProjectCowork.Domain.Models.Users;
 
 public class RoleEntity : IdentityRole<Guid>
 {
-    public ICollection<RolePermissionEntity> Permissions { get; set; } = [];
 }

@@ -1,6 +1,8 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -16,14 +18,18 @@ public record EditProjectCommand : IRequest<EditProjectCommand, Task>
 internal class EditProjectCommandHandler : IRequestHandler<EditProjectCommand, Task>
 {
     private readonly ProjectCoworkDbContext _context;
+    private readonly IPermissionService _permissionService;
 
-    public EditProjectCommandHandler(ProjectCoworkDbContext context)
+    public EditProjectCommandHandler(ProjectCoworkDbContext context, IPermissionService permissionService)
     {
         _context = context;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(EditProjectCommand request, CancellationToken ct)
     {
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Projects, ActionType.Update, ct);
+
         var project = await _context.Projects
             .FirstOrDefaultAsync(x => x.Id == request.ProjectId, ct);
 

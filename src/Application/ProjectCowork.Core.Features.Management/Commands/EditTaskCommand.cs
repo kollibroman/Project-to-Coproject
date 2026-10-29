@@ -2,7 +2,9 @@ using System.Net;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Enums.Management;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 using TaskStatus = ProjectCowork.Domain.Enums.Management.TaskStatus;
@@ -31,10 +33,12 @@ public record EditTaskCommand : IRequest<EditTaskCommand, Task>
 internal class EditTaskCommandHandler : IRequestHandler<EditTaskCommand, Task>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public EditTaskCommandHandler(ProjectCoworkDbContext dbContext)
+    public EditTaskCommandHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(EditTaskCommand request, CancellationToken ct)
@@ -46,6 +50,8 @@ internal class EditTaskCommandHandler : IRequestHandler<EditTaskCommand, Task>
         {
             throw new EntityNotFoundException($"Task {request.TaskId} does not exist");
         }
+
+        await _permissionService.EnsureProjectPermissionAsync(task.ProjectId, ResourceType.Management, ActionType.Update, ct);
 
         var aggregate = new TaskAggregate(task);
 

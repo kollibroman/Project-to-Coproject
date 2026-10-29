@@ -5,5 +5,7 @@ public enum ResourceType
     Projects,
     Postings,
     Repositories,
-    Applications
+    Applications,
+    Management,
+    Permissions
 }

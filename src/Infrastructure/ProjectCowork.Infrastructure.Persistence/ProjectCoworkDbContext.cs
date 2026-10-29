@@ -24,13 +24,14 @@ public class ProjectCoworkDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     public virtual DbSet<ApplicationModuleEntity> Modules => Set<ApplicationModuleEntity>();
     public virtual DbSet<FeatureActionEntity> FeatureActions => Set<FeatureActionEntity>();
     public virtual DbSet<FeatureEntity> Features => Set<FeatureEntity>();
-    public virtual DbSet<RolePermissionEntity> RolePermissions => Set<RolePermissionEntity>();
     public virtual DbSet<ProjectPostingEntity> ProjectPostings => Set<ProjectPostingEntity>();
     public virtual DbSet<ProjectApplicationEntity> ProjectApplications => Set<ProjectApplicationEntity>();
     public virtual DbSet<RepositoryEntity> Repositories => Set<RepositoryEntity>();
     public virtual DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
     public virtual DbSet<TaskEntity> Tasks => Set<TaskEntity>();
     public virtual DbSet<SprintEntity> Sprints => Set<SprintEntity>();
+    public virtual DbSet<ProjectMemberEntity> ProjectMembers => Set<ProjectMemberEntity>();
+    public virtual DbSet<ProjectRoleEntity> ProjectRoles => Set<ProjectRoleEntity>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
