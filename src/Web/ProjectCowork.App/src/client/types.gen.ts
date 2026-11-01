@@ -114,6 +114,7 @@ export type ProjectModel = {
     name: string;
     description: string;
     ownerId: string;
+    roleName: string;
 };
 
 export type ProjectPostingDto = {

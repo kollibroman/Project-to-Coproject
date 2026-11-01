@@ -10,7 +10,6 @@ internal static class UserSeeder
 {
     public const string EmailPrefix = "seed.user";
     private const string Password = "Test123!";
-    private const int RandomSeed = 20261029;
 
     public static async Task<SeedDataContext> SeedAsync(ProjectCoworkDbContext dbContext, CancellationToken cancellationToken)
     {

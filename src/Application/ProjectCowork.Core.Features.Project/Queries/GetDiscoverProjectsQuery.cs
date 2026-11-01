@@ -32,7 +32,8 @@ internal class GetDiscoverProjectsQueryHandler : IStreamRequestHandler<GetDiscov
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                OwnerId = x.OwnerId
+                OwnerId = x.OwnerId,
+                RoleName = "Podgląd"
             })
             .AsAsyncEnumerable();
     }

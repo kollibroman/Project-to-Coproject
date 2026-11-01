@@ -7,7 +7,7 @@ interface Props {
     project: ProjectModel;
 }
 
-export const ProjectUserPaper = ({ project: { id, name, description } }: Props) => {
+export const ProjectUserPaper = ({ project: { id, name, description, roleName } }: Props) => {
 
     return (
         <>
@@ -20,8 +20,7 @@ export const ProjectUserPaper = ({ project: { id, name, description } }: Props) 
                                     <Title order={1}>{name}</Title>
                                 </Grid.Col>
                                 <Grid.Col span={3}>
-                                    // TODO: wpisywać zwracana role w projekcie
-                                    <Text>Rola: </Text>
+                                    <Text>Rola: {roleName}</Text>
                                 </Grid.Col>
                             </Grid>
                             <Text size="sm">{description}</Text>

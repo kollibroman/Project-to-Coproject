@@ -34,7 +34,13 @@ internal class GetProjectsQueryHandler : IStreamRequestHandler<GetProjectsQuery,
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                OwnerId = x.OwnerId
+                OwnerId = x.OwnerId,
+                RoleName = x.OwnerId == userId
+                    ? "Owner"
+                    : x.ProjectMembers
+                        .Where(member => member.UserId == userId)
+                        .Select(member => member.ProjectRole.Name)
+                        .First()
             })
             .AsAsyncEnumerable();
     }
