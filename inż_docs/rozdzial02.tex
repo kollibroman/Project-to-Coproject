@@ -1,7 +1,61 @@
 \chapter{Analiza wymagań}
-\section{Wymagania funkcjonalne}
 
+\section{Przegląd istniejących rozwiązań}
 
-\section{Wymagania niefunkcjonalne}
+\subsection{Github}
+
+\subsection{JustJoin.It}
+Portal z ogłoszeniami o pracę typowo w sferze IT. Oferuje efektywne filtry do ofert pracy i możliwość aplikacji do danej oferty z poziomu strony internetowej.
+Firmy mogą w bardzo efektywny sposób publikować ogłoszenia z danymi ofertami pracy, gdzie samo ogłoszenie można sparametryzować do odpowiednich kryteriów wyszukiwania przez zainteresowanych.
+Do takich parametrów należą m.in: stack technologiczny, lokalizacja, tryb pracy typ umowy itp. Dla tego typu użytkowników jest to bardzo wygodne rozwiązanie ponieważ nie muszą poświęcać swoich środków marketingowych w celu
+pozyskiwania nowych pracowników. Z kolei dla osoby poszukującej pracy, portal ten także jest wygodnym rozwiązaniem, ze względu na to że może on w prosty sposób wyszukać interesujące go ogłoszenie
+za pomocą wcześniej wspomnianych filtrów. W kontekście problemu poruszanego w niniejszej pracy, rozwiązanie to nie jest w pełni kompleksowe.
+Brakuje na nim narzędzi do zarządzania projektem i do hostowania kodu. Strona ta skupia się tylko na jednym podproblemie należącym do rozwiązywanego problemu.
+Istotnym brakiem tej platformy, również jest grupa docelowa, a mianowicie nie są nią studenci poszukujący innych studentów do wspólnej nauki.
+Główną grupą docelową w tym przypadku są osoby poszukujące pracy w branży, a także profesjonalne firmy poszukujące pracowników już z pewnym doświadczeniem.
+Nie ma tam miejsca na typowo studenckie inicjatywy. 
+
+\section{Wymagania funkcjonalne i niefunkcjonalne}
+
+W celu rozwiązania omawianego problemu, tworzony system musi oferować połączenie kilku niezależnych od siebie funkcjonalności, takich jak hosting repozytoriów,
+zgłaszania zapotrzebowania na osoby w projekcie, wyszukiwania takich ofert i podstawowego zarządzania projektem w postaci rozpisywania zadań i przydzielania odpowiedzialności za nie.
+W tym celu przeprowadzono analizę wymagań funkcjonalnych i niefunkcjonalnych. Po analizie zdefiniowano następujące wymagania funkcjonalne:
+\begin{enumerate}
+    \item System wymaga założenia konta
+    \item System hostuje repozytoria systemu kontroli wersji $Git$
+    \item System obsługuje komendy $push$, $pull$ i $clone$ systemu kontroli wersji $Git$
+    \item System implementuje $RBAC$ dla każdego projektu
+    \item System definiuje dynamicznie role w projekcie
+    \item Członek projektu z uprawnieniami dodaje i usuwa osoby w projekcie
+    \item Członek projektu publikuje oferty pracy w projekcie
+    \item Członek projektu z uprawnieniami nadaje role w projekcie
+    \item System importuje repozytoria z platformy $Github$
+    \item Biznes przegląda projekty
+    \item System wysyła zaproszenia do projektu na maila
+    \item Członek projektu tworzy sprinty
+    \item Członek projektu tworzy zadania
+    \item Użytkownik może aplikować na daną ofertę
+    \item Członek projektu widzi aplikacje na daną ofertę
+\end{enumerate}
+
+I niefunkcjonalne:
+\begin{enumerate}
+    \item System przechowuje repozytoria na serwerze
+    \item System przechowuje pliki dla aplikacji w magazynie chmurowym
+    \item 
+\end{enumerate}
+
+\subsection{Diagram SysML wymagań funckjonalnych}
+
+W~celu lepszej wizualizacji wymagań funkcjonalnych, na Rysunku \ref{fig:sysml_wymag} przedstawiono diagram SysML obrazujący powiązania między poszczególnymi modułami. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{rys05/sysML_wymagania.png}
+    \caption{Diagram SysML wymagań funkcjonalnych}
+    \label{fig:sysml_wymag}
+\end{figure}
 
 \section{Przypadki użycia}
+
+Po zdefiniowaniu wymagań, na ich podstawie powstały następujące przypadki użycia:
