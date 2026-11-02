@@ -74,6 +74,21 @@ export type EditTaskRequest = {
     assignedUserId?: null | string;
 };
 
+export type EditSprintRequest = {
+    name: string;
+    startDate: string;
+    endDate: string;
+};
+
+export type EditTaskRequest = {
+    status: TaskStatus;
+    name: string;
+    description: string;
+    priority: TaskPriority;
+    sprintId?: null | string;
+    assignedUserId?: null | string;
+};
+
 export type IFormFile = Blob | File;
 
 export type InviteUserRequest = {

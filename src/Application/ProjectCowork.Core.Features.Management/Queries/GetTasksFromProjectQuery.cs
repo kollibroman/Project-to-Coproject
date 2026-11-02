@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Core.Features.Management.Models;
 using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
+using ProjectCowork.Domain.Enums.Management;
 using ProjectCowork.Persistence;
+using TaskStatus = ProjectCowork.Domain.Enums.Management.TaskStatus;
 
 namespace ProjectCowork.Core.Features.Management.Queries;
 

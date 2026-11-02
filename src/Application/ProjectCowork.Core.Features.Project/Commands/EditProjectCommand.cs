@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
+using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 

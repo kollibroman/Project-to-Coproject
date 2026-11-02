@@ -899,6 +899,11 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Tasks");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Permissions.ActionEntity", b =>
                 {
                     b.Navigation("Features");
