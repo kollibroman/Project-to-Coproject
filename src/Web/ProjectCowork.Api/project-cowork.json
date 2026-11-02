@@ -1857,7 +1857,8 @@
           "id",
           "name",
           "description",
-          "ownerId"
+          "ownerId",
+          "roleName"
         ],
         "type": "object",
         "properties": {
@@ -1874,6 +1875,9 @@
           "ownerId": {
             "type": "string",
             "format": "uuid"
+          },
+          "roleName": {
+            "type": "string"
           }
         }
       },
