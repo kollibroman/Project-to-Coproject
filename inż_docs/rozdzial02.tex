@@ -1,8 +1,22 @@
 \chapter{Analiza wymagań}
 
+Zgodnie z celem i zakresem projektu przedstawionym w rozdziale pierwszym, podstawowym zadaniem systemu jest to żeby umożliwiał
+tworzenie ogłoszeń do projektów jak i dał możliwości do zarządzania samym projektem. Przed wyspecykowaniem wymagań funckjonalnych i niefunkcjonalnych,
+przeprowadzono przegląd istniejących rozwiązań, które w pewnym stopniu rozwiązują problem niniejszej pracy. Potem, znając istniejące funckjonalności, możliwym stało się zdefiniowanie odpowiednich wymagań.
+
 \section{Przegląd istniejących rozwiązań}
 
-\subsection{Github}
+Na rynku znajduje się wiele platform, które w pewnym stopniu adresują ten problem, ale żadna z nich nie sprawia że użytkownicy znajdują się w pełnym środowisku do tworzenia projektów.
+Osoby poszukujące innych osób do współpracy nad projektem musi korzystać z kilku niezależnych od siebie platform, co powoduje w dalszej perspektywie niepotrzebne kroki, utrudniające efektywne prowadzenie projektu.
+
+\subsection{Github.com}
+
+Platforma założona przez Chrisa Wanstratha, P. J. Hyetta i Toma Prestona-Wernera w 2008 roku, która umożliwia hostowanie repozytoriów Git. Użytkownicy mogą tworzyć własne repozytoria, przeglądać repozytoria innych użytkowników,
+a także współpracować nad projektami poprzez zgłaszanie problemów (ang. \textit{issues}), proponowanie zmian (ang. \textit{pull requests}) oraz komentowanie kodu źródłowego.
+W 2018 roku Github został wykupiony przez Microsoft, który wprowadził wiele zmian, m.in brak limitu prywatnych repozytoriów dla użytkowników i wprowadzenie płatnych planów dla firm. W 2020 roku Github wprowadził funkcjonalność \textit{Github Actions}, która umożliwia automatyzację procesów związanych z tworzeniem oprogramowania, takich jak testowanie, budowanie i wdrażanie aplikacji.
+Platforma ta umożliwa bardzo efektywną współpracę nad projektami, jednak nie oferuje ona możliwości tworzenia zgłoszeń zapotrzebowania na dane osoby w sposób ustruktyryzowany. Dużo projektów open-source
+robi to w sposób nieformany, często przez odpowiednią sekcję w pliku $README.md$. W kontekście problemu poruszanego w niniejszej pracy, to rozwiązanie jest niewystarczające, jednak ono jest adresuje najwięcej zdefiniowanych wymgań.
+
 
 \subsection{JustJoin.It}
 Portal z ogłoszeniami o pracę typowo w sferze IT. Oferuje efektywne filtry do ofert pracy i możliwość aplikacji do danej oferty z poziomu strony internetowej.
@@ -15,12 +29,28 @@ Istotnym brakiem tej platformy, również jest grupa docelowa, a mianowicie nie 
 Główną grupą docelową w tym przypadku są osoby poszukujące pracy w branży, a także profesjonalne firmy poszukujące pracowników już z pewnym doświadczeniem.
 Nie ma tam miejsca na typowo studenckie inicjatywy. 
 
+\subsection{Azure DevOps}
+Zintegrowana platforma do zarządzania projektami i tworzenia oprogramowania, stworzona przez Microsoft. Oferuje ona narzędzia takie same jak Github, jednak poprzez grupę docelową (firmy) ma ona dużo bardziej rozwinięte narzędzia inne niż do hostowania kodu.
+W porównaniu do Githuba, Azure devops ma dużo bardziej rozbudowane narzędzia do zarządzania zadaniami i odpowiedzalnością w projekcie. Poprzez prosty podział na zadania, platforma ta bardzo ułatwiła pracę w metodyce zwinnej (ang. \textit{Agile}). Rozwiązanie to niestety
+jest płatne od ponad 5 użytkowników, co w kontekście projektów studencki stanowi pewne ograniczenie przy większej skali projektu. Dodatkowo studenci nie są grupą docelową takiego rozwiązania i mogą mieć problemy żeby w nim się odnaleźć.
+Podobnie jak w przypadku Githuba, Azure DevOps nie oferuje możliwości tworzenia zgłoszeń zapotrzebowania na dane osoby w sposób ustruktyryzowany. W kontekście problemu poruszanego w niniejszej pracy, to rozwiązanie jest niewystarczające, jednak ono również adresuje dużo zdefiniowanych wymagań.
+
+\section{Założenia projektowe}
+
+Projekt systemu zakłada że użytkownicy będą mogli tworzyć projekty, czyli podstawowe jednostki w systemie, na których będą opierali swoją pracę.
+Pracując w danym projekcie, użytkownik będzie mógł tworzyć repozytoria, czyli miejsca w których będzie przechowywał kod źródłowy podlegający konkretnemu projektowi.
+Oprócz kodu źródłoowego użytkownik będzie mógł zarządzać projektem w metodyce zwinnej, czyli tworzyć sprinty i zadania, co pozwoli mu na efektywne zarządzanie pracą zespołu nad projektem.
+W momencie kiedy zespół zauważy że brakuje im osoby o konkretnych umiejętnościach, będzie mógł stworzyć ogłoszenie o zapotrzebowaniu takiej osoby. Potem,
+pod ogłoszeniem będą mogli sprawdzić kto aplikował na daną ofertę i w prosty sposób odsiać osoby które nie spełniają wymagań. W momencie kiedy zespół znajdzie pożądaną osobę,
+w prosty sposób będzie mógł ją dodać do projektu i przydzielić jej odpowiednią, zdefiniowaną wcześniej rolę.
+
+\newpage
 \section{Wymagania funkcjonalne i niefunkcjonalne}
 
 W celu rozwiązania omawianego problemu, tworzony system musi oferować połączenie kilku niezależnych od siebie funkcjonalności, takich jak hosting repozytoriów,
 zgłaszania zapotrzebowania na osoby w projekcie, wyszukiwania takich ofert i podstawowego zarządzania projektem w postaci rozpisywania zadań i przydzielania odpowiedzialności za nie.
-W tym celu przeprowadzono analizę wymagań funkcjonalnych i niefunkcjonalnych. Po analizie zdefiniowano następujące wymagania funkcjonalne:
-\begin{enumerate}
+W tym celu przeprowadzono analizę wymagań funkcjonalnych i niefunkcjonalnych. Po analizie założeń projektowych zdefiniowano następujące wymagania funkcjonalne:
+\begin{itemize}
     \item System wymaga założenia konta
     \item System hostuje repozytoria systemu kontroli wersji $Git$
     \item System obsługuje komendy $push$, $pull$ i $clone$ systemu kontroli wersji $Git$
@@ -36,25 +66,28 @@ W tym celu przeprowadzono analizę wymagań funkcjonalnych i niefunkcjonalnych. 
     \item Członek projektu tworzy zadania
     \item Użytkownik może aplikować na daną ofertę
     \item Członek projektu widzi aplikacje na daną ofertę
-\end{enumerate}
+\end{itemize}
 
 I niefunkcjonalne:
-\begin{enumerate}
+\begin{itemize}
     \item System przechowuje repozytoria na serwerze
     \item System przechowuje pliki dla aplikacji w magazynie chmurowym
-    \item 
-\end{enumerate}
+    \item System zapewnia integrację z platformą $Github$
+    \item System zapewnia przepustowość dla wielu użytkowników
+    \item System zapewnia bezpieczeństwo danych użytkowników
+    \item System umożliwia zarządzanie projektem metodyką zwinną
+\end{itemize}
 
-\subsection{Diagram SysML wymagań funckjonalnych}
+\subsection{Diagram SysML wymagań funkcjonalnych}
 
-W~celu lepszej wizualizacji wymagań funkcjonalnych, na Rysunku \ref{fig:sysml_wymag} przedstawiono diagram SysML obrazujący powiązania między poszczególnymi modułami. 
-
-\begin{figure}[ht]
+W celu lepszej wizualizacji wymagań funkcjonalnych, na Rysunku \ref{fig:sysml_wymag} przedstawiono diagram SysML obrazujący powiązania między poszczególnymi modułami. 
+\begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.85\linewidth]{rys05/sysML_wymagania.png}
+    \includegraphics[width=\linewidth]{rys02/sysML_wymagania.png}
     \caption{Diagram SysML wymagań funkcjonalnych}
     \label{fig:sysml_wymag}
 \end{figure}
+
 
 \section{Przypadki użycia}
 
