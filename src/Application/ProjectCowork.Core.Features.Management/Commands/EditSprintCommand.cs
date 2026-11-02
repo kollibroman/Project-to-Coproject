@@ -1,6 +1,8 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -17,10 +19,12 @@ public record EditSprintCommand : IRequest<EditSprintCommand, Task>
 internal class EditSprintCommandHandler : IRequestHandler<EditSprintCommand, Task>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public EditSprintCommandHandler(ProjectCoworkDbContext dbContext)
+    public EditSprintCommandHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(EditSprintCommand request, CancellationToken ct)
@@ -32,6 +36,8 @@ internal class EditSprintCommandHandler : IRequestHandler<EditSprintCommand, Tas
         {
             throw new EntityNotFoundException($"Sprint {request.SprintId} does not exist");
         }
+
+        await _permissionService.EnsureProjectPermissionAsync(sprint.ProjectId, ResourceType.Management, ActionType.Update, ct);
 
         var aggregate = new SprintAggregate(sprint);
 

@@ -41,3 +41,13 @@ export {
   useEditTask,
   useDeleteTask,
 } from './useTasks';
+export {
+  usePermissions,
+  useProjectRoles,
+  useProjectMembers,
+  useCreateProjectRole,
+  useUpdateProjectRole,
+  useDeleteProjectRole,
+  useChangeProjectMemberRole,
+  useRemoveProjectMember,
+} from './usePermissions';

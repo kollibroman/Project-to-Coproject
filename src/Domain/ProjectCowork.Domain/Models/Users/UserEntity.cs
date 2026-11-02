@@ -9,6 +9,6 @@ public class UserEntity : IdentityUser<Guid>
     public RefreshTokenEntity RefreshToken { get; set; }
     
     public ICollection<ProjectEntity> OwnedProjects { get; set; } = [];
-    public ICollection<ProjectEntity> AssignedProjects { get; set; } = [];
+    public ICollection<ProjectMemberEntity> AssignedProjects { get; set; } = [];
     public ICollection<ProjectApplicationEntity> ProjectApplications { get; set; } = [];
 }

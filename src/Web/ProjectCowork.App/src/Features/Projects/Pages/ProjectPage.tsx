@@ -3,14 +3,15 @@ import {useProject} from "../../../hooks";
 import {Navigate, useParams} from "react-router";
 import { RepositoryTab } from "../Components/RepositoryTab.tsx";
 import { PostingsTab } from "../../Postings/Components/PostingsTab.tsx";
-import { ProjectUsersTab } from "../Components/ProjectUsersTab.tsx";
 import { SprintsTab } from "../../Management/Components/SprintsTab.tsx";
+import { ProjectAccessTab } from "../../Permissions/ProjectAccess/Components/ProjectAccessTab.tsx";
 
 export const ProjectPage = () => {
 
     const { projectId } = useParams<{ projectId: string }>();
+    const normalizedProjectId = String(projectId ?? '');
 
-    const { data, isLoading, isError } = useProject(projectId);
+    const { data, isLoading, isError } = useProject(normalizedProjectId as string);
 
     if(isError)
     {
@@ -42,19 +43,19 @@ export const ProjectPage = () => {
                         <Tabs.Tab value="repositories">Repozytoria</Tabs.Tab>
                         <Tabs.Tab value="sprints">Sprinty i zadania</Tabs.Tab>
                         <Tabs.Tab value="postings">Ogłoszenia</Tabs.Tab>
-                        <Tabs.Tab value="users">Użytkownicy</Tabs.Tab>
+                        <Tabs.Tab value="access">Członkowie i role</Tabs.Tab>
                     </Tabs.List>
                     <Tabs.Panel value="repositories">
-                       <RepositoryTab projectId={projectId} />
+                       <RepositoryTab projectId={normalizedProjectId} />
                     </Tabs.Panel>
                     <Tabs.Panel value="sprints">
-                        <SprintsTab projectId={projectId} />
+                        <SprintsTab projectId={normalizedProjectId} />
                     </Tabs.Panel>
                     <Tabs.Panel value="postings">
-                        <PostingsTab projectId={projectId} />
+                        <PostingsTab projectId={normalizedProjectId} />
                     </Tabs.Panel>
-                    <Tabs.Panel value="users">
-                        <ProjectUsersTab projectId={projectId} />
+                    <Tabs.Panel value="access">
+                        <ProjectAccessTab projectId={normalizedProjectId} />
                     </Tabs.Panel>
                 </Tabs>
             </Stack>

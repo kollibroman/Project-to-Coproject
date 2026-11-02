@@ -4,6 +4,7 @@
   </Folder>
   <Folder Name="/Application/Features/">
     <Project Path="Application/ProjectCowork.Core.Features.Management/ProjectCowork.Core.Features.Management.csproj" />
+    <Project Path="Application/ProjectCowork.Core.Features.Permissions/ProjectCowork.Core.Features.Permissions.csproj" />
     <Project Path="Application/ProjectCowork.Core.Features.ProjectPosting/ProjectCowork.Core.Features.ProjectPosting.csproj" />
     <Project Path="Application/ProjectCowork.Core.Features.Repositories/ProjectCowork.Core.Features.Repositories.csproj" />
     <Project Path="Application/ProjectCowork.Core.Features.User/ProjectCowork.Core.Features.User.csproj" />

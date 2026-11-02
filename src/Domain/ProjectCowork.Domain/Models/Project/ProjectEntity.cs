@@ -20,6 +20,7 @@ public class ProjectEntity : BaseTrackedEntity
     public ICollection<SprintEntity> Sprints { get; set; } = [];
     public ICollection<TaskEntity> Tasks { get; set; } = [];
     public ICollection<ProjectPostingEntity> ProjectPostings { get; set; } = [];
-    public ICollection<UserEntity> Collaborators { get; set; } = [];
+    public ICollection<ProjectMemberEntity> ProjectMembers { get; set; } = [];
+    public ICollection<ProjectRoleEntity> ProjectRoles { get; set; } = [];
     public ICollection<RepositoryEntity> Repositories { get; set; } = [];
 }

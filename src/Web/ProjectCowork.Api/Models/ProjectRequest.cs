@@ -19,4 +19,7 @@ public record InviteUserRequest
 {
     public required Guid ProjectId { get; init; }
     public required string Email { get; init; }
+
+    /// <summary>Rola w projekcie. Null oznacza rolę domyślną projektu.</summary>
+    public Guid? RoleId { get; init; }
 }

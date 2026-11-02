@@ -15,8 +15,8 @@ internal class ProjectEntityConfiguration : IEntityTypeConfiguration<ProjectEnti
             .HasForeignKey(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
         
-        builder.HasMany(x => x.Collaborators)
-            .WithMany(x => x.AssignedProjects)
-            .UsingEntity(j => j.ToTable("ProjectCollaborators"));
+        // builder.HasMany(x => x.Collaborators)
+        //     .WithMany(x => x.AssignedProjects)
+        //     .UsingEntity(j => j.ToTable("ProjectCollaborators"));
     }
 }

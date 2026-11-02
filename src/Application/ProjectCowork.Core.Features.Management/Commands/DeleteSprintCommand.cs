@@ -1,7 +1,9 @@
 using DispatchR;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
@@ -17,11 +19,13 @@ internal class DeleteSprintCommandHandler : IRequestHandler<DeleteSprintCommand,
 {
     private readonly ProjectCoworkDbContext _dbContext;
     private readonly IMediator _mediator;
+    private readonly IPermissionService _permissionService;
 
-    public DeleteSprintCommandHandler(ProjectCoworkDbContext dbContext, IMediator mediator)
+    public DeleteSprintCommandHandler(ProjectCoworkDbContext dbContext, IMediator mediator, IPermissionService permissionService)
     {
         _dbContext = dbContext;
         _mediator = mediator;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(DeleteSprintCommand request, CancellationToken ct)
@@ -33,6 +37,8 @@ internal class DeleteSprintCommandHandler : IRequestHandler<DeleteSprintCommand,
         {
             throw new EntityNotFoundException($"Sprint {request.SprintId} does not exist");
         }
+
+        await _permissionService.EnsureProjectPermissionAsync(sprint.ProjectId, ResourceType.Management, ActionType.Delete, ct);
 
         var aggregate = new SprintAggregate(sprint);
 

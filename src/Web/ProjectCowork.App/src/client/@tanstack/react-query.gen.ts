@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { deleteApiProjectsByProjectId, deleteApiRepositoryByRepositoryId, deleteApiSprintsBySprintId, deleteApiTasksByTaskId, getApiGitByProjectIdByNameGitByPath, getApiPostingsActive, getApiPostingsByProjectId, getApiPostingsPostingByProjectPostingId, getApiProjects, getApiProjectsByProjectId, getApiProjectsDiscover, getApiRepositoryByRepositoryId, getApiRepositoryProjectByProjectId, getApiSprintsBySprintId, getApiSprintsBySprintIdTasks, getApiSprintsProjectByProjectId, getApiTasksByTaskId, getApiTasksProjectByProjectId, type Options, postApiAuthLogin, postApiAuthLogout, postApiAuthRegisterBusiness, postApiAuthRegisterUser, postApiAuthTokenRefresh, postApiGitByProjectIdByNameGitByPath, postApiGitRepositoryCreate, postApiPostingsPostingAdd, postApiPostingsPostingApply, postApiPostingsPostingByProjectPostingIdApplications, postApiProjects, postApiProjectsByProjectIdEdit, postApiProjectsByProjectIdInvite, postApiSprints, postApiTasks, putApiPostingsPostingUpdate, putApiSprintsBySprintId, putApiTasksByTaskId } from '../sdk.gen';
-import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdResponse, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponse, DeleteApiSprintsBySprintIdData, DeleteApiSprintsBySprintIdResponse, DeleteApiTasksByTaskIdData, DeleteApiTasksByTaskIdResponse, GetApiGitByProjectIdByNameGitByPathData, GetApiPostingsActiveData, GetApiPostingsActiveResponse, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponse, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponse, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdResponse, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponse, GetApiProjectsResponse, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponse, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponse, GetApiSprintsBySprintIdData, GetApiSprintsBySprintIdResponse, GetApiSprintsBySprintIdTasksData, GetApiSprintsBySprintIdTasksResponse, GetApiSprintsProjectByProjectIdData, GetApiSprintsProjectByProjectIdResponse, GetApiTasksByTaskIdData, GetApiTasksByTaskIdResponse, GetApiTasksProjectByProjectIdData, GetApiTasksProjectByProjectIdResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutResponse, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponse, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponse, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponse, PostApiGitByProjectIdByNameGitByPathData, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponse, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponse, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponse, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponse, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponse, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponse, PostApiProjectsData, PostApiSprintsData, PostApiTasksData, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponse, PutApiSprintsBySprintIdData, PutApiSprintsBySprintIdResponse, PutApiTasksByTaskIdData, PutApiTasksByTaskIdResponse } from '../types.gen';
+import { deleteApiProjectsByProjectId, deleteApiProjectsByProjectIdMembersByUserId, deleteApiProjectsByProjectIdRolesByRoleId, deleteApiRepositoryByRepositoryId, deleteApiSprintsBySprintId, deleteApiTasksByTaskId, getApiGitByProjectIdByNameGitByPath, getApiPermissions, getApiPostingsActive, getApiPostingsByProjectId, getApiPostingsPostingByProjectPostingId, getApiProjects, getApiProjectsByProjectId, getApiProjectsByProjectIdMembers, getApiProjectsByProjectIdRoles, getApiProjectsDiscover, getApiRepositoryByRepositoryId, getApiRepositoryProjectByProjectId, getApiSprintsBySprintId, getApiSprintsBySprintIdTasks, getApiSprintsProjectByProjectId, getApiTasksByTaskId, getApiTasksProjectByProjectId, type Options, postApiAuthLogin, postApiAuthLogout, postApiAuthRegisterBusiness, postApiAuthRegisterUser, postApiAuthTokenRefresh, postApiGitByProjectIdByNameGitByPath, postApiGitRepositoryCreate, postApiPostingsPostingAdd, postApiPostingsPostingApply, postApiPostingsPostingByProjectPostingIdApplications, postApiProjects, postApiProjectsByProjectIdEdit, postApiProjectsByProjectIdInvite, postApiProjectsByProjectIdRoles, postApiSprints, postApiTasks, putApiPostingsPostingUpdate, putApiProjectsByProjectIdMembersByUserId, putApiProjectsByProjectIdRolesByRoleId, putApiSprintsBySprintId, putApiTasksByTaskId } from '../sdk.gen';
+import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdMembersByUserIdData, DeleteApiProjectsByProjectIdMembersByUserIdResponse, DeleteApiProjectsByProjectIdResponse, DeleteApiProjectsByProjectIdRolesByRoleIdData, DeleteApiProjectsByProjectIdRolesByRoleIdResponse, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponse, DeleteApiSprintsBySprintIdData, DeleteApiSprintsBySprintIdResponse, DeleteApiTasksByTaskIdData, DeleteApiTasksByTaskIdResponse, GetApiGitByProjectIdByNameGitByPathData, GetApiPermissionsData, GetApiPermissionsResponse, GetApiPostingsActiveData, GetApiPostingsActiveResponse, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponse, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponse, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdMembersData, GetApiProjectsByProjectIdMembersResponse, GetApiProjectsByProjectIdResponse, GetApiProjectsByProjectIdRolesData, GetApiProjectsByProjectIdRolesResponse, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponse, GetApiProjectsResponse, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponse, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponse, GetApiSprintsBySprintIdData, GetApiSprintsBySprintIdResponse, GetApiSprintsBySprintIdTasksData, GetApiSprintsBySprintIdTasksResponse, GetApiSprintsProjectByProjectIdData, GetApiSprintsProjectByProjectIdResponse, GetApiTasksByTaskIdData, GetApiTasksByTaskIdResponse, GetApiTasksProjectByProjectIdData, GetApiTasksProjectByProjectIdResponse, PostApiAuthLoginData, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutResponse, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponse, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponse, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponse, PostApiGitByProjectIdByNameGitByPathData, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponse, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponse, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponse, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponse, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponse, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponse, PostApiProjectsByProjectIdRolesData, PostApiProjectsData, PostApiSprintsData, PostApiTasksData, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponse, PutApiProjectsByProjectIdMembersByUserIdData, PutApiProjectsByProjectIdMembersByUserIdResponse, PutApiProjectsByProjectIdRolesByRoleIdData, PutApiProjectsByProjectIdRolesByRoleIdResponse, PutApiSprintsBySprintIdData, PutApiSprintsBySprintIdResponse, PutApiTasksByTaskIdData, PutApiTasksByTaskIdResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -547,6 +547,121 @@ export const postApiTasksMutation = (options?: Partial<Options<PostApiTasksData>
     const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiTasksData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await postApiTasks({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getApiPermissionsQueryKey = (options?: Options<GetApiPermissionsData>) => createQueryKey('getApiPermissions', options);
+
+export const getApiPermissionsOptions = (options?: Options<GetApiPermissionsData>) => queryOptions<GetApiPermissionsResponse, DefaultError, GetApiPermissionsResponse, ReturnType<typeof getApiPermissionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiPermissions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiPermissionsQueryKey(options)
+});
+
+export const getApiProjectsByProjectIdRolesQueryKey = (options: Options<GetApiProjectsByProjectIdRolesData>) => createQueryKey('getApiProjectsByProjectIdRoles', options);
+
+export const getApiProjectsByProjectIdRolesOptions = (options: Options<GetApiProjectsByProjectIdRolesData>) => queryOptions<GetApiProjectsByProjectIdRolesResponse, DefaultError, GetApiProjectsByProjectIdRolesResponse, ReturnType<typeof getApiProjectsByProjectIdRolesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiProjectsByProjectIdRoles({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiProjectsByProjectIdRolesQueryKey(options)
+});
+
+export const postApiProjectsByProjectIdRolesMutation = (options?: Partial<Options<PostApiProjectsByProjectIdRolesData>>): UseMutationOptions<unknown, DefaultError, Options<PostApiProjectsByProjectIdRolesData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiProjectsByProjectIdRolesData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postApiProjectsByProjectIdRoles({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const deleteApiProjectsByProjectIdRolesByRoleIdMutation = (options?: Partial<Options<DeleteApiProjectsByProjectIdRolesByRoleIdData>>): UseMutationOptions<DeleteApiProjectsByProjectIdRolesByRoleIdResponse, DefaultError, Options<DeleteApiProjectsByProjectIdRolesByRoleIdData>> => {
+    const mutationOptions: UseMutationOptions<DeleteApiProjectsByProjectIdRolesByRoleIdResponse, DefaultError, Options<DeleteApiProjectsByProjectIdRolesByRoleIdData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await deleteApiProjectsByProjectIdRolesByRoleId({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const putApiProjectsByProjectIdRolesByRoleIdMutation = (options?: Partial<Options<PutApiProjectsByProjectIdRolesByRoleIdData>>): UseMutationOptions<PutApiProjectsByProjectIdRolesByRoleIdResponse, DefaultError, Options<PutApiProjectsByProjectIdRolesByRoleIdData>> => {
+    const mutationOptions: UseMutationOptions<PutApiProjectsByProjectIdRolesByRoleIdResponse, DefaultError, Options<PutApiProjectsByProjectIdRolesByRoleIdData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await putApiProjectsByProjectIdRolesByRoleId({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getApiProjectsByProjectIdMembersQueryKey = (options: Options<GetApiProjectsByProjectIdMembersData>) => createQueryKey('getApiProjectsByProjectIdMembers', options);
+
+export const getApiProjectsByProjectIdMembersOptions = (options: Options<GetApiProjectsByProjectIdMembersData>) => queryOptions<GetApiProjectsByProjectIdMembersResponse, DefaultError, GetApiProjectsByProjectIdMembersResponse, ReturnType<typeof getApiProjectsByProjectIdMembersQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getApiProjectsByProjectIdMembers({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getApiProjectsByProjectIdMembersQueryKey(options)
+});
+
+export const deleteApiProjectsByProjectIdMembersByUserIdMutation = (options?: Partial<Options<DeleteApiProjectsByProjectIdMembersByUserIdData>>): UseMutationOptions<DeleteApiProjectsByProjectIdMembersByUserIdResponse, DefaultError, Options<DeleteApiProjectsByProjectIdMembersByUserIdData>> => {
+    const mutationOptions: UseMutationOptions<DeleteApiProjectsByProjectIdMembersByUserIdResponse, DefaultError, Options<DeleteApiProjectsByProjectIdMembersByUserIdData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await deleteApiProjectsByProjectIdMembersByUserId({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const putApiProjectsByProjectIdMembersByUserIdMutation = (options?: Partial<Options<PutApiProjectsByProjectIdMembersByUserIdData>>): UseMutationOptions<PutApiProjectsByProjectIdMembersByUserIdResponse, DefaultError, Options<PutApiProjectsByProjectIdMembersByUserIdData>> => {
+    const mutationOptions: UseMutationOptions<PutApiProjectsByProjectIdMembersByUserIdResponse, DefaultError, Options<PutApiProjectsByProjectIdMembersByUserIdData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await putApiProjectsByProjectIdMembersByUserId({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

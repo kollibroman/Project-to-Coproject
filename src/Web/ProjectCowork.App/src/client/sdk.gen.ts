@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdResponses, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponses, DeleteApiSprintsBySprintIdData, DeleteApiSprintsBySprintIdResponses, DeleteApiTasksByTaskIdData, DeleteApiTasksByTaskIdResponses, GetApiGitByProjectIdByNameGitByPathData, GetApiGitByProjectIdByNameGitByPathResponses, GetApiPostingsActiveData, GetApiPostingsActiveResponses, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponses, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponses, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdResponses, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponses, GetApiProjectsResponses, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponses, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponses, GetApiSprintsBySprintIdData, GetApiSprintsBySprintIdResponses, GetApiSprintsBySprintIdTasksData, GetApiSprintsBySprintIdTasksResponses, GetApiSprintsProjectByProjectIdData, GetApiSprintsProjectByProjectIdResponses, GetApiTasksByTaskIdData, GetApiTasksByTaskIdResponses, GetApiTasksProjectByProjectIdData, GetApiTasksProjectByProjectIdResponses, PostApiAuthLoginData, PostApiAuthLoginResponses, PostApiAuthLogoutData, PostApiAuthLogoutResponses, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponses, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponses, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponses, PostApiGitByProjectIdByNameGitByPathData, PostApiGitByProjectIdByNameGitByPathResponses, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponses, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponses, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponses, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponses, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponses, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponses, PostApiProjectsData, PostApiProjectsResponses, PostApiSprintsData, PostApiSprintsResponses, PostApiTasksData, PostApiTasksResponses, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponses, PutApiSprintsBySprintIdData, PutApiSprintsBySprintIdResponses, PutApiTasksByTaskIdData, PutApiTasksByTaskIdResponses } from './types.gen';
+import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdMembersByUserIdData, DeleteApiProjectsByProjectIdMembersByUserIdResponses, DeleteApiProjectsByProjectIdResponses, DeleteApiProjectsByProjectIdRolesByRoleIdData, DeleteApiProjectsByProjectIdRolesByRoleIdResponses, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponses, DeleteApiSprintsBySprintIdData, DeleteApiSprintsBySprintIdResponses, DeleteApiTasksByTaskIdData, DeleteApiTasksByTaskIdResponses, GetApiGitByProjectIdByNameGitByPathData, GetApiGitByProjectIdByNameGitByPathResponses, GetApiPermissionsData, GetApiPermissionsResponses, GetApiPostingsActiveData, GetApiPostingsActiveResponses, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponses, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponses, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdMembersData, GetApiProjectsByProjectIdMembersResponses, GetApiProjectsByProjectIdResponses, GetApiProjectsByProjectIdRolesData, GetApiProjectsByProjectIdRolesResponses, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponses, GetApiProjectsResponses, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponses, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponses, GetApiSprintsBySprintIdData, GetApiSprintsBySprintIdResponses, GetApiSprintsBySprintIdTasksData, GetApiSprintsBySprintIdTasksResponses, GetApiSprintsProjectByProjectIdData, GetApiSprintsProjectByProjectIdResponses, GetApiTasksByTaskIdData, GetApiTasksByTaskIdResponses, GetApiTasksProjectByProjectIdData, GetApiTasksProjectByProjectIdResponses, PostApiAuthLoginData, PostApiAuthLoginResponses, PostApiAuthLogoutData, PostApiAuthLogoutResponses, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponses, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponses, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponses, PostApiGitByProjectIdByNameGitByPathData, PostApiGitByProjectIdByNameGitByPathResponses, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponses, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponses, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponses, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponses, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponses, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponses, PostApiProjectsByProjectIdRolesData, PostApiProjectsByProjectIdRolesResponses, PostApiProjectsData, PostApiProjectsResponses, PostApiSprintsData, PostApiSprintsResponses, PostApiTasksData, PostApiTasksResponses, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponses, PutApiProjectsByProjectIdMembersByUserIdData, PutApiProjectsByProjectIdMembersByUserIdResponses, PutApiProjectsByProjectIdRolesByRoleIdData, PutApiProjectsByProjectIdRolesByRoleIdResponses, PutApiSprintsBySprintIdData, PutApiSprintsBySprintIdResponses, PutApiTasksByTaskIdData, PutApiTasksByTaskIdResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -283,6 +283,66 @@ export const putApiTasksByTaskId = <ThrowOnError extends boolean = false>(option
 export const postApiTasks = <ThrowOnError extends boolean = false>(options: Options<PostApiTasksData, ThrowOnError>): RequestResult<PostApiTasksResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiTasksResponses, unknown, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/api/tasks',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiPermissions = <ThrowOnError extends boolean = false>(options?: Options<GetApiPermissionsData, ThrowOnError>): RequestResult<GetApiPermissionsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetApiPermissionsResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/permissions',
+    ...options
+});
+
+export const getApiProjectsByProjectIdRoles = <ThrowOnError extends boolean = false>(options: Options<GetApiProjectsByProjectIdRolesData, ThrowOnError>): RequestResult<GetApiProjectsByProjectIdRolesResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiProjectsByProjectIdRolesResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/roles',
+    ...options
+});
+
+export const postApiProjectsByProjectIdRoles = <ThrowOnError extends boolean = false>(options: Options<PostApiProjectsByProjectIdRolesData, ThrowOnError>): RequestResult<PostApiProjectsByProjectIdRolesResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiProjectsByProjectIdRolesResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/roles',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const deleteApiProjectsByProjectIdRolesByRoleId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiProjectsByProjectIdRolesByRoleIdData, ThrowOnError>): RequestResult<DeleteApiProjectsByProjectIdRolesByRoleIdResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteApiProjectsByProjectIdRolesByRoleIdResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/roles/{roleId}',
+    ...options
+});
+
+export const putApiProjectsByProjectIdRolesByRoleId = <ThrowOnError extends boolean = false>(options: Options<PutApiProjectsByProjectIdRolesByRoleIdData, ThrowOnError>): RequestResult<PutApiProjectsByProjectIdRolesByRoleIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiProjectsByProjectIdRolesByRoleIdResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/roles/{roleId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiProjectsByProjectIdMembers = <ThrowOnError extends boolean = false>(options: Options<GetApiProjectsByProjectIdMembersData, ThrowOnError>): RequestResult<GetApiProjectsByProjectIdMembersResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiProjectsByProjectIdMembersResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/members',
+    ...options
+});
+
+export const deleteApiProjectsByProjectIdMembersByUserId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiProjectsByProjectIdMembersByUserIdData, ThrowOnError>): RequestResult<DeleteApiProjectsByProjectIdMembersByUserIdResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteApiProjectsByProjectIdMembersByUserIdResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/members/{userId}',
+    ...options
+});
+
+export const putApiProjectsByProjectIdMembersByUserId = <ThrowOnError extends boolean = false>(options: Options<PutApiProjectsByProjectIdMembersByUserIdData, ThrowOnError>): RequestResult<PutApiProjectsByProjectIdMembersByUserIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiProjectsByProjectIdMembersByUserIdResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/projects/{projectId}/members/{userId}',
     ...options,
     headers: {
         'Content-Type': 'application/json',

@@ -44,7 +44,7 @@ export const DiscoverPage = () => {
                                 size="lg"
                                 radius="sm"
                                 component={Link}
-                                to={`/project/${project.id}`}
+                                to={`/discover/project/${project.id}`}
                             >
                                 <ArrowRightIcon style={{ width: '70%', height: '70%' }} />
                             </ActionIcon>
