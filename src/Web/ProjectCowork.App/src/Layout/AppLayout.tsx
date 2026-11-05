@@ -20,7 +20,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: 'Pulpit', path: '/' },
   { label: 'Projekty', path: '/projects' },
-  { label: 'Ustawienia', path: '/settings' },
+  { label: 'Konto', path: '/account' },
 ];
 
 export function AppLayout() {

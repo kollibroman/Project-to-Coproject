@@ -6,10 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectCowork.Api.Extensions;
 using ProjectCowork.Api.Utils;
 using ProjectCowork.Core;
-using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Infrastructure;
-using ProjectCowork.Infrastructure.Authorization.Models;
 using ProjectCowork.Persistence;
+using ProjectCowork.Persistence.SeedData;
 using Scalar.AspNetCore;
 using Serilog;
 

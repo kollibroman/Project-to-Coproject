@@ -43,7 +43,8 @@ internal class GetTasksFromProjectQueryHandler : IStreamRequestHandler<GetTasksF
                 Priority = x.Priority,
                 FinishedDate = x.FinishedDate,
                 SprintId = x.SprintId,
-                AssignedUserId = x.AssignedUserId
+                AssignedUserId = x.AssignedUserId,
+                FriendlyId = x.FriendlyId
             })
             .AsAsyncEnumerable();
 

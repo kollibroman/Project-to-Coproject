@@ -605,6 +605,12 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("GithubFineGrainedPat")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GithubUsername")
+                        .HasColumnType("text");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
@@ -892,11 +898,6 @@ namespace ProjectCowork.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Management.SprintEntity", b =>

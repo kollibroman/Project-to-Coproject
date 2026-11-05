@@ -29,6 +29,18 @@ export {
   useDeleteRepository,
 } from './useRepositories';
 export {
+  useGithubStatus,
+  useConnectGithub,
+  useGithubRepositories,
+  useImportGithubRepository,
+} from './useGithub';
+export {
+  useRepositoryBranches,
+  useRepositoryTree,
+  useRepositoryFile,
+  useRepositoryCommits,
+} from './useRepositoryBrowser';
+export {
   useSprints,
   useCreateSprint,
   useEditSprint,

@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\ProjectCowork.Domain\ProjectCowork.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\ProjectCowork.Core.Features.Repositories\ProjectCowork.Core.Features.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@ using Bogus;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Models.Permissions;
 
-namespace ProjectCowork.Persistence;
+namespace ProjectCowork.Persistence.SeedData;
 
 public static class PermissionSeeder
 {

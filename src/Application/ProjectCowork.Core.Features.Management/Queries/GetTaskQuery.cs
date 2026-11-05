@@ -40,7 +40,8 @@ internal class GetTaskQueryHandler : IRequestHandler<GetTaskQuery, Task<TaskDto>
                     Priority = x.Priority,
                     FinishedDate = x.FinishedDate,
                     SprintId = x.SprintId,
-                    AssignedUserId = x.AssignedUserId
+                    AssignedUserId = x.AssignedUserId,
+                    FriendlyId = x.FriendlyId
                 }
             })
             .FirstOrDefaultAsync(ct);

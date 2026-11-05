@@ -39,8 +39,26 @@ export type ApplyForProjectRequest = {
     attachments: Array<IFormFile>;
 };
 
+export type BranchDto = {
+    name: string;
+    isDefault: boolean;
+};
+
 export type ChangeMemberRoleRequest = {
     roleId: string;
+};
+
+export type CommitDto = {
+    sha: string;
+    message: string;
+    authorName: string;
+    authorEmail?: null | string;
+    date: string;
+};
+
+export type CommitsPageDto = {
+    items: Array<CommitDto>;
+    hasMore: boolean;
 };
 
 export type CreateProjectRequest = {
@@ -74,7 +92,30 @@ export type EditTaskRequest = {
     assignedUserId?: null | string;
 };
 
+export type FileContentDto = {
+    path: string;
+    content?: null | string;
+    isBinary: boolean;
+    size: number | string;
+};
+
+export type GithubAuthorizePatRequest = {
+    login: string;
+    pat: string;
+};
+
+export type GithubConnectionStatusDto = {
+    isConnected: boolean;
+    githubUsername?: null | string;
+};
+
 export type IFormFile = Blob | File;
+
+export type ImportGithubRepositoryRequest = {
+    repositoryName: string;
+    projectId: string;
+    cloneUrl: string;
+};
 
 export type InviteUserRequest = {
     projectId: string;
@@ -163,6 +204,7 @@ export type SprintDto = {
 export type TaskDto = {
     id: string;
     name: string;
+    friendlyId: number | string;
     description: string;
     status: TaskStatus;
     priority: TaskPriority;
@@ -175,11 +217,26 @@ export type TaskPriority = number;
 
 export type TaskStatus = number;
 
+export type TreeEntryDto = {
+    name: string;
+    path: string;
+    type: TreeEntryType;
+    size?: null | number | string;
+};
+
+export type TreeEntryType = 'folder' | 'file';
+
 export type UpdatePostingRequest = {
     projectPostingId: string;
     jobDescription: string;
     projectDescription: string;
     isActive: boolean;
+};
+
+export type UserRepositoryDto = {
+    name: string;
+    cloneUrl: string;
+    ownerName: string;
 };
 
 export type GetApiProjectsData = {
@@ -606,6 +663,88 @@ export type GetApiRepositoryByRepositoryIdResponses = {
 
 export type GetApiRepositoryByRepositoryIdResponse = GetApiRepositoryByRepositoryIdResponses[keyof GetApiRepositoryByRepositoryIdResponses];
 
+export type GetApiRepositoryByRepositoryIdBranchesData = {
+    body?: never;
+    path: {
+        repositoryId: string;
+    };
+    query?: never;
+    url: '/api/repository/{repositoryId}/branches';
+};
+
+export type GetApiRepositoryByRepositoryIdBranchesResponses = {
+    /**
+     * OK
+     */
+    200: Array<BranchDto>;
+};
+
+export type GetApiRepositoryByRepositoryIdBranchesResponse = GetApiRepositoryByRepositoryIdBranchesResponses[keyof GetApiRepositoryByRepositoryIdBranchesResponses];
+
+export type GetApiRepositoryByRepositoryIdTreeData = {
+    body?: never;
+    path: {
+        repositoryId: string;
+    };
+    query: {
+        branch: string;
+        path?: string;
+    };
+    url: '/api/repository/{repositoryId}/tree';
+};
+
+export type GetApiRepositoryByRepositoryIdTreeResponses = {
+    /**
+     * OK
+     */
+    200: Array<TreeEntryDto>;
+};
+
+export type GetApiRepositoryByRepositoryIdTreeResponse = GetApiRepositoryByRepositoryIdTreeResponses[keyof GetApiRepositoryByRepositoryIdTreeResponses];
+
+export type GetApiRepositoryByRepositoryIdFileData = {
+    body?: never;
+    path: {
+        repositoryId: string;
+    };
+    query: {
+        branch: string;
+        path: string;
+    };
+    url: '/api/repository/{repositoryId}/file';
+};
+
+export type GetApiRepositoryByRepositoryIdFileResponses = {
+    /**
+     * OK
+     */
+    200: FileContentDto;
+};
+
+export type GetApiRepositoryByRepositoryIdFileResponse = GetApiRepositoryByRepositoryIdFileResponses[keyof GetApiRepositoryByRepositoryIdFileResponses];
+
+export type GetApiRepositoryByRepositoryIdCommitsData = {
+    body?: never;
+    path: {
+        repositoryId: string;
+    };
+    query: {
+        branch: string;
+        page?: number | string;
+        pageSize?: number | string;
+    };
+    url: '/api/repository/{repositoryId}/commits';
+};
+
+export type GetApiRepositoryByRepositoryIdCommitsResponses = {
+    /**
+     * OK
+     */
+    200: CommitsPageDto;
+};
+
+export type GetApiRepositoryByRepositoryIdCommitsResponse = GetApiRepositoryByRepositoryIdCommitsResponses[keyof GetApiRepositoryByRepositoryIdCommitsResponses];
+
 export type GetApiSprintsProjectByProjectIdData = {
     body?: never;
     path: {
@@ -939,3 +1078,63 @@ export type PutApiProjectsByProjectIdMembersByUserIdResponses = {
 };
 
 export type PutApiProjectsByProjectIdMembersByUserIdResponse = PutApiProjectsByProjectIdMembersByUserIdResponses[keyof PutApiProjectsByProjectIdMembersByUserIdResponses];
+
+export type GetApiGithubStatusData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/github/status';
+};
+
+export type GetApiGithubStatusResponses = {
+    /**
+     * OK
+     */
+    200: GithubConnectionStatusDto;
+};
+
+export type GetApiGithubStatusResponse = GetApiGithubStatusResponses[keyof GetApiGithubStatusResponses];
+
+export type PostApiGithubAuthorizeData = {
+    body: GithubAuthorizePatRequest;
+    path?: never;
+    query?: never;
+    url: '/api/github/authorize';
+};
+
+export type PostApiGithubAuthorizeResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetApiGithubUserRepositoriesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/github/user/repositories';
+};
+
+export type GetApiGithubUserRepositoriesResponses = {
+    /**
+     * OK
+     */
+    200: Array<UserRepositoryDto>;
+};
+
+export type GetApiGithubUserRepositoriesResponse = GetApiGithubUserRepositoriesResponses[keyof GetApiGithubUserRepositoriesResponses];
+
+export type PostApiGithubRepositoryImportData = {
+    body: ImportGithubRepositoryRequest;
+    path?: never;
+    query?: never;
+    url: '/api/github/repository/import';
+};
+
+export type PostApiGithubRepositoryImportResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};

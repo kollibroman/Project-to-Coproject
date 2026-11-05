@@ -29,6 +29,8 @@ public class TaskAggregate
             ? project.LastTaskFriendlyId + 1 
             : project.LastTaskFriendlyId;
         
+        project.LastTaskFriendlyId = friendlyId;
+        
         return new TaskEntity
         {
             Name = name,

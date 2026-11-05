@@ -15,8 +15,8 @@ export const ProjectsPage = () => {
       <Group justify="space-between">
         <Title order={1}>Projekty</Title>
         <Group>
-          <Button variant="default" component={Link} to="/settings">
-            Ustawienia
+          <Button variant="default" component={Link} to="/account">
+            Konto
           </Button>
           <Button onClick={open}>Nowy projekt</Button>
         </Group>

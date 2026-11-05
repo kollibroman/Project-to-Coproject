@@ -7,7 +7,7 @@ namespace ProjectCowork.Infrastructure.Integrations.Git.Internal;
 /// </summary>
 internal static partial class GitRepositoryPaths
 {
-    public static string ReposRoot => Path.Combine(Directory.GetCurrentDirectory(), "Repos");
+    private static string ReposRoot => Path.Combine(Directory.GetCurrentDirectory(), "Repos");
 
     public static string GetProjectRoot(Guid projectId) =>
         Path.Combine(ReposRoot, projectId.ToString());
@@ -15,7 +15,9 @@ internal static partial class GitRepositoryPaths
     public static string GetRepositoryPath(Guid projectId, string repositoryName)
     {
         if (!IsValidName(repositoryName))
+        {
             throw new ArgumentException($"Invalid repository name '{repositoryName}'.", nameof(repositoryName));
+        }
 
         return Path.Combine(GetProjectRoot(projectId), $"{repositoryName}.git");
     }

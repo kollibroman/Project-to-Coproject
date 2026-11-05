@@ -1,10 +1,10 @@
-import {createBrowserRouter, createRoutesFromElements, Route} from "react-router";
+import {createBrowserRouter, createRoutesFromElements, Navigate, Route} from "react-router";
 import {GuestNoAuthRedirect} from "../Utils/GuestNoAuthRedirect.tsx";
 import {RequireAuthGuard} from "../Utils/RequireAuthGuard.tsx";
 import {AuthPage} from "../Features/Auth/Pages/AuthPage.tsx";
 import {AppLayout} from "../Layout/AppLayout.tsx";
 import {ProjectsPage} from "../Features/Projects/Pages/ProjectsPage.tsx";
-import {SettingsPage} from "../Features/Settings/Pages/SettingsPage.tsx";
+import {AccountPage} from "../Features/Account/Pages/AccountPage.tsx";
 import Home from "../App.tsx";
 import {ProjectPage} from "../Features/Projects/Pages/ProjectPage.tsx";
 import {ProjectPreviewPage} from "../Features/Projects/Pages/ProjectPreviewPage.tsx";
@@ -27,7 +27,8 @@ export const Routings = createBrowserRouter(
                     <Route path="/postings" element={<PostingsPage />}/>
                     <Route path={"/project/:projectId"} element={<ProjectPage />}/>
                     <Route path={"/repository/:repositoryId"} element={<RepositoryPage />}/>
-                    <Route path="/settings" element={<SettingsPage />}/>
+                    <Route path="/account" element={<AccountPage />}/>
+                    <Route path="/settings" element={<Navigate to="/account" replace />}/>
                 </Route>
             </Route>
         </Route>,

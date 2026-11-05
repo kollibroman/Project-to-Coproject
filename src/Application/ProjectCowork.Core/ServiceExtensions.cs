@@ -2,6 +2,7 @@ using System.Reflection;
 using DispatchR.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectCowork.Core.Features.Repositories;
 
 namespace ProjectCowork.Core;
 
@@ -24,7 +25,9 @@ public static class ServiceExtensions
                 options.Assemblies.Add(Assembly.Load(assemblyName));
             }
         });
-    
+
+        services.AddRepositoriesFeature();
+        
         return services;
     }
 }

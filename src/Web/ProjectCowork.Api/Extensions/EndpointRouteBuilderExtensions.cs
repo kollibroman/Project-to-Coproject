@@ -14,6 +14,7 @@ public static class EndpointRouteBuilderExtensions
         endpoints.MapSprints();
         endpoints.MapTasks();
         endpoints.MapPermissions();
+        endpoints.MapGithubControllerRoutes();
         
         return endpoints;
     }

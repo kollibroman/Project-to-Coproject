@@ -6,6 +6,9 @@ namespace ProjectCowork.Domain.Models.Users;
 
 public class UserEntity : IdentityUser<Guid>
 {
+    public string? GithubUsername { get; set; }
+    public string? GithubFineGrainedPat { get; set; }
+    
     public RefreshTokenEntity RefreshToken { get; set; }
     
     public ICollection<ProjectEntity> OwnedProjects { get; set; } = [];

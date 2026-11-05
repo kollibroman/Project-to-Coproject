@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdMembersByUserIdData, DeleteApiProjectsByProjectIdMembersByUserIdResponses, DeleteApiProjectsByProjectIdResponses, DeleteApiProjectsByProjectIdRolesByRoleIdData, DeleteApiProjectsByProjectIdRolesByRoleIdResponses, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponses, DeleteApiSprintsBySprintIdData, DeleteApiSprintsBySprintIdResponses, DeleteApiTasksByTaskIdData, DeleteApiTasksByTaskIdResponses, GetApiGitByProjectIdByNameGitByPathData, GetApiGitByProjectIdByNameGitByPathResponses, GetApiPermissionsData, GetApiPermissionsResponses, GetApiPostingsActiveData, GetApiPostingsActiveResponses, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponses, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponses, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdMembersData, GetApiProjectsByProjectIdMembersResponses, GetApiProjectsByProjectIdResponses, GetApiProjectsByProjectIdRolesData, GetApiProjectsByProjectIdRolesResponses, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponses, GetApiProjectsResponses, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdResponses, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponses, GetApiSprintsBySprintIdData, GetApiSprintsBySprintIdResponses, GetApiSprintsBySprintIdTasksData, GetApiSprintsBySprintIdTasksResponses, GetApiSprintsProjectByProjectIdData, GetApiSprintsProjectByProjectIdResponses, GetApiTasksByTaskIdData, GetApiTasksByTaskIdResponses, GetApiTasksProjectByProjectIdData, GetApiTasksProjectByProjectIdResponses, PostApiAuthLoginData, PostApiAuthLoginResponses, PostApiAuthLogoutData, PostApiAuthLogoutResponses, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponses, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponses, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponses, PostApiGitByProjectIdByNameGitByPathData, PostApiGitByProjectIdByNameGitByPathResponses, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponses, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponses, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponses, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponses, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponses, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponses, PostApiProjectsByProjectIdRolesData, PostApiProjectsByProjectIdRolesResponses, PostApiProjectsData, PostApiProjectsResponses, PostApiSprintsData, PostApiSprintsResponses, PostApiTasksData, PostApiTasksResponses, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponses, PutApiProjectsByProjectIdMembersByUserIdData, PutApiProjectsByProjectIdMembersByUserIdResponses, PutApiProjectsByProjectIdRolesByRoleIdData, PutApiProjectsByProjectIdRolesByRoleIdResponses, PutApiSprintsBySprintIdData, PutApiSprintsBySprintIdResponses, PutApiTasksByTaskIdData, PutApiTasksByTaskIdResponses } from './types.gen';
+import type { DeleteApiProjectsByProjectIdData, DeleteApiProjectsByProjectIdMembersByUserIdData, DeleteApiProjectsByProjectIdMembersByUserIdResponses, DeleteApiProjectsByProjectIdResponses, DeleteApiProjectsByProjectIdRolesByRoleIdData, DeleteApiProjectsByProjectIdRolesByRoleIdResponses, DeleteApiRepositoryByRepositoryIdData, DeleteApiRepositoryByRepositoryIdResponses, DeleteApiSprintsBySprintIdData, DeleteApiSprintsBySprintIdResponses, DeleteApiTasksByTaskIdData, DeleteApiTasksByTaskIdResponses, GetApiGitByProjectIdByNameGitByPathData, GetApiGitByProjectIdByNameGitByPathResponses, GetApiGithubStatusData, GetApiGithubStatusResponses, GetApiGithubUserRepositoriesData, GetApiGithubUserRepositoriesResponses, GetApiPermissionsData, GetApiPermissionsResponses, GetApiPostingsActiveData, GetApiPostingsActiveResponses, GetApiPostingsByProjectIdData, GetApiPostingsByProjectIdResponses, GetApiPostingsPostingByProjectPostingIdData, GetApiPostingsPostingByProjectPostingIdResponses, GetApiProjectsByProjectIdData, GetApiProjectsByProjectIdMembersData, GetApiProjectsByProjectIdMembersResponses, GetApiProjectsByProjectIdResponses, GetApiProjectsByProjectIdRolesData, GetApiProjectsByProjectIdRolesResponses, GetApiProjectsData, GetApiProjectsDiscoverData, GetApiProjectsDiscoverResponses, GetApiProjectsResponses, GetApiRepositoryByRepositoryIdBranchesData, GetApiRepositoryByRepositoryIdBranchesResponses, GetApiRepositoryByRepositoryIdCommitsData, GetApiRepositoryByRepositoryIdCommitsResponses, GetApiRepositoryByRepositoryIdData, GetApiRepositoryByRepositoryIdFileData, GetApiRepositoryByRepositoryIdFileResponses, GetApiRepositoryByRepositoryIdResponses, GetApiRepositoryByRepositoryIdTreeData, GetApiRepositoryByRepositoryIdTreeResponses, GetApiRepositoryProjectByProjectIdData, GetApiRepositoryProjectByProjectIdResponses, GetApiSprintsBySprintIdData, GetApiSprintsBySprintIdResponses, GetApiSprintsBySprintIdTasksData, GetApiSprintsBySprintIdTasksResponses, GetApiSprintsProjectByProjectIdData, GetApiSprintsProjectByProjectIdResponses, GetApiTasksByTaskIdData, GetApiTasksByTaskIdResponses, GetApiTasksProjectByProjectIdData, GetApiTasksProjectByProjectIdResponses, PostApiAuthLoginData, PostApiAuthLoginResponses, PostApiAuthLogoutData, PostApiAuthLogoutResponses, PostApiAuthRegisterBusinessData, PostApiAuthRegisterBusinessResponses, PostApiAuthRegisterUserData, PostApiAuthRegisterUserResponses, PostApiAuthTokenRefreshData, PostApiAuthTokenRefreshResponses, PostApiGitByProjectIdByNameGitByPathData, PostApiGitByProjectIdByNameGitByPathResponses, PostApiGithubAuthorizeData, PostApiGithubAuthorizeResponses, PostApiGithubRepositoryImportData, PostApiGithubRepositoryImportResponses, PostApiGitRepositoryCreateData, PostApiGitRepositoryCreateResponses, PostApiPostingsPostingAddData, PostApiPostingsPostingAddResponses, PostApiPostingsPostingApplyData, PostApiPostingsPostingApplyResponses, PostApiPostingsPostingByProjectPostingIdApplicationsData, PostApiPostingsPostingByProjectPostingIdApplicationsResponses, PostApiProjectsByProjectIdEditData, PostApiProjectsByProjectIdEditResponses, PostApiProjectsByProjectIdInviteData, PostApiProjectsByProjectIdInviteResponses, PostApiProjectsByProjectIdRolesData, PostApiProjectsByProjectIdRolesResponses, PostApiProjectsData, PostApiProjectsResponses, PostApiSprintsData, PostApiSprintsResponses, PostApiTasksData, PostApiTasksResponses, PutApiPostingsPostingUpdateData, PutApiPostingsPostingUpdateResponses, PutApiProjectsByProjectIdMembersByUserIdData, PutApiProjectsByProjectIdMembersByUserIdResponses, PutApiProjectsByProjectIdRolesByRoleIdData, PutApiProjectsByProjectIdRolesByRoleIdResponses, PutApiSprintsBySprintIdData, PutApiSprintsBySprintIdResponses, PutApiTasksByTaskIdData, PutApiTasksByTaskIdResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -208,6 +208,30 @@ export const getApiRepositoryByRepositoryId = <ThrowOnError extends boolean = fa
     ...options
 });
 
+export const getApiRepositoryByRepositoryIdBranches = <ThrowOnError extends boolean = false>(options: Options<GetApiRepositoryByRepositoryIdBranchesData, ThrowOnError>): RequestResult<GetApiRepositoryByRepositoryIdBranchesResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiRepositoryByRepositoryIdBranchesResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/repository/{repositoryId}/branches',
+    ...options
+});
+
+export const getApiRepositoryByRepositoryIdTree = <ThrowOnError extends boolean = false>(options: Options<GetApiRepositoryByRepositoryIdTreeData, ThrowOnError>): RequestResult<GetApiRepositoryByRepositoryIdTreeResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiRepositoryByRepositoryIdTreeResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/repository/{repositoryId}/tree',
+    ...options
+});
+
+export const getApiRepositoryByRepositoryIdFile = <ThrowOnError extends boolean = false>(options: Options<GetApiRepositoryByRepositoryIdFileData, ThrowOnError>): RequestResult<GetApiRepositoryByRepositoryIdFileResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiRepositoryByRepositoryIdFileResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/repository/{repositoryId}/file',
+    ...options
+});
+
+export const getApiRepositoryByRepositoryIdCommits = <ThrowOnError extends boolean = false>(options: Options<GetApiRepositoryByRepositoryIdCommitsData, ThrowOnError>): RequestResult<GetApiRepositoryByRepositoryIdCommitsResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiRepositoryByRepositoryIdCommitsResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/repository/{repositoryId}/commits',
+    ...options
+});
+
 export const getApiSprintsProjectByProjectId = <ThrowOnError extends boolean = false>(options: Options<GetApiSprintsProjectByProjectIdData, ThrowOnError>): RequestResult<GetApiSprintsProjectByProjectIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiSprintsProjectByProjectIdResponses, unknown, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/api/sprints/project/{projectId}',
@@ -343,6 +367,38 @@ export const deleteApiProjectsByProjectIdMembersByUserId = <ThrowOnError extends
 export const putApiProjectsByProjectIdMembersByUserId = <ThrowOnError extends boolean = false>(options: Options<PutApiProjectsByProjectIdMembersByUserIdData, ThrowOnError>): RequestResult<PutApiProjectsByProjectIdMembersByUserIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiProjectsByProjectIdMembersByUserIdResponses, unknown, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/api/projects/{projectId}/members/{userId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiGithubStatus = <ThrowOnError extends boolean = false>(options?: Options<GetApiGithubStatusData, ThrowOnError>): RequestResult<GetApiGithubStatusResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetApiGithubStatusResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/github/status',
+    ...options
+});
+
+export const postApiGithubAuthorize = <ThrowOnError extends boolean = false>(options: Options<PostApiGithubAuthorizeData, ThrowOnError>): RequestResult<PostApiGithubAuthorizeResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiGithubAuthorizeResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/github/authorize',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiGithubUserRepositories = <ThrowOnError extends boolean = false>(options?: Options<GetApiGithubUserRepositoriesData, ThrowOnError>): RequestResult<GetApiGithubUserRepositoriesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetApiGithubUserRepositoriesResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/github/user/repositories',
+    ...options
+});
+
+export const postApiGithubRepositoryImport = <ThrowOnError extends boolean = false>(options: Options<PostApiGithubRepositoryImportData, ThrowOnError>): RequestResult<PostApiGithubRepositoryImportResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiGithubRepositoryImportResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/api/github/repository/import',
     ...options,
     headers: {
         'Content-Type': 'application/json',
