@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   deleteApiSprintsBySprintIdMutation,
+  getApiSprintsBySprintIdOptions,
   getApiSprintsProjectByProjectIdOptions,
   getApiSprintsProjectByProjectIdQueryKey,
   postApiSprintsMutation,
@@ -11,6 +12,12 @@ export const useSprints = (projectId: string | undefined) =>
   useQuery({
     ...getApiSprintsProjectByProjectIdOptions({ path: { projectId: projectId ?? '' } }),
     enabled: Boolean(projectId),
+  });
+
+export const useSprint = (sprintId: string | undefined) =>
+  useQuery({
+    ...getApiSprintsBySprintIdOptions({ path: { sprintId: sprintId ?? '' } }),
+    enabled: Boolean(sprintId),
   });
 
 export const useCreateSprint = () => {

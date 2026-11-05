@@ -14,4 +14,5 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<ProjectEntity> OwnedProjects { get; set; } = [];
     public ICollection<ProjectMemberEntity> AssignedProjects { get; set; } = [];
     public ICollection<ProjectApplicationEntity> ProjectApplications { get; set; } = [];
+    public ICollection<ProjectInvitationEntity> ProjectInvitations { get; set; } = [];
 }

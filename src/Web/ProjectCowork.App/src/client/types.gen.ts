@@ -121,6 +121,7 @@ export type InviteUserRequest = {
     projectId: string;
     email: string;
     roleId?: null | string;
+    message?: null | string;
 };
 
 export type LoginRequest = {
@@ -139,6 +140,17 @@ export type ProjectApplicationDto = {
     description: string;
     userId: string;
     userEmail: null | string;
+};
+
+export type ProjectInvitationModel = {
+    id: string;
+    projectId: string;
+    projectName: string;
+    projectDescription: string;
+    invitedBy: string;
+    invitationContent: string;
+    roleName?: null | string;
+    createdAt: string;
 };
 
 export type ProjectMemberDto = {
@@ -356,6 +368,58 @@ export type PostApiProjectsByProjectIdInviteResponses = {
 };
 
 export type PostApiProjectsByProjectIdInviteResponse = PostApiProjectsByProjectIdInviteResponses[keyof PostApiProjectsByProjectIdInviteResponses];
+
+export type GetApiProjectsInvitationsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/projects/invitations';
+};
+
+export type GetApiProjectsInvitationsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ProjectInvitationModel>;
+};
+
+export type GetApiProjectsInvitationsResponse = GetApiProjectsInvitationsResponses[keyof GetApiProjectsInvitationsResponses];
+
+export type PostApiProjectsInvitationsByInvitationIdAcceptData = {
+    body?: never;
+    path: {
+        invitationId: string;
+    };
+    query?: never;
+    url: '/api/projects/invitations/{invitationId}/accept';
+};
+
+export type PostApiProjectsInvitationsByInvitationIdAcceptResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type PostApiProjectsInvitationsByInvitationIdAcceptResponse = PostApiProjectsInvitationsByInvitationIdAcceptResponses[keyof PostApiProjectsInvitationsByInvitationIdAcceptResponses];
+
+export type PostApiProjectsInvitationsByInvitationIdDeclineData = {
+    body?: never;
+    path: {
+        invitationId: string;
+    };
+    query?: never;
+    url: '/api/projects/invitations/{invitationId}/decline';
+};
+
+export type PostApiProjectsInvitationsByInvitationIdDeclineResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type PostApiProjectsInvitationsByInvitationIdDeclineResponse = PostApiProjectsInvitationsByInvitationIdDeclineResponses[keyof PostApiProjectsInvitationsByInvitationIdDeclineResponses];
 
 export type PostApiAuthLoginData = {
     body: LoginRequest;

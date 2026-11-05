@@ -11,6 +11,7 @@ import {
 import { useAuth } from '../../../hooks';
 import { getEmailFromToken, getUserIdFromToken } from '../../../auth/claims.ts';
 import { GithubConnectionSection } from '../Components/GithubConnectionSection.tsx';
+import { InvitationsSection } from '../Components/InvitationsSection.tsx';
 
 const colorSchemeOptions: { label: string; value: MantineColorScheme }[] = [
     { label: 'Jasny', value: 'light' },
@@ -55,6 +56,8 @@ export const AccountPage = () => {
                     />
                 </Stack>
             </Paper>
+
+            <InvitationsSection />
 
             <GithubConnectionSection />
         </Stack>

@@ -1,6 +1,6 @@
 import {Skeleton, Stack, Tabs, Text, Title} from "@mantine/core";
 import {useProject} from "../../../hooks";
-import {Navigate, useParams} from "react-router";
+import {Navigate, useParams, useSearchParams} from "react-router";
 import { RepositoryTab } from "../Components/RepositoryTab.tsx";
 import { PostingsTab } from "../../Postings/Components/PostingsTab.tsx";
 import { SprintsTab } from "../../Management/Components/SprintsTab.tsx";
@@ -9,6 +9,7 @@ import { ProjectAccessTab } from "../../Permissions/ProjectAccess/Components/Pro
 export const ProjectPage = () => {
 
     const { projectId } = useParams<{ projectId: string }>();
+    const [searchParams, setSearchParams] = useSearchParams();
     const normalizedProjectId = String(projectId ?? '');
 
     const { data, isLoading, isError } = useProject(normalizedProjectId as string);
@@ -38,7 +39,10 @@ export const ProjectPage = () => {
             <Stack gap="md">
                 <Title>{data?.name}</Title>
                 <Text>{data?.description}</Text>
-                <Tabs defaultValue={"repositories"}>
+                <Tabs
+                    value={searchParams.get("tab") ?? "repositories"}
+                    onChange={(value) => setSearchParams(value && value !== "repositories" ? { tab: value } : {}, { replace: true })}
+                >
                     <Tabs.List>
                         <Tabs.Tab value="repositories">Repozytoria</Tabs.Tab>
                         <Tabs.Tab value="sprints">Sprinty i zadania</Tabs.Tab>

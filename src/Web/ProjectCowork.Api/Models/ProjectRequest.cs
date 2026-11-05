@@ -22,4 +22,7 @@ public record InviteUserRequest
 
     /// <summary>Rola w projekcie. Null oznacza rolę domyślną projektu.</summary>
     public Guid? RoleId { get; init; }
+
+    /// <summary>Opcjonalna wiadomość dla zapraszanego.</summary>
+    public string? Message { get; init; }
 }

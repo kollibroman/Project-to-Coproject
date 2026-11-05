@@ -449,6 +449,46 @@ namespace ProjectCowork.Persistence.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectInvitationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("InvitationContent")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("UserAccepted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectInvitations");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectMemberEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -840,6 +880,25 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectInvitationEntity", b =>
+                {
+                    b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
+                        .WithMany("ProjectInvitations")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectCowork.Domain.Models.Users.UserEntity", "User")
+                        .WithMany("ProjectInvitations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectMemberEntity", b =>
                 {
                     b.HasOne("ProjectCowork.Domain.Models.Project.ProjectEntity", "Project")
@@ -922,6 +981,8 @@ namespace ProjectCowork.Persistence.Migrations
 
             modelBuilder.Entity("ProjectCowork.Domain.Models.Project.ProjectEntity", b =>
                 {
+                    b.Navigation("ProjectInvitations");
+
                     b.Navigation("ProjectMembers");
 
                     b.Navigation("ProjectPostings");
@@ -942,6 +1003,8 @@ namespace ProjectCowork.Persistence.Migrations
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("ProjectApplications");
+
+                    b.Navigation("ProjectInvitations");
 
                     b.Navigation("RefreshToken")
                         .IsRequired();

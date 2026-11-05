@@ -6,8 +6,12 @@ import {
   getApiProjectsDiscoverOptions,
   getApiProjectsOptions,
   getApiProjectsQueryKey,
+  getApiProjectsInvitationsOptions,
+  getApiProjectsInvitationsQueryKey,
   postApiProjectsByProjectIdEditMutation,
   postApiProjectsByProjectIdInviteMutation,
+  postApiProjectsInvitationsByInvitationIdAcceptMutation,
+  postApiProjectsInvitationsByInvitationIdDeclineMutation,
   postApiProjectsMutation,
 } from '../client/@tanstack/react-query.gen';
 import type { Options } from '../client';
@@ -84,6 +88,38 @@ export const useDeleteProject = () => {
       void queryClient.invalidateQueries({
         queryKey: getApiProjectsQueryKey(),
       });
+    },
+  });
+};
+
+/**
+ * Oczekujące zaproszenia zalogowanego użytkownika. GET /api/projects/invitations
+ * Odświeżane co minutę, żeby dzwonek w nagłówku pokazał nowe zaproszenie bez przeładowania strony.
+ */
+export const useMyInvitations = () =>
+  useQuery({
+    ...getApiProjectsInvitationsOptions(),
+    refetchInterval: 60_000,
+  });
+
+/** Przyjęcie zaproszenia. Użytkownik staje się członkiem projektu, więc lista projektów też się zmienia. */
+export const useAcceptInvitation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...postApiProjectsInvitationsByInvitationIdAcceptMutation(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: getApiProjectsInvitationsQueryKey() });
+      void queryClient.invalidateQueries({ queryKey: getApiProjectsQueryKey() });
+    },
+  });
+};
+
+export const useDeclineInvitation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...postApiProjectsInvitationsByInvitationIdDeclineMutation(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: getApiProjectsInvitationsQueryKey() });
     },
   });
 };

@@ -11,6 +11,7 @@ import {ProjectPreviewPage} from "../Features/Projects/Pages/ProjectPreviewPage.
 import {DiscoverPage} from "../Features/Projects/Pages/DiscoverPage.tsx";
 import {PostingsPage} from "../Features/Postings/Pages/PostingsPage.tsx";
 import {RepositoryPage} from "../Features/Repositories/Pages/RepositoryPage.tsx";
+import {SprintPage} from "../Features/Management/Pages/SprintPage.tsx";
 
 export const Routings = createBrowserRouter(
     createRoutesFromElements(
@@ -26,6 +27,7 @@ export const Routings = createBrowserRouter(
                     <Route path="/discover/project/:projectId" element={<ProjectPreviewPage />}/>
                     <Route path="/postings" element={<PostingsPage />}/>
                     <Route path={"/project/:projectId"} element={<ProjectPage />}/>
+                    <Route path={"/project/:projectId/sprint/:sprintId"} element={<SprintPage />}/>
                     <Route path={"/repository/:repositoryId"} element={<RepositoryPage />}/>
                     <Route path="/account" element={<AccountPage />}/>
                     <Route path="/settings" element={<Navigate to="/account" replace />}/>

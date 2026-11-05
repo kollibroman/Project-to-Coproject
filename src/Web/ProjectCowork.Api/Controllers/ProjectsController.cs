@@ -21,6 +21,11 @@ public static class ProjectsController
         group.MapPost("/", CreateProjectAsync);
         group.MapPost("/{projectId}/edit", EditProjectAsync);
         group.MapPost("/{projectId}/invite", InviteUserAsync);
+
+        // Zaproszenia zalogowanego użytkownika. Segment "invitations" ma pierwszeństwo przed "/{projectId}".
+        group.MapGet("/invitations", GetMyInvitationsAsync);
+        group.MapPost("/invitations/{invitationId:guid}/accept", AcceptInvitationAsync);
+        group.MapPost("/invitations/{invitationId:guid}/decline", DeclineInvitationAsync);
         
         return endpoints;
     }
@@ -76,7 +81,36 @@ public static class ProjectsController
         {
             ProjectId = projectId,
             Email = request.Email,
+            InvitationContent = request.Message?.Trim() ?? string.Empty,
             RoleId = request.RoleId
+        }, ct);
+
+        return TypedResults.NoContent();
+    }
+
+    private static Ok<IAsyncEnumerable<ProjectInvitationModel>> GetMyInvitationsAsync([FromServices] IMediator mediator, CancellationToken ct)
+    {
+        var stream = mediator.CreateStream(new GetMyInvitationsQuery(), ct);
+        return TypedResults.Ok(stream);
+    }
+
+    private static async Task<NoContent> AcceptInvitationAsync([FromRoute] Guid invitationId, [FromServices] IMediator mediator, CancellationToken ct)
+    {
+        await mediator.Send(new AnswerInvitationToProjectCommand
+        {
+            InvitationId = invitationId,
+            Accept = true
+        }, ct);
+
+        return TypedResults.NoContent();
+    }
+
+    private static async Task<NoContent> DeclineInvitationAsync([FromRoute] Guid invitationId, [FromServices] IMediator mediator, CancellationToken ct)
+    {
+        await mediator.Send(new AnswerInvitationToProjectCommand
+        {
+            InvitationId = invitationId,
+            Accept = false
         }, ct);
 
         return TypedResults.NoContent();

@@ -32,6 +32,7 @@ public class ProjectCoworkDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     public virtual DbSet<SprintEntity> Sprints => Set<SprintEntity>();
     public virtual DbSet<ProjectMemberEntity> ProjectMembers => Set<ProjectMemberEntity>();
     public virtual DbSet<ProjectRoleEntity> ProjectRoles => Set<ProjectRoleEntity>();
+    public virtual DbSet<ProjectInvitationEntity> ProjectInvitations => Set<ProjectInvitationEntity>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

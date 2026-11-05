@@ -6,6 +6,9 @@ export {
   useEditProject,
   useInviteUser,
   useDeleteProject,
+  useMyInvitations,
+  useAcceptInvitation,
+  useDeclineInvitation,
 } from './useProjects';
 export {
   useAuth,
@@ -42,6 +45,7 @@ export {
 } from './useRepositoryBrowser';
 export {
   useSprints,
+  useSprint,
   useCreateSprint,
   useEditSprint,
   useDeleteSprint,
