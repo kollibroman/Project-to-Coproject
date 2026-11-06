@@ -1,6 +1,10 @@
+using System.Net;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Domain.Exceptions.Projects;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -10,26 +14,35 @@ public record InviteUserToProjectCommand : IRequest<InviteUserToProjectCommand, 
 {
     public required Guid ProjectId { get; init; }
     public required string Email { get; init; }
+
+    public required string InvitationContent { get; init; }
+
+    /// <summary>Null oznacza rolę domyślną projektu.</summary>
+    public Guid? RoleId { get; init; }
 }
 
 internal class InviteUserToProjectCommandHandler : IRequestHandler<InviteUserToProjectCommand, Task>
 {
     private readonly ProjectCoworkDbContext _context;
+    private readonly IPermissionService _permissionService;
 
-    public InviteUserToProjectCommandHandler(ProjectCoworkDbContext context)
+    public InviteUserToProjectCommandHandler(ProjectCoworkDbContext context, IPermissionService permissionService)
     {
         _context = context;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(InviteUserToProjectCommand request, CancellationToken ct)
     {
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Permissions, ActionType.Create, ct);
+
         var project = await _context.Projects
-            .Include(x => x.Collaborators)
+            .IncludeAccessGraph()
             .FirstOrDefaultAsync(x => x.Id == request.ProjectId, ct);
 
         if (project is null)
         {
-            throw new EntityNotFoundException($"Project {request.ProjectId} does not exist");
+            throw new EntityNotFoundException($"Project {request.ProjectId} does not exist", HttpStatusCode.NotFound);
         }
 
         var normalizedEmail = request.Email.Trim().ToUpperInvariant();
@@ -39,13 +52,26 @@ internal class InviteUserToProjectCommandHandler : IRequestHandler<InviteUserToP
 
         if (user is null)
         {
-            throw new EntityNotFoundException($"User with email {request.Email} does not exist");
+            throw new EntityNotFoundException($"User with email {request.Email} does not exist", HttpStatusCode.NotFound);
         }
 
-        var aggregate = new ProjectAggregate(project);
+        if (project.OwnerId == user.Id || project.ProjectMembers.Any(x => x.UserId == user.Id))
+        {
+            throw new ProjectAccessException("User is already a member of the project.");
+        }
 
-        aggregate.AddCollaborator(user);
+        var hasPendingInvitation = await _context.ProjectInvitations
+            .AnyAsync(x => x.ProjectId == project.Id && x.UserId == user.Id && x.IsActive, ct);
 
+        if (hasPendingInvitation)
+        {
+            throw new ProjectAccessException("User has already been invited to the project.");
+        }
+
+        // TODO: Add invitation via mail
+        var invitation = ProjectInvitationAggregate.Create(request.InvitationContent, user.Id, project.Id, request.RoleId);
+        
+        _context.Add(invitation);
         await _context.SaveChangesAsync(ct);
     }
 }

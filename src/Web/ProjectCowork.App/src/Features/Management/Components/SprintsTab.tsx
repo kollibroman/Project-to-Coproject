@@ -15,6 +15,7 @@ import { TaskPaper } from './TaskPaper.tsx';
 import { SprintDialog } from '../Dialogs/SprintDialog.tsx';
 import { TaskDialog } from '../Dialogs/TaskDialog.tsx';
 import { ConfirmDeleteDialog } from '../Dialogs/ConfirmDeleteDialog.tsx';
+import { buildStatusUpdate } from '../taskEnums.ts';
 
 type SprintsTabProps = {
     projectId: string | undefined;
@@ -82,20 +83,9 @@ export const SprintsTab = ({ projectId }: SprintsTabProps) => {
 
     const handleStatusChange = (task: TaskDto, status: TaskStatus) => {
         setUpdatingTaskId(task.id);
-        editTask.mutate(
-            {
-                path: { taskId: task.id },
-                body: {
-                    name: task.name,
-                    description: task.description,
-                    priority: task.priority,
-                    status,
-                    sprintId: task.sprintId ?? null,
-                    assignedUserId: task.assignedUserId ?? null,
-                },
-            },
-            { onSettled: () => setUpdatingTaskId(undefined) },
-        );
+        editTask.mutate(buildStatusUpdate(task, status), {
+            onSettled: () => setUpdatingTaskId(undefined),
+        });
     };
 
     const closeDelete = () => {
@@ -171,12 +161,11 @@ export const SprintsTab = ({ projectId }: SprintsTabProps) => {
                                 sprint={sprint}
                                 tasks={tasks}
                                 isActive={sprint.startDate <= now && now <= sprint.endDate}
+                                to={`/project/${projectId}/sprint/${sprint.id}`}
                                 onAddTask={() => handleCreateTask(sprint.id)}
                                 onEdit={() => handleEditSprint(sprint)}
                                 onDelete={() => setDeleteTarget({ kind: 'sprint', sprint })}
-                            >
-                                {renderTasks(tasks)}
-                            </SprintSection>
+                            />
                         );
                     })}
 

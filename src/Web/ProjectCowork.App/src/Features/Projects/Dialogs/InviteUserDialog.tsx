@@ -1,4 +1,4 @@
-import { Alert, Button, Group, Modal, Stack, TextInput } from '@mantine/core';
+import { Alert, Button, Group, Modal, Stack, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useInviteUser } from '../../../hooks';
 
@@ -10,6 +10,7 @@ interface Props {
 
 interface FormValues {
     email: string;
+    message: string;
 }
 
 export const InviteUserDialog = ({ projectId, opened, onClose }: Props) => {
@@ -18,6 +19,7 @@ export const InviteUserDialog = ({ projectId, opened, onClose }: Props) => {
     const form = useForm<FormValues>({
         initialValues: {
             email: '',
+            message: '',
         },
         validate: {
             email: (value) =>
@@ -32,10 +34,11 @@ export const InviteUserDialog = ({ projectId, opened, onClose }: Props) => {
     };
 
     const handleSubmit = form.onSubmit((values) => {
+        const message = values.message.trim();
         inviteUser.mutate(
             {
                 path: { projectId },
-                body: { projectId, email: values.email.trim() },
+                body: { projectId, email: values.email.trim(), message: message || null },
             },
             {
                 onSuccess: () => handleClose(),
@@ -61,6 +64,15 @@ export const InviteUserDialog = ({ projectId, opened, onClose }: Props) => {
                         withAsterisk
                         data-autofocus
                         {...form.getInputProps('email')}
+                    />
+
+                    <Textarea
+                        label="Wiadomość"
+                        placeholder="Opcjonalnie: kilka słów do zapraszanej osoby"
+                        autosize
+                        minRows={2}
+                        maxRows={6}
+                        {...form.getInputProps('message')}
                     />
 
                     <Group justify="flex-end">

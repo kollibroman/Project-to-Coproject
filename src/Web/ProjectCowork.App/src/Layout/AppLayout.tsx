@@ -11,6 +11,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../hooks';
+import { InvitationsBell } from './InvitationsBell.tsx';
 
 type NavItem = {
   label: string;
@@ -20,7 +21,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: 'Pulpit', path: '/' },
   { label: 'Projekty', path: '/projects' },
-  { label: 'Ustawienia', path: '/settings' },
+  { label: 'Konto', path: '/account' },
 ];
 
 export function AppLayout() {
@@ -58,9 +59,12 @@ export function AppLayout() {
             />
             <Title order={3}>ProjectCowork</Title>
           </Group>
-          <Button variant="subtle" size="sm" onClick={logout}>
-            Wyloguj
-          </Button>
+          <Group gap="xs">
+            <InvitationsBell />
+            <Button variant="subtle" size="sm" onClick={logout}>
+              Wyloguj
+            </Button>
+          </Group>
         </Group>
       </AppShell.Header>
 

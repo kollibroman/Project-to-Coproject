@@ -1,3 +1,5 @@
+using ProjectCowork.Domain.Models.Project;
+
 namespace ProjectCowork.Domain.Models.Permissions;
 
 public class FeatureActionEntity
@@ -7,6 +9,6 @@ public class FeatureActionEntity
     public FeatureEntity Feature { get; set; }
     public int ActionId { get; set; }
     public ActionEntity Action { get; set; }
-
-    public ICollection<RolePermissionEntity> RolePermissions { get; set; } = [];
+    
+    public ICollection<ProjectRoleEntity> ProjectRoles { get; set; } = [];
 }

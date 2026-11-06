@@ -150,6 +150,17 @@
         "tags": [
           "ProjectsController"
         ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -198,6 +209,89 @@
           },
           "required": true
         },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/invitations": {
+      "get": {
+        "tags": [
+          "ProjectsController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectInvitationModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/invitations/{invitationId}/accept": {
+      "post": {
+        "tags": [
+          "ProjectsController"
+        ],
+        "parameters": [
+          {
+            "name": "invitationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/invitations/{invitationId}/decline": {
+      "post": {
+        "tags": [
+          "ProjectsController"
+        ],
+        "parameters": [
+          {
+            "name": "invitationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -798,6 +892,217 @@
         ]
       }
     },
+    "/api/repository/{repositoryId}/branches": {
+      "get": {
+        "tags": [
+          "RepositoryController"
+        ],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BranchDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/repository/{repositoryId}/tree": {
+      "get": {
+        "tags": [
+          "RepositoryController"
+        ],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TreeEntryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/repository/{repositoryId}/file": {
+      "get": {
+        "tags": [
+          "RepositoryController"
+        ],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileContentDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/repository/{repositoryId}/commits": {
+      "get": {
+        "tags": [
+          "RepositoryController"
+        ],
+        "parameters": [
+          {
+            "name": "repositoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommitsPageDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
     "/api/sprints/project/{projectId}": {
       "get": {
         "tags": [
@@ -1159,6 +1464,414 @@
           }
         ]
       }
+    },
+    "/api/permissions": {
+      "get": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PermissionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/roles": {
+      "get": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectRoleDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/roles/{roleId}": {
+      "put": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members": {
+      "get": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectMemberDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members/{userId}": {
+      "put": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMemberRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "PermissionsController"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/github/status": {
+      "get": {
+        "tags": [
+          "GithubController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GithubConnectionStatusDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/github/authorize": {
+      "post": {
+        "tags": [
+          "GithubController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GithubAuthorizePatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/github/user/repositories": {
+      "get": {
+        "tags": [
+          "GithubController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRepositoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/github/repository/import": {
+      "post": {
+        "tags": [
+          "GithubController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportGithubRepositoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1173,6 +1886,9 @@
             "type": "string"
           }
         }
+      },
+      "ActionType": {
+        "type": "integer"
       },
       "AddPostingRequest": {
         "required": [
@@ -1281,6 +1997,81 @@
             "items": {
               "$ref": "#/components/schemas/IFormFile"
             }
+          }
+        }
+      },
+      "BranchDto": {
+        "required": [
+          "name",
+          "isDefault"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ChangeMemberRoleRequest": {
+        "required": [
+          "roleId"
+        ],
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CommitDto": {
+        "required": [
+          "sha",
+          "message",
+          "authorName",
+          "date"
+        ],
+        "type": "object",
+        "properties": {
+          "sha": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "authorEmail": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CommitsPageDto": {
+        "required": [
+          "items",
+          "hasMore"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommitDto"
+            }
+          },
+          "hasMore": {
+            "type": "boolean"
           }
         }
       },
@@ -1393,9 +2184,91 @@
           }
         }
       },
+      "FileContentDto": {
+        "required": [
+          "path",
+          "isBinary",
+          "size"
+        ],
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "isBinary": {
+            "type": "boolean"
+          },
+          "size": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int64"
+          }
+        }
+      },
+      "GithubAuthorizePatRequest": {
+        "required": [
+          "login",
+          "pat"
+        ],
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "pat": {
+            "type": "string"
+          }
+        }
+      },
+      "GithubConnectionStatusDto": {
+        "required": [
+          "isConnected"
+        ],
+        "type": "object",
+        "properties": {
+          "isConnected": {
+            "type": "boolean"
+          },
+          "githubUsername": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
       "IFormFile": {
         "type": "string",
         "format": "binary"
+      },
+      "ImportGithubRepositoryRequest": {
+        "required": [
+          "repositoryName",
+          "projectId",
+          "cloneUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "repositoryName": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cloneUrl": {
+            "type": "string"
+          }
+        }
       },
       "InviteUserRequest": {
         "required": [
@@ -1410,6 +2283,19 @@
           },
           "email": {
             "type": "string"
+          },
+          "roleId": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "uuid"
+          },
+          "message": {
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       },
@@ -1425,6 +2311,30 @@
           },
           "password": {
             "type": "string"
+          }
+        }
+      },
+      "PermissionDto": {
+        "required": [
+          "id",
+          "resource",
+          "action"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "resource": {
+            "$ref": "#/components/schemas/ResourceType"
+          },
+          "action": {
+            "$ref": "#/components/schemas/ActionType"
           }
         }
       },
@@ -1456,12 +2366,93 @@
           }
         }
       },
+      "ProjectInvitationModel": {
+        "required": [
+          "id",
+          "projectId",
+          "projectName",
+          "projectDescription",
+          "invitedBy",
+          "invitationContent",
+          "createdAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectName": {
+            "type": "string"
+          },
+          "projectDescription": {
+            "type": "string"
+          },
+          "invitedBy": {
+            "type": "string"
+          },
+          "invitationContent": {
+            "type": "string"
+          },
+          "roleName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ProjectMemberDto": {
+        "required": [
+          "userId",
+          "userName",
+          "email",
+          "roleId",
+          "roleName",
+          "isOwner"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "roleId": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "uuid"
+          },
+          "roleName": {
+            "type": "string"
+          },
+          "isOwner": {
+            "type": "boolean"
+          }
+        }
+      },
       "ProjectModel": {
         "required": [
           "id",
           "name",
           "description",
-          "ownerId"
+          "ownerId",
+          "roleName"
         ],
         "type": "object",
         "properties": {
@@ -1478,6 +2469,9 @@
           "ownerId": {
             "type": "string",
             "format": "uuid"
+          },
+          "roleName": {
+            "type": "string"
           }
         }
       },
@@ -1507,6 +2501,74 @@
           },
           "isActive": {
             "type": "boolean"
+          }
+        }
+      },
+      "ProjectRoleDto": {
+        "required": [
+          "id",
+          "name",
+          "isDefault",
+          "permissionIds",
+          "memberCount"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "permissionIds": {
+            "type": "array",
+            "items": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          },
+          "memberCount": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "ProjectRoleRequest": {
+        "required": [
+          "name",
+          "isDefault",
+          "permissionIds"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "permissionIds": {
+            "type": "array",
+            "items": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
           }
         }
       },
@@ -1549,6 +2611,9 @@
           }
         }
       },
+      "ResourceType": {
+        "type": "integer"
+      },
       "SprintDto": {
         "required": [
           "id",
@@ -1579,6 +2644,7 @@
         "required": [
           "id",
           "name",
+          "friendlyId",
           "description",
           "status",
           "priority"
@@ -1591,6 +2657,14 @@
           },
           "name": {
             "type": "string"
+          },
+          "friendlyId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int64"
           },
           "description": {
             "type": "string"
@@ -1630,6 +2704,40 @@
       "TaskStatus": {
         "type": "integer"
       },
+      "TreeEntryDto": {
+        "required": [
+          "name",
+          "path",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TreeEntryType"
+          },
+          "size": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int64"
+          }
+        }
+      },
+      "TreeEntryType": {
+        "enum": [
+          "folder",
+          "file"
+        ]
+      },
       "UpdatePostingRequest": {
         "required": [
           "projectPostingId",
@@ -1651,6 +2759,25 @@
           },
           "isActive": {
             "type": "boolean"
+          }
+        }
+      },
+      "UserRepositoryDto": {
+        "required": [
+          "name",
+          "cloneUrl",
+          "ownerName"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "cloneUrl": {
+            "type": "string"
+          },
+          "ownerName": {
+            "type": "string"
           }
         }
       }
@@ -1685,6 +2812,12 @@
     },
     {
       "name": "TasksController"
+    },
+    {
+      "name": "PermissionsController"
+    },
+    {
+      "name": "GithubController"
     }
   ]
 }

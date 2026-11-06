@@ -2,8 +2,10 @@ using System.Net;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Enums.Management;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Domain.Models.Management;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 using TaskStatus = ProjectCowork.Domain.Enums.Management.TaskStatus;
@@ -24,14 +26,18 @@ public record AddTaskCommand : IRequest<AddTaskCommand, Task>
 internal class AddTaskCommandHandler : IRequestHandler<AddTaskCommand, Task>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public AddTaskCommandHandler(ProjectCoworkDbContext dbContext)
+    public AddTaskCommandHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(AddTaskCommand request, CancellationToken ct)
     {
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Management, ActionType.Create, ct);
+
         var project = await _dbContext.Projects
             .Include(x => x.Tasks)
             .FirstOrDefaultAsync(x => x.Id == request.ProjectId, ct);

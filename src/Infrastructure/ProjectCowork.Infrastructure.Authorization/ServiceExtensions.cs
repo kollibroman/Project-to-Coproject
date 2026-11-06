@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectCowork.Domain.Models.Users;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
-using ProjectCowork.Infrastructure.Authorization.Handlers;
 using ProjectCowork.Infrastructure.Authorization.Services;
 using ProjectCowork.Infrastructure.Authorization.Settings;
 using ProjectCowork.Infrastructure.Configuration.Options;
@@ -30,12 +27,12 @@ public static class ServiceExtensions
         
         services.AddOptionsWithRequiredFieldsValidation<JwtSettings>();
         
+        // Uprawnienia są sprawdzane per projekt w handlerach (IPermissionService.EnsureProjectPermissionAsync),
+        // a nie przez globalne polityki ASP.NET.
         services.AddScoped<IAuthorizedUserProvider, AuthorizedUserProvider>()
             .AddScoped<IPermissionService, PermissionService>()
             .AddScoped<ITokenService, TokenService>()
             .AddScoped<IRefreshTokenValidationService, RefreshTokenValidationService>();
-        
-        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         
         return services;
     }

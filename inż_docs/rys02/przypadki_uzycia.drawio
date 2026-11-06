@@ -1,0 +1,135 @@
+<mxfile host="drawio">
+  <diagram id="use-cases" name="Przypadki użycia">
+    <mxGraphModel dx="1000" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="880" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== Granica systemu ===== -->
+        <mxCell id="sys" value="System ProjectCowork" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;verticalAlign=top;align=left;spacingLeft=8;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="170" y="110" width="560" height="610" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Aktorzy główni (lewa strona) ===== -->
+        <mxCell id="a_gosc" value="Gość" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="180" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_user" value="Użytkownik" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="306" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_biz" value="Biznes" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="404" width="30" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Aktor główny (prawa strona) ===== -->
+        <mxCell id="a_member" value="Członek projektu" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="770" y="404" width="30" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Aktorzy pomocniczy (systemy zewnętrzne) ===== -->
+        <mxCell id="a_github" value="«system»&lt;br&gt;GitHub" style="shape=umlActor;verticalLabelPosition=top;verticalAlign=bottom;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="442" y="40" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a_mail" value="«system»&lt;br&gt;Serwer pocztowy" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="442" y="750" width="30" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Przypadki użycia: kolumna 1 (Gość, Użytkownik, Biznes) ===== -->
+        <mxCell id="uc_register" value="Rejestracja konta" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="195" y="160" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_login" value="Logowanie" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="195" y="216" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_newproject" value="Tworzenie projektu" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="195" y="286" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_postings" value="Przeglądanie ogłoszeń" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="195" y="342" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_browse" value="Przeglądanie projektów" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="195" y="412" width="165" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Przypadki użycia: kolumna 2 (rozszerzenia i zawierania) ===== -->
+        <mxCell id="uc_import" value="Importowanie repozytorium z GitHub" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="375" y="160" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_apply" value="Aplikowanie na ofertę" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="375" y="342" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_mail" value="Wysyłanie zaproszenia e-mail" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="375" y="664" width="165" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Przypadki użycia: kolumna 3 (Członek projektu) ===== -->
+        <mxCell id="uc_repo" value="Tworzenie repozytorium" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="160" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_git" value="Wykonywanie operacji push, pull i clone" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="216" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_sprint" value="Tworzenie sprintu" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="272" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_task" value="Tworzenie zadania" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="328" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_publish" value="Publikowanie ogłoszenia" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="384" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_applications" value="Przeglądanie aplikacji na ofertę" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="440" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_roles" value="Definiowanie ról w projekcie" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="496" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_assign" value="Nadawanie ról członkom" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="552" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_remove" value="Usuwanie osoby z projektu" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="608" width="165" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_invite" value="Zapraszanie osoby do projektu" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="555" y="664" width="165" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Asocjacje: Gość, Użytkownik, Biznes ===== -->
+        <mxCell id="as1" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_gosc" target="uc_register"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as2" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_gosc" target="uc_login"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as3" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_user" target="uc_newproject"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as4" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_user" target="uc_postings"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as5" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_biz" target="uc_browse"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- ===== Asocjacje: Członek projektu ===== -->
+        <mxCell id="as6" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_repo"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as7" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_git"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as8" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_sprint"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as9" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_task"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as10" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_publish"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as11" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_applications"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as12" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_roles"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as13" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_assign"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as14" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_remove"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as15" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="a_member" target="uc_invite"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- ===== Asocjacje: systemy zewnętrzne ===== -->
+        <mxCell id="as16" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="uc_import" target="a_github"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="as17" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="uc_mail" target="a_mail"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- ===== Relacje «extend» i «include» ===== -->
+        <mxCell id="ex1" value="«extend»" style="endArrow=open;dashed=1;html=1;rounded=0;fontSize=10;endSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="uc_apply" target="uc_postings"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ex2" value="«extend»" style="endArrow=open;dashed=1;html=1;rounded=0;fontSize=10;endSize=8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="uc_import" target="uc_repo"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="in1" value="«include»" style="endArrow=open;dashed=1;html=1;rounded=0;fontSize=10;endSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="uc_invite" target="uc_mail"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- ===== Generalizacje aktorów ===== -->
+        <mxCell id="gen1" style="endArrow=block;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="a_biz" target="a_user">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="30" y="434" /><mxPoint x="30" y="351" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="gen2" style="endArrow=block;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" edge="1" parent="1" source="a_member" target="a_user">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="815" y="434" /><mxPoint x="815" y="860" /><mxPoint x="15" y="860" /><mxPoint x="15" y="321" /></Array></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
