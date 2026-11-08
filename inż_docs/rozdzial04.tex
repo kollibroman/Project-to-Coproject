@@ -1,14 +1,23 @@
 \chapter{Opis architektury i implementacji}
 
 \section{Organizacja projektu}
+Projekt został podzielony na wiele podprojektów, w których znajdują się elementy każdej warstwy systemu i obsługa pojedynczych modułów.
+Każdy podprojekt ma swoją jedną odpowiedzialność, co zwiększą utrzymywalnosc projektu i ułatwia jego rozwój w przyszłości.
+Projekt jest nazwą własną ekosystemu \texttt{.Net} \cite{dotnet_docs}, który w swojej specyfikacji określa projekt
+jako folder ze swoim własnym plikiem konfiguracyjnym, specyfikacją budowania i potrzebnymi bibliotekami. 
 
 \section{Architektura systemu}
+System został stworzony według specyfikacji architektury heksagonalnej z elementami DDD opisanymi w \cite{evans2015domain}, a także uzupełnionymi i przełożonymi na przykłady
+praktyczne w \cite{vernon2016ddd}. Każda warstwa ma swoją jedną odpowiedzialność i nie jest zależna od warstwy od niej wyższej.
+System został podzielony na aplikację serwerową i aplikację kliencką, które działają niezależnie od siebie. Warstwa serwerowa może zapewnić obsługę dla oprogramowania
+innego niż tworzona aplikacja kliencka. 
 
 \subsection{Diagram opisowy systemu}
 
 \subsection{Diagram komponentów}
 
 \section{Aplikacja serwerowa}
+Aplikacja serwerowa, napisana w języku \texttt{C\#} 
 
 \subsection{Warstwa domenowa}
 
@@ -19,5 +28,12 @@
 \subsection{Warstwa dostępowa}
 
 \section{Aplikacja kliencka}
+Aplikacja kliencka, znajdująca się w folderze \textit{Web/ProjectCowork.App} została napisana we frameworku \texttt{React.js} za pomocą języka \texttt{Typescript}.
+Architektura aplikacji została podzielona na tzw. \texttt{Hooks}, gdzie zdefiniowane są połączenia z Api, 
+\texttt{Features}, gdzie zdefiniowane są strony dla każdego modułu aplikacji, \texttt{Auth}, gdzie znajduje się obsługa sesji zalogowanego użytkownika
+i reszta gdzie znajdują się funkcje pomocnicze, takie jak obsługa głównego
+stylu strony i tego jak się zachowuje strona w momencie kiedy użytkownik jest zalogowany lub nie.
+
+%TODO: Dodac ss samego projektu frontu
 
 \section{Konteneryzacja}
