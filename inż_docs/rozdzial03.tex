@@ -29,22 +29,12 @@ Tabela \texttt{UserTokens} przechowuje informacje o tokenach użytkowników, a t
 \end{figure}
 
 \section{Makiety interfejsu graficznego}
-% Makieta na pełną szerokość tekstu, nie wyższa niż połowa strony (razem z podpisem).
-% #1 - nazwa pliku w rys03/makiety, #2 - podpis, #3 - etykieta
-\newcommand{\makieta}[3]{%
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/#1.pdf}
-    \caption{#2}
-    \label{#3}
-\end{figure}}
 Makiety interfejsu graficznego zostały przygotowane w narzędziu \textit{Figma}. Każdą z nich przygotowano dla widoku na komputerze o szerokości ekranu 1280 pikseli, w jasnym motywie aplikacji. Każdy ekran po zalogowaniu
 składa się z górnego paska z nazwą systemu, ikoną zaproszeń i przyciskiem wylogowania oraz z bocznego menu nawigacyjnego. Dane widoczne na makietach są przykładowe.
 Docelowo w samej aplikacji dostępny będzie również ciemny motyw, który będzie można włączyć z poziomu panelu konta użytkownika.
 Makiety stworzone od razu weług docelowego stylu aplikacji, zgodnego ze specyfikacją \textit{Material Design} w wersji 3.0. W aplikacji klienckiej do tego zastosowano 
 bibliotekę \textit{Mantine}, która jest zgodna z tym style oraz udostępnia wiele gotowych komponentów, co ułatwia implementację.
 Na rysunkach \ref{fig:makieta_logowanie} i \ref{fig:makieta_rejestracja} przedstawiono makiety ekranów logowania i rejestracji użytkownika. Po zalogowaniu użytkownik zostaje przeniesiony na pulpit, którego makietę przedstawiono na rysunku \ref{fig:makieta_pulpit}.
-
 \begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{0.49\textwidth}
@@ -61,54 +51,156 @@ Na rysunkach \ref{fig:makieta_logowanie} i \ref{fig:makieta_rejestracja} przedst
     \end{minipage}
 \end{figure}
 
-\makieta{03_pulpit}{Makieta strony głównej}{fig:makieta_pulpit}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/03_pulpit.pdf}
+    \caption{Makieta strony głównej}
+    \label{fig:makieta_pulpit}
+\end{figure}
 Z poziomu strony głównej, użytkownik może przejść do listy projektów, w których uczestniczy (niezależnie od roli), do projektów w których nieuczestniczy (sekcja odkryj) i dostępnych ofert współpracy przy projektach.
 Dodatkowo, z poziomu menu bocznego użytkownik może przejść do panelu ze swoim kontem, w którym może połączyć się do swojego konta na platformie \textit{Github} za pomocą tokena.
 Na panelu również pokazano możliwość modyfikacji motywu systemu i panel z zaproszeniami do projektów, które użytkownik może przyjąć bądź odrzucić. Makietę tą pokazano na rysunku \ref{fig:makieta_konto}
-\makieta{19_konto}{Makieta strony konta użytkownika}{fig:makieta_konto}
-\newpage
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[scale=0.3]{rys03/makiety/19_konto.pdf}
+    \caption{Makieta strony konta użytkownika}
+    \label{fig:makieta_konto}
+\end{figure}
 Ze strony głównej, lub menu panelu bocznego, użytkownik możej przejść do listy projektów w których uczestniczy, przedstawionej na rysunku \ref{fig:makieta_projekty}.
 Na rysunku przedstawiono widok z przykładowymi projektami, gdzie użytkownik ma kilka różnych, dynamicznie definiowanych ról. Z poziomu każdego komponentu projektu można przejść do strony
 ze szczegółami danego projektu, przedstwionej na rysunkach \ref{fig:makieta_projekt_repo}, \ref{fig:makieta_projekt_ogloszenia}, \ref{fig:makieta_projekt_czlonkowie} i \ref{fig:makieta_projekt_sprinty}.
-
-\makieta{04_projekty}{Makieta listy projektów użytkownika}{fig:makieta_projekty}
 Na stronie ze szczegółami projektu, widok został podzielony na kilka zakładek, które umożliwiają zobaczenie dedykowanych widoków do każdej funkcjonalności.
 Pierwszą z nich jest zakładka repozytoria, w której znajdują się wszystkie repozytoria z kodem do danego projektu. Z jej poziomu jest możliwość stworzenia nowego repozytorium oraz importowania istniejącego z platformy \textit{Github}.
 Komponent z repozytoriami, analogicznie jak w przypadku projektów, umożliwiają przejście do widoku repozytorium, inspirowanego tym jak wyglądają tego typu widoki na innych platformach do hostowania kodu. Po wejściu w ten widok,
-przedstawiony na rysunku \ref{fig:makieta_repo_kod}
-
-\makieta{05_projekt_repozytoria}{Makieta strony projektu z zakładką repozytoriów}{fig:makieta_projekt_repo}
-
+przedstawiony na rysunku \ref{fig:makieta_repo_kod}.
+\begin{figure}[!htbp]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/04_projekty.pdf}
+        \caption{Makieta listy projektów użytkownika}
+        \label{fig:makieta_projekty}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/05_projekt_repozytoria.pdf}
+    \caption{Makieta strony projektu z zakładką repozytoriów}
+    \label{fig:makieta_projekt_repo}
+    \end{minipage}
+\end{figure}
 Na podstronie repozytorium, użytkownik może przeglądać listę plików danym repozytorium oraz listę commitów, listę widać na rysunku \ref{fig:makieta_repo_commity}. Po kliknięciu w dany plik, użytkownik może zobaczyć jego podgląd.
 Zaprezentowano to na rysunku \ref{fig:makieta_repo_plik}
-\makieta{12_repozytorium_kod}{Makieta strony repozytorium z~listą plików}{fig:makieta_repo_kod}
-\makieta{13_repozytorium_plik}{Makieta podglądu pliku w repozytorium}{fig:makieta_repo_plik}
-\makieta{14_repozytorium_commity}{Makieta historii commitów repozytorium}{fig:makieta_repo_commity}
+\begin{figure}[!htbp]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/12_repozytorium_kod.pdf}
+        \caption{Makieta strony repozytorium z listą plików}
+        \label{fig:makieta_repo_kod}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/13_repozytorium_plik.pdf}
+        \caption{Makieta podglądu pliku w repozytorium}
+        \label{fig:makieta_repo_plik}
+    \end{minipage}
+    \begin{minipage}[t]{0.8\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/14_repozytorium_commity.pdf}
+        \caption{Makieta historii commitów repozytorium}
+        \label{fig:makieta_repo_commity}
+    \end{minipage}
+\end{figure}
 \newpage
 Kolejną zakładka na stronie projektu jest sekcja związana ze sprintami i zadaniami. W tej sekcji użytkownik może przeglądać listę sprintów oraz zadań razem z ich statusami w danym sprincie.
 Z tego poziomu użytkownik może również stworzyć nowy sprint lub zadanie. Pokazano to na rysunku \ref{fig:makieta_projekt_sprinty}.
-\makieta{06_projekt_sprinty}{Makieta strony projektu z zakładką sprintów i zadań}{fig:makieta_projekt_sprinty}. Z poziomu tego widoku, użytkownik może zobaczyć ile zadań zostało zrealizowanych, ile jest do zrobienia i ile jest w trakcie.
+Z poziomu tego widoku, użytkownik może zobaczyć ile zadań zostało zrealizowanych, ile jest do zrobienia i ile jest w trakcie.
 Z zakładki sprintów, użytkownik może przejść do szczegółów danego sprintu pokazanego na rysunku \ref{fig:makieta_sprint}
 Z tego poziomu zadania można również grupować według ich statusu i tak jak w poprzednim rysunku, można zarządzać ich statusami. Dostępna jest również edycja sprintu, usunięcie go i dodanie nowych zadań do niego.
-\makieta{07_sprint}{Makieta strony sprintu}{fig:makieta_sprint}
+\begin{figure}[!htbp]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/06_projekt_sprinty.pdf}
+        \caption{Makieta strony projektu z zakładką sprintów i zadań}
+        \label{fig:makieta_projekt_sprinty}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/07_sprint.pdf}
+    \caption{Makieta strony sprintu}
+    \label{fig:makieta_sprint}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/08_dialog_nowe_zadanie.pdf}
+        \caption{Makieta okna tworzenia zadania}
+        \label{fig:makieta_dialog_zadanie}
+    \end{minipage}
+\end{figure}
 Poza zakładkami repozytoriów i sprintów, użytkownik może również przejść do zakładki ogłoszeń, w której znajdują się wszystkie ogłoszenia związane z danym projektem.
 Z poziomu tej zakładki użytkownik może również stworzyć nowe ogłoszenie, które będzie widoczne dla wszystkich użytkowników, którzy nie są członkami projektu. Pokazano to na rysunku \ref{fig:makieta_projekt_ogloszenia}.
 Z tego poziomu, użytkownik może zobaczyć zgłoszenia na dane ogłoszenie, które zostały złożone i na ich podstawie wybrać pożądaną osobę. Ogłoszenia również można edytować i ustawiać ich statusy (aktywne, nieaktywne).
 Istnieje także możliwość grupowania ogłoszeń zgodnie z ich statusem oraz dodawanie nowych.
-\makieta{09_projekt_ogloszenia}{Makieta strony projektu z zakładką ogłoszeń}{fig:makieta_projekt_ogloszenia}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[scale=0.3]{rys03/makiety/09_projekt_ogloszenia.pdf}
+    \caption{Makieta strony projektu z zakładką ogłoszeń}
+    \label{fig:makieta_projekt_ogloszenia}
+\end{figure}
 \newpage
 Ostatnią dostępną zakładką na stronie projektu jest zakładka członków i ról. Jej makieta znajduje się na rysunku \ref{fig:makieta_projekt_czlonkowie}.
 Z jej poziomu można definiować role w projekcie i przypisywać je do członków projektu. Każda rola ma dedykowane uprawnienia, które można zdefiniować zgodnie z makietą na rysunku \ref{fig:makieta_dialog_rola}.
-\makieta{10_projekt_czlonkowie_role}{Makieta strony projektu z zakładką członków i ról}{fig:makieta_projekt_czlonkowie}
-\makieta{11_dialog_rola_uprawnienia}{Makieta okna edycji roli i jej uprawnień}{fig:makieta_dialog_rola}
+\begin{figure}[!htbp]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/10_projekt_czlonkowie_role.pdf}
+        \caption{Makieta strony projektu z zakładką członków i ról}
+        \label{fig:makieta_projekt_czlonkowie}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/11_dialog_rola_uprawnienia.pdf}
+        \caption{Makieta okna edycji roli i jej uprawnień}
+        \label{fig:makieta_dialog_rola}
+    \end{minipage}
+\end{figure}
 Po przejściu przez stronę projektów, użytkownik może przejść do sekcji odkrywania projektów widocznej na rysunku \ref{fig:makieta_odkryj}.
 Na tej stronie użytkownik może przeglądać wszystkie projekty, w których nie uczestniczy i do których być może może aplikować.
 Z poziomu tej strony użytkownik może przejść do podglądu danego projektu, na którym znajdują się oferty wystawione przez jego członków. Z poziomu tej strony można na taką ofertę aplikować. 
-\makieta{15_odkryj}{Makieta strony odkrywania projektów}{fig:makieta_odkryj}
-\makieta{16_podglad_projektu}{Makieta podglądu projektu z aktywnymi ogłoszeniami}{fig:makieta_podglad}
+\begin{figure}[!htbp]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/15_odkryj.pdf}
+        \caption{Makieta strony odkrywania projektów}
+        \label{fig:makieta_odkryj}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/16_podglad_projektu.pdf}
+        \caption{Makieta podglądu projektu z aktywnymi ogłoszeniami}
+        \label{fig:makieta_podglad}
+    \end{minipage}
+\end{figure}
+\newpage
+Ostatnią dostępną stroną z poziomu strony głównej jest strona z ofertami współpracy, pokazana na rysunku \ref{fig:makieta_oferty}. Z poziomu tej strony użytkownik może przeglądać wszystkie oferty współpracy, które zostały wystawione przez członków projektów.
+Z jej poziomu można również aplikować na daną ofertę, co widać na rysunku \ref{fig:makieta_aplikuj}.
 
-\makieta{18_oferty}{Makieta strony ofert współpracy}{fig:makieta_oferty}
-\makieta{17_dialog_aplikuj}{Makieta okna zgłoszenia do ogłoszenia}{fig:makieta_aplikuj}
-
-
-\makieta{08_dialog_nowe_zadanie}{Makieta okna tworzenia zadania}{fig:makieta_dialog_zadanie}
+\begin{figure}[!htbp]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/18_oferty.pdf}
+        \caption{Makieta strony ofert współpracy}
+        \label{fig:makieta_oferty}
+    \end{minipage}
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/17_dialog_aplikuj.pdf}
+        \caption{Makieta okna zgłoszenia do ogłoszenia}
+        \label{fig:makieta_aplikuj}
+    \end{minipage}
+\end{figure}
+%TODO makiety dla biznesu

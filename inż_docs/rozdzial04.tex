@@ -15,6 +15,35 @@ innego niż tworzona aplikacja kliencka.
 \subsection{Diagram opisowy systemu}
 
 \subsection{Diagram komponentów}
+System został podzielony na kilka warstw, które dzielą się na podprojekty, które mają swoje pojedyncze odpowiedzialności. Warstwa domeny opisuje encje systemowe, enumy i wyjątki domenowe.
+Warstwa infrastruktury zawiera integracje, wydarzenia domenowe, połączenie z bazą danych, konfigurację encji, uwierzytelnianie i pomniejsze klasy wspomagające.
+Warstwa aplikacji zawiera logikę biznesową systemu, która jest wywoływana przez warstwę dostępową. Podzielona ona jest na moduły, gdzie każdy moduł odpowiada części domeny zawartej w warstwie domeny.
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[scale=0.3]{rys04/diag_komp.pdf}
+    \caption{Diagram komponentów systemu}
+    \label{fig:diag_komp}
+\end{figure}
+\newpage
+\subsection{Podejście projektowe}
+W procesie projektowania aplikacji serwerowej zastosowano elementy podejścia \textit{DDD} (ang. \textit{Domain-Driven Design}) \cite{evans2015domain, vernon2016ddd}. Koncepcja ta zakłada ścisłe powiązanie struktury oprogramowania z docelową dziedziną biznesową poprzez wypracowanie tzw. języka wszechobecnego (ang. \textit{Ubiquitous Language}). Oznacza to, że terminologia stosowana bezpośrednio w kodzie źródłowym - w nazwach klas, metod oraz modułów -
+jest tożsama z pojęciami używanymi przez ekspertów dziedzinowych oraz użytkowników końcowych. Takie podejście ułatwia zrozumienie działania systemu osobom nietechnicznym, upraszcza definiowanie nowych wymagań oraz zwiększa utrzymywalność projektu w miarę jego rozwoju.
+
+Model domeny został rozdzielony na dwie części. Projekt \texttt{ProjectCowork.Domain} zawiera encje oraz typy wyliczeniowe, a projekt \texttt{ProjectCowork.Domain.Exceptions} wyjątki domenowe. Projekty te nie mają referencji do warstwy aplikacji, infrastruktury ani warstwy dostępowej, zależności w systemie są więc skierowane wyłącznie do domeny. Izolacja domeny od technologii nie jest jednak pełna. Encje \texttt{UserEntity} i \texttt{RoleEntity} dziedziczą po klasach \texttt{IdentityUser<Guid>} i \texttt{IdentityRole<Guid>} z biblioteki \texttt{ASP.NET Core Identity}, co pozwala wykorzystać gotowy mechanizm zarządzania kontami użytkowników bez tworzenia dodatkowej warstwy mapowania. Z kolei wyjątki domenowe przechowują kod statusu HTTP, który jest następnie zwracany przez warstwę dostępową. Są to świadome kompromisy, które upraszczają implementację kosztem czystości modelu.
+
+Encje mają postać modelu anemicznego: są to klasy z publicznymi właściwościami i właściwościami nawigacyjnymi wykorzystywanymi przez \texttt{Entity Framework Core}, pozbawione logiki biznesowej. Logika ta została przeniesiona do klas agregatów w projekcie \texttt{ProjectCowork.Infrastructure.Domain}. Każdy agregat opakowuje encję główną, udostępnia statyczną metodę \texttt{Create} tworzącą poprawną encję oraz metody modyfikujące jej stan, które sprawdzają reguły biznesowe przed wprowadzeniem zmiany. Agregaty znajdują się w warstwie infrastruktury, ponieważ korzystają z mechanizmu publikowania zdarzeń opartego na bibliotece \texttt{DispatchR} oraz z rozszerzeń zapytań \texttt{Entity Framework Core}, które ładują wszystkie elementy agregatu z bazy danych.
+
+W ramach projektowania w systemie wyróżniono następujące elementy wzorca DDD:
+\begin{itemize}
+    \item \textbf{Moduły funkcjonalne} - logika warstwy aplikacji została podzielona na moduły (\textit{Project}, \textit{Management}, \textit{Permissions}, \textit{ProjectPosting}, \textit{Repositories}, \textit{User}, \textit{Integrations}), z których każdy odpowiada za wyodrębniony fragment dziedziny. Podział ten nawiązuje do idei ograniczonych kontekstów (ang. \textit{Bounded Contexts}), jednak moduły korzystają ze wspólnego modelu domeny i jednego kontekstu bazy danych \texttt{ProjectCoworkDbContext}, nie są więc w pełni autonomiczne.
+    \item \textbf{Encje (ang. \textit{Entities})} - obiekty posiadające unikalną tożsamość oraz własny cykl życia. W systemie tożsamość encji wyznacza identyfikator typu \texttt{Guid} (lub \texttt{int} w przypadku encji katalogu uprawnień). Encje, dla których istotna jest historia zmian, dziedziczą po klasie \texttt{BaseTrackedEntity}, której pola \texttt{CreatedAt} i \texttt{UpdatedAt} są uzupełniane automatycznie przez interceptor \texttt{Entity Framework Core} podczas zapisu.
+    \item \textbf{Agregaty (ang. \textit{Aggregates})} - grupy powiązanych encji traktowane jako jedna jednostka spójności. Przykładem jest \texttt{ProjectAggregate}, który obejmuje projekt wraz z jego rolami i członkami oraz pilnuje niezmienników, takich jak istnienie dokładnie jednej roli domyślnej, unikalność nazw ról, zakaz usunięcia roli przypisanej do członków czy zakaz zmiany roli właściciela projektu. Analogicznie \texttt{SprintAggregate} sprawdza poprawność dat sprintu, a \texttt{TaskAggregate} nadaje zadaniom kolejne numery w obrębie projektu i ustawia datę ukończenia przy zmianie statusu. Ponieważ encje mają publiczne właściwości, wyłączność modyfikacji przez agregat nie jest wymuszana przez kompilator, lecz wynika z konwencji przyjętej w warstwie aplikacji.
+    \item \textbf{Zdarzenia domenowe (ang. \textit{Domain Events})} - obiekty reprezentujące istotne fakty, które zaszły w systemie, np. \texttt{InvitationAcceptedEvent}, \texttt{SprintDeletedEvent}, \texttt{RepositoryDeletedEvent} czy \texttt{AttachmentAddedEvent}. Agregaty dziedziczące po klasie \texttt{AggregateRoot} rejestrują zdarzenia metodą \texttt{RaiseDomainEvent}, a handler komendy publikuje je przez mediator po wykonaniu operacji. Zdarzenia są obsługiwane w tym samym procesie i w ramach tego samego żądania. Nie zapewniają więc asynchroniczności, ale oddzielają operacje poboczne od głównej logiki. Przykładowo przyjęcie zaproszenia dodaje użytkownika do projektu w osobnym handlerze, a dodanie załącznika powoduje wysłanie pliku do usługi \texttt{Azure Blob Storage}.
+\end{itemize}
+
+W modelu nie zastosowano obiektów wartości (ang. \textit{Value Objects}). Proste atrybuty, takie jak daty, statusy czy priorytety zadań, są reprezentowane typami wbudowanymi (\texttt{DateOnly}, \texttt{DateTimeOffset}) oraz typami wyliczeniowymi, a ich walidacja odbywa się w agregatach.
+
+Uzupełnieniem opisanych elementów w warstwie aplikacji jest zastosowanie wzorca \textit{CQRS} (ang. \textit{Command Query Responsibility Segregation}), który rozdziela operacje modyfikujące stan systemu (komendy) od operacji odczytujących dane (zapytania). Każdy moduł zawiera osobne katalogi \texttt{Commands} i \texttt{Queries}, a komendy i zapytania są obsługiwane przez osobne handlery. Rozdział ten ma charakter logiczny: obie strony korzystają z tej samej bazy danych i tego samego modelu, a zapytania nie przechodzą przez agregaty, tylko odczytują dane bezpośrednio z kontekstu bazy danych.
 
 \section{Aplikacja serwerowa}
 Aplikacja serwerowa, napisana w języku \texttt{C\#} opiera się na koncepcji architektury heksagonalnej z elementami DDD. Do komunikacji między warstwą dostępową API, a resztą warstw,
@@ -23,6 +52,8 @@ Ogranicza to zależności między warstwami i nie korzystanie z interfejsów prz
 zmiejszenie zależności między warstwami i wyczyściło metody w kontrolerach API, które teraz jedynie wykorzystują interfejs \texttt{IMediator} do wywoływania metod logiki biznesowej systemu.
 Oprócz tego wzorca, system bardzo mocno wykorzystuje wbudowany we framework \texttt{.Net} mechanizm wstrzykiwania zależności, który pozwala na łatwe podmienianie implementacji interfejsów w systemie i ułatwia testowanie jednostkowe.
 Instancje każdej klasy implementującej dany interfejs są tworzone w momencie uruchomienia aplikacji i wstrzykiwane do klas, które ich potrzebują. Każda z nich ma określony czas życia, co pozwala zoptymalizować wykorzystanie zasobów przy działaniu systemu.
+
+\subsection{Diagram przepływu ze wzorcem Mediator-a}
 
 
 \subsection{Warstwa domenowa}
