@@ -10,6 +10,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<IGitServerService, GitServerService>();
         services.AddScoped<IGitClientService, GitClientService>();
+        services.AddScoped<IGitBrowserService, GitBrowserService>();
         
         return services;
     }

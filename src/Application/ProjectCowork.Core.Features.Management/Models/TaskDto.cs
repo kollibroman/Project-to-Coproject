@@ -7,6 +7,7 @@ public record TaskDto
 {
     public required Guid Id { get; init; }
     public required string Name { get; init; }
+    public required long FriendlyId { get; init; }
     public required string Description { get; init; }
     public required TaskStatus Status { get; init; }
     public required TaskPriority Priority { get; init; }

@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Authorization\ProjectCowork.Infrastructure.Authorization.csproj" />
       <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Domain\ProjectCowork.Infrastructure.Domain.csproj" />
       <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Integrations.Git\ProjectCowork.Infrastructure.Integrations.Git.csproj" />
       <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />

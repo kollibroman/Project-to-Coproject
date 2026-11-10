@@ -9,9 +9,11 @@ interface Props {
     onDelete: (task: TaskDto) => void;
     onStatusChange: (task: TaskDto, status: TaskStatus) => void;
     updating?: boolean;
+    /** Ukrywa odznakę priorytetu, gdy lista jest już pogrupowana po priorytecie. */
+    hidePriority?: boolean;
 }
 
-export const TaskPaper = ({ task, onEdit, onDelete, onStatusChange, updating }: Props) => {
+export const TaskPaper = ({ task, onEdit, onDelete, onStatusChange, updating, hidePriority }: Props) => {
     const priority = getTaskPriority(task.priority);
     const isDone = task.status === TaskStatusValue.Done;
 
@@ -20,12 +22,17 @@ export const TaskPaper = ({ task, onEdit, onDelete, onStatusChange, updating }: 
             <Group justify="space-between" align="flex-start" wrap="nowrap">
                 <Stack gap={4} style={{ minWidth: 0 }}>
                     <Group gap="xs">
-                        <Text fw={600} td={isDone ? 'line-through' : undefined}>
+                        <Text size="sm" c="dimmed" ff="monospace">
+                            #{task.friendlyId}
+                        </Text>
+                        <Text fw={600} td={isDone ? 'line-through' : undefined} c={isDone ? 'dimmed' : undefined}>
                             {task.name}
                         </Text>
-                        <Badge color={priority.color} variant="light" size="sm">
-                            {priority.label}
-                        </Badge>
+                        {!hidePriority && (
+                            <Badge color={priority.color} variant="light" size="sm">
+                                {priority.label}
+                            </Badge>
+                        )}
                     </Group>
                     {task.description && (
                         <Text size="sm" c="dimmed" lineClamp={2}>

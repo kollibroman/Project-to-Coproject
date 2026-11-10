@@ -1,0 +1,135 @@
+<mxfile host="drawio">
+  <diagram id="sysml-req" name="Wymagania funkcjonalne">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== Wymaganie nadrzędne ===== -->
+        <mxCell id="r" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Platforma ProjectCowork&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1&quot;&lt;br&gt;text = &quot;System umożliwia publikowanie ogłoszeń naborów do projektów oraz zarządzanie projektami programistycznymi&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="438" y="20" width="320" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Grupa 1.1 ===== -->
+        <mxCell id="g1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Dostęp do systemu&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.1&quot;&lt;br&gt;text = &quot;System kontroluje dostęp użytkowników do platformy&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="170" width="215" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Konto użytkownika&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.1.1&quot;&lt;br&gt;text = &quot;System wymaga założenia konta&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="50" y="310" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Przeglądanie projektów&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.1.2&quot;&lt;br&gt;text = &quot;Biznes przegląda projekty&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="50" y="425" width="185" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Grupa 1.2 ===== -->
+        <mxCell id="g2" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Hosting repozytoriów&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.2&quot;&lt;br&gt;text = &quot;System hostuje repozytoria systemu kontroli wersji Git&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="255" y="170" width="215" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c21" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Operacje Git&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.2.1&quot;&lt;br&gt;text = &quot;System obsługuje komendy push, pull i clone systemu kontroli wersji Git&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="285" y="310" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c22" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Import z GitHub&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.2.2&quot;&lt;br&gt;text = &quot;System importuje repozytoria z platformy GitHub&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="285" y="425" width="185" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Grupa 1.3 ===== -->
+        <mxCell id="g3" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Kontrola dostępu RBAC&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.3&quot;&lt;br&gt;text = &quot;System implementuje RBAC dla każdego projektu&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="490" y="170" width="215" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c31" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Dynamiczne role&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.3.1&quot;&lt;br&gt;text = &quot;System definiuje dynamicznie role w projekcie&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="520" y="310" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c32" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Nadawanie ról&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.3.2&quot;&lt;br&gt;text = &quot;Członek projektu z uprawnieniami nadaje role w projekcie&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="520" y="425" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c33" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Zarządzanie członkami&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.3.3&quot;&lt;br&gt;text = &quot;Członek projektu z uprawnieniami dodaje i usuwa osoby w projekcie&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="520" y="540" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c34" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Zaproszenia e-mail&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.3.4&quot;&lt;br&gt;text = &quot;System wysyła zaproszenia do projektu na maila&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="520" y="655" width="185" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Grupa 1.4 ===== -->
+        <mxCell id="g4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Ogłoszenia naborów&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.4&quot;&lt;br&gt;text = &quot;Członek projektu publikuje oferty pracy w projekcie&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="725" y="170" width="215" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c41" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Aplikowanie na ofertę&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.4.1&quot;&lt;br&gt;text = &quot;Użytkownik może aplikować na daną ofertę&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="755" y="310" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c42" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Przegląd aplikacji&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.4.2&quot;&lt;br&gt;text = &quot;Członek projektu widzi aplikacje na daną ofertę&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="755" y="425" width="185" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Grupa 1.5 ===== -->
+        <mxCell id="g5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Planowanie pracy&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.5&quot;&lt;br&gt;text = &quot;System umożliwia planowanie pracy zespołu w projekcie&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="960" y="170" width="215" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c51" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Sprinty&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.5.1&quot;&lt;br&gt;text = &quot;Członek projektu tworzy sprinty&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="990" y="310" width="185" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c52" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;«requirement»&lt;br&gt;&lt;b&gt;Zadania&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;margin-right:4px;&quot;&gt;id = &quot;1.5.2&quot;&lt;br&gt;text = &quot;Członek projektu tworzy zadania&quot;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;rounded=0;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="990" y="425" width="185" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Relacje zawierania (grupa -> wymaganie nadrzędne) ===== -->
+        <mxCell id="e_g1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="g1" target="r">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="g2" target="r">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="g3" target="r">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="g4" target="r">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="g5" target="r">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Relacje zawierania (wymaganie szczegółowe -> grupa) ===== -->
+        <mxCell id="e_c11" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c11" target="g1">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="32" y="360" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c12" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c12" target="g1">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="32" y="475" /></Array></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_c21" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c21" target="g2">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="267" y="360" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c22" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c22" target="g2">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="267" y="475" /></Array></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_c31" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c31" target="g3">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="502" y="360" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c32" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c32" target="g3">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="502" y="475" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c33" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c33" target="g3">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="502" y="590" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c34" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c34" target="g3">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="502" y="705" /></Array></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_c41" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c41" target="g4">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="737" y="360" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c42" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c42" target="g4">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="737" y="475" /></Array></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_c51" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c51" target="g5">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="972" y="360" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e_c52" style="rounded=0;html=1;endArrow=circlePlus;endFill=0;endSize=10;strokeColor=#000000;exitX=0;exitY=0.5;entryX=0.056;entryY=1;" edge="1" parent="1" source="c52" target="g5">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="972" y="475" /></Array></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -24,10 +24,10 @@ public class TaskAggregate
         {
             EnsureSprintBelongsToProject(sprint, project.Id);
         }
+
+        var friendlyId = project.LastTaskFriendlyId + 1;
         
-        var friendlyId = project.LastTaskFriendlyId != 0 
-            ? project.LastTaskFriendlyId + 1 
-            : project.LastTaskFriendlyId;
+        project.LastTaskFriendlyId = friendlyId;
         
         return new TaskEntity
         {

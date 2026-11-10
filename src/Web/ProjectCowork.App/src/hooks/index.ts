@@ -6,6 +6,9 @@ export {
   useEditProject,
   useInviteUser,
   useDeleteProject,
+  useMyInvitations,
+  useAcceptInvitation,
+  useDeclineInvitation,
 } from './useProjects';
 export {
   useAuth,
@@ -29,7 +32,20 @@ export {
   useDeleteRepository,
 } from './useRepositories';
 export {
+  useGithubStatus,
+  useConnectGithub,
+  useGithubRepositories,
+  useImportGithubRepository,
+} from './useGithub';
+export {
+  useRepositoryBranches,
+  useRepositoryTree,
+  useRepositoryFile,
+  useRepositoryCommits,
+} from './useRepositoryBrowser';
+export {
   useSprints,
+  useSprint,
   useCreateSprint,
   useEditSprint,
   useDeleteSprint,
@@ -41,3 +57,13 @@ export {
   useEditTask,
   useDeleteTask,
 } from './useTasks';
+export {
+  usePermissions,
+  useProjectRoles,
+  useProjectMembers,
+  useCreateProjectRole,
+  useUpdateProjectRole,
+  useDeleteProjectRole,
+  useChangeProjectMemberRole,
+  useRemoveProjectMember,
+} from './usePermissions';

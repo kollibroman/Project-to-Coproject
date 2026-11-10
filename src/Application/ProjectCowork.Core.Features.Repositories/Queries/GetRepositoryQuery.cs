@@ -1,6 +1,10 @@
+using System.Net;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Core.Features.Repositories.Models;
+using ProjectCowork.Domain.Enums.Permissions;
+using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Persistence;
 
 namespace ProjectCowork.Core.Features.Repositories.Queries;
@@ -13,22 +17,38 @@ public record GetRepositoryQuery : IRequest<GetRepositoryQuery, Task<RepositoryD
 internal class GetRepositoryQueryHandler : IRequestHandler<GetRepositoryQuery, Task<RepositoryDto>>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public GetRepositoryQueryHandler(ProjectCoworkDbContext dbContext)
+    public GetRepositoryQueryHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task<RepositoryDto> Handle(GetRepositoryQuery request, CancellationToken cancellationToken)
     {
-        return await _dbContext.Repositories
+        var result = await _dbContext.Repositories
             .Where(x => x.Id == request.RepositoryId)
-            .Select(x => new RepositoryDto
+            .Select(x => new
             {
-                Name = x.RepositoryName,
-                Id = x.Id,
-                RepoUrl = x.RepoPath
+                x.ProjectId,
+                Repository = new RepositoryDto
+                {
+                    Name = x.RepositoryName,
+                    Id = x.Id,
+                    RepoUrl = x.RepoPath
+                }
             })
-            .FirstAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (result is null)
+        {
+            throw new EntityNotFoundException($"Repository {request.RepositoryId} does not exist", HttpStatusCode.NotFound);
+        }
+
+        await _permissionService.EnsureProjectPermissionAsync(result.ProjectId, ResourceType.Repositories,
+            ActionType.View, cancellationToken);
+
+        return result.Repository;
     }
 }

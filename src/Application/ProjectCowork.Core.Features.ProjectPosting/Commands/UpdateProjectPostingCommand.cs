@@ -1,6 +1,8 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -17,10 +19,12 @@ public record UpdateProjectPostingCommand : IRequest<UpdateProjectPostingCommand
 internal class UpdateProjectPostingCommandHandler : IRequestHandler<UpdateProjectPostingCommand, Task>
 {
     private readonly ProjectCoworkDbContext _dbContext;
+    private readonly IPermissionService _permissionService;
 
-    public UpdateProjectPostingCommandHandler(ProjectCoworkDbContext dbContext)
+    public UpdateProjectPostingCommandHandler(ProjectCoworkDbContext dbContext, IPermissionService permissionService)
     {
         _dbContext = dbContext;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(UpdateProjectPostingCommand request, CancellationToken ct)
@@ -31,6 +35,8 @@ internal class UpdateProjectPostingCommandHandler : IRequestHandler<UpdateProjec
         {
             throw new EntityNotFoundException($"ProjectPosting {request.ProjectPostingId} does not exist");
         }
+
+        await _permissionService.EnsureProjectPermissionAsync(entity.ProjectId, ResourceType.Postings, ActionType.Update, ct);
 
         var aggregate = new ProjectPostingAggregate(entity);
         

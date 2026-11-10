@@ -1,4 +1,5 @@
 using DispatchR.Abstractions.Send;
+using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
@@ -26,7 +27,13 @@ internal class AddProjectCommandHandler : IRequestHandler<AddProjectCommand, Tas
     {
         var ownerId = _authorizedUserProvider.GetCurrentUserId();
 
-        var entity = ProjectAggregate.Create(request.Name, request.Description, ownerId);
+        // Katalog potrzebny do zbudowania domyślnych ról projektu.
+        var permissionCatalog = await _dbContext.FeatureActions
+            .Include(x => x.Feature)
+            .Include(x => x.Action)
+            .ToListAsync(cancellationToken);
+
+        var entity = ProjectAggregate.Create(request.Name, request.Description, ownerId, permissionCatalog);
         
         _dbContext.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);

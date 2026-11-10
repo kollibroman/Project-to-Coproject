@@ -1,4 +1,4 @@
-import type { TaskPriority, TaskStatus } from '../../client';
+import type { TaskDto, TaskPriority, TaskStatus } from '../../client';
 
 export const TaskStatusValue = {
     Todo: 0,
@@ -33,6 +33,19 @@ export const getTaskStatus = (value: TaskStatus) =>
 
 export const getTaskPriority = (value: TaskPriority) =>
     taskPriorityOptions.find((x) => x.value === value) ?? taskPriorityOptions[2];
+
+/** Ciało PUT /api/tasks/{id} przy zmianie samego statusu. API wymaga pełnego zestawu pól. */
+export const buildStatusUpdate = (task: TaskDto, status: TaskStatus) => ({
+    path: { taskId: task.id },
+    body: {
+        name: task.name,
+        description: task.description,
+        priority: task.priority,
+        status,
+        sprintId: task.sprintId ?? null,
+        assignedUserId: task.assignedUserId ?? null,
+    },
+});
 
 /** Dane dla Mantine Select, który operuje na stringach. */
 export const toSelectData = (options: { value: number; label: string }[]) =>

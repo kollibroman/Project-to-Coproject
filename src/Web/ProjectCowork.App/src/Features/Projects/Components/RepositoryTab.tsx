@@ -1,9 +1,10 @@
 import {useRepositories} from "../../../hooks";
 import {Button, Group, Skeleton, Stack, Text} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {PlusIcon} from "@phosphor-icons/react";
+import {GithubLogoIcon, PlusIcon} from "@phosphor-icons/react";
 import {RepositoryPaper} from "../../Repositories/Components/RepositoryPaper.tsx";
 import {CreateRepositoryDialog} from "../../Repositories/Dialogs/CreateRepositoryDialog.tsx";
+import {ImportGithubRepositoryDialog} from "../../Repositories/Dialogs/ImportGithubRepositoryDialog.tsx";
 
 type RepositoryTabProps = {
     projectId: string | undefined;
@@ -13,6 +14,7 @@ export const RepositoryTab = ({ projectId }: RepositoryTabProps) => {
 
     const { data, isLoading } = useRepositories(projectId);
     const [opened, { open, close }] = useDisclosure(false);
+    const [importOpened, { open: openImport, close: closeImport }] = useDisclosure(false);
 
     if(isLoading)
     {
@@ -30,6 +32,14 @@ export const RepositoryTab = ({ projectId }: RepositoryTabProps) => {
             <Stack gap="md">
                 <Group justify="flex-end">
                     <Button
+                        variant="default"
+                        leftSection={<GithubLogoIcon />}
+                        onClick={openImport}
+                        disabled={!projectId}
+                    >
+                        Importuj z GitHuba
+                    </Button>
+                    <Button
                         leftSection={<PlusIcon />}
                         onClick={open}
                         disabled={!projectId}
@@ -46,7 +56,10 @@ export const RepositoryTab = ({ projectId }: RepositoryTabProps) => {
             </Stack>
 
             {projectId && (
-                <CreateRepositoryDialog projectId={projectId} opened={opened} onClose={close} />
+                <>
+                    <CreateRepositoryDialog projectId={projectId} opened={opened} onClose={close} />
+                    <ImportGithubRepositoryDialog projectId={projectId} opened={importOpened} onClose={closeImport} />
+                </>
             )}
         </>
     );

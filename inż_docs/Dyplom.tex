@@ -34,8 +34,6 @@
 \usepackage[T1]{fontenc}
 \usepackage[english,polish]{babel} % Tutaj ważna jest kolejność atrybutów (dla pracy po polsku polish powinno być na końcu)
 
-\usepackage{float}
-
 %%--biblatex--%%\usepackage{csquotes}
 %%--biblatex--%%\RequirePackage[
 %%--biblatex--%%    backend=biber,
@@ -716,7 +714,7 @@ Listing \thelstlisting: #1\hfill%\hfill%
 \makeoddhead{outer}{}{}{\small\itshape\rightmark}
 \makeevenhead{outer}{\small\itshape\leftmark}{}{}
 \makeoddfoot{outer}{\small\@author:~\@titleShort}{}{\small\thepage}
-\makeevenfoot{outer}{\small\thepage}{}{\small\@author:~\@title}
+\makeevenfoot{outer}{\small\thepage}{}{\small\@author:~\@titleShort}
 \makeheadrule{outer}{\linewidth}{\normalrulethickness}
 \makefootrule{outer}{\linewidth}{\normalrulethickness}{2pt}
 \makeatother
@@ -868,8 +866,8 @@ Specjalność: & {\bfseries \@specjalnosc}\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\Mastertrue % INFO: odkomentuj, jeśli to praca magisterska
 \title{Projekt aplikacji ułatwiającej współpracę przy grupowych projektach studenckich oraz pozyskiwanie potencjalnych inwestorów} % INFO: tytuł pracy w języku polskim 
-\titleShort{Szablon pracy dyplomowej ...}  % INFO: krótki tytuł pracy (do zamieszczenia w stopce, sklejony z imieniem i nazwiskiem autora nie powinien zająć więcej niż jedną linijkę)
-\titleEN{A project for an app designed to facilitate collaboration on student group projects and attract potential investors } % INFO: tytuł pracy w języku angielskim
+\titleShort{Projekt aplikacji ułatwiającej współpracę przy grupowych projektach $\ldots$}  % INFO: krótki tytuł pracy (do zamieszczenia w stopce, sklejony z imieniem i nazwiskiem autora nie powinien zająć więcej niż jedną linijkę)
+\titleEN{A project for an app designed to facilitate collaboration on student group projects and attract potential investors} % INFO: tytuł pracy w języku angielskim
 \author{Filip Kwiek}  % INFO: imię i nazwisko autora
 \uczelnia{Politechnika Wrocławska} % INFO: nazwa uczelni
 \wydzial{Wydział Informatyki i Telekomunikacji} % INFO: nazwa wydziału

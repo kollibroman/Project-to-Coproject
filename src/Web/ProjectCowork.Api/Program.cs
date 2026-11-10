@@ -6,10 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectCowork.Api.Extensions;
 using ProjectCowork.Api.Utils;
 using ProjectCowork.Core;
-using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Infrastructure;
-using ProjectCowork.Infrastructure.Authorization.Models;
 using ProjectCowork.Persistence;
+using ProjectCowork.Persistence.SeedData;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -45,19 +44,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    // Register all possible permission policies
-    foreach (var resource in Enum.GetValues<ResourceType>())
-    {
-        foreach (var action in Enum.GetValues<ActionType>())
-        {
-            var policyName = $"Permission.{resource}.{action}";
-            options.AddPolicy(policyName, policy => 
-                policy.Requirements.Add(new PermissionRequirement(resource, action)));
-        }
-    }
-});
+// Uprawnienia w projektach sprawdzają handlery przez IPermissionService, bez globalnych polityk.
+builder.Services.AddAuthorization();
         
 builder.Services.AddSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(builder.Configuration));
@@ -109,6 +97,8 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ProjectCoworkDbContext>();
     await context.Database.MigrateAsync();
+    await PermissionSeeder.SeedAsync(context);
+    await DemoDataSeeder.SeedAsync(context);
 }
 
 app.Run();

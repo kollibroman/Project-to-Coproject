@@ -1,6 +1,8 @@
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
+using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
+using ProjectCowork.Infrastructure.Authorization.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -14,14 +16,18 @@ public record DeleteProjectCommand : IRequest<DeleteProjectCommand, Task>
 internal class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, Task>
 {
     private readonly ProjectCoworkDbContext _context;
+    private readonly IPermissionService _permissionService;
 
-    public DeleteProjectCommandHandler(ProjectCoworkDbContext context)
+    public DeleteProjectCommandHandler(ProjectCoworkDbContext context, IPermissionService permissionService)
     {
         _context = context;
+        _permissionService = permissionService;
     }
 
     public async Task Handle(DeleteProjectCommand request, CancellationToken ct)
     {
+        await _permissionService.EnsureProjectPermissionAsync(request.ProjectId, ResourceType.Projects, ActionType.Delete, ct);
+
         var project = await _context.Projects
             .FirstOrDefaultAsync(x => x.Id == request.ProjectId, ct);
 
