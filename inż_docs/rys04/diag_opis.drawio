@@ -1,0 +1,78 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="diag_opis" name="Diagram opisowy systemu">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Obszary -->
+        <mxCell id="zone_users" value="&lt;b&gt;Użytkownicy&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="20" y="80" width="220" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="zone_server" value="&lt;b&gt;Serwer&lt;/b&gt; (Docker Compose)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="300" y="80" width="560" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="zone_ext" value="&lt;b&gt;Systemy zewnętrzne&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="920" y="80" width="220" height="560" as="geometry" />
+        </mxCell>
+
+        <!-- Użytkownicy -->
+        <mxCell id="pc" value="&lt;b&gt;Komputer użytkownika&lt;/b&gt;&lt;br&gt;przeglądarka internetowa" style="shape=mxgraph.networks.pc;html=1;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="85" y="150" width="90" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gitcli" value="&lt;b&gt;Klient Git&lt;/b&gt;&lt;br&gt;git clone / pull / push" style="shape=mxgraph.networks.laptop;html=1;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="85" y="420" width="90" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Serwer -->
+        <mxCell id="app" value="&lt;b&gt;ProjectCowork.App&lt;/b&gt;&lt;br&gt;React + TypeScript&lt;br&gt;serwowane przez nginx&lt;br&gt;port 3000" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="340" y="140" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="&lt;b&gt;ProjectCowork.Api&lt;/b&gt;&lt;br&gt;ASP.NET Core (.NET 10)&lt;br&gt;REST API + serwer Git HTTP&lt;br&gt;port 8080" style="shape=mxgraph.networks.server;html=1;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="625" y="250" width="60" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="&lt;b&gt;PostgreSQL 18&lt;/b&gt;&lt;br&gt;dane aplikacji" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="480" width="130" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="blob" value="&lt;b&gt;Azurite&lt;/b&gt;&lt;br&gt;emulator Azure Blob Storage&lt;br&gt;załączniki" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="520" y="480" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="repos" value="&lt;b&gt;Repozytoria Git&lt;/b&gt;&lt;br&gt;wolumen /app/Repos&lt;br&gt;(repozytoria bare)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="705" y="480" width="130" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Systemy zewnętrzne -->
+        <mxCell id="github" value="&lt;b&gt;GitHub&lt;/b&gt;&lt;br&gt;REST API (api.github.com)&lt;br&gt;repozytoria do importu" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="945" y="240" width="170" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Połączenia -->
+        <mxCell id="e_pc_app" value="HTTP&lt;br&gt;pobranie aplikacji SPA" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="pc" target="app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_pc_api" value="HTTP / JSON (REST)&lt;br&gt;token JWT" style="endArrow=classic;startArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="pc" target="api">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="295" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_git_api" value="Git Smart HTTP&lt;br&gt;/api/git/{projekt}/{nazwa}.git" style="endArrow=classic;startArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="gitcli" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_api_db" value="EF Core / Npgsql" style="endArrow=classic;startArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="api" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_api_blob" value="Azure Blob SDK" style="endArrow=classic;startArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="api" target="blob">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_api_repos" value="LibGit2Sharp&lt;br&gt;git http-backend" style="endArrow=classic;startArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="api" target="repos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_api_github" value="HTTPS (REST, token PAT)&lt;br&gt;klonowanie repozytoriów" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="api" target="github">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
