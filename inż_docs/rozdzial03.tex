@@ -21,13 +21,19 @@ Tabela \texttt{\_EFMigrationsHistory} jest tabelą domyślnie generowaną przez 
 Pozostałe tabele na rysunku są tabelami tworzonymi przez bibliotekę \texttt{Microsoft.Extensions.Identity} i przechowują informacje o użytkownikach, rolach i ich powiązaniach. Tabele te są wykorzystywane do zarządzania dostępem do systemu i jego funkcjonalnościami. 
 Tabela \texttt{UserEntity} dziedziczy po klasie \texttt{IdentityUser} i przechowuje informacje o użytkownikach systemu. Tabela \texttt{RoleEntity} dziedziczy po klasie \texttt{IdentityRole} i przechowuje informacje o rolach w systemie. Tabela \texttt{UserRoles} jest tabelą łączącą użytkowników z rolami i przechowuje informacje o przypisanych rolach do użytkowników. Tabela \texttt{UserClaims} przechowuje informacje o roszczeniach użytkowników, a tabela \texttt{UserLogins} przechowuje informacje o logowaniach użytkowników. 
 Tabela \texttt{UserTokens} przechowuje informacje o tokenach użytkowników, a tabela \texttt{RoleClaims} przechowuje informacje o rolach.
-\begin{figure}[ht]
+\begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{rys03/gen_db.png}
+    \includegraphics[scale=0.2]{rys03/diag_klas.pdf}
+    \caption{Diagram klas bazy danych}
+    \label{fig:diag_klas}
+\end{figure}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[scale=0.5]{rys03/gen_db.png}
     \caption{Wygenerowane tabele przez ORM}
     \label{fig:wygenerowane_tabele}
 \end{figure}
-
+\newpage
 \section{Makiety interfejsu graficznego}
 Makiety interfejsu graficznego zostały przygotowane w narzędziu \textit{Figma}. Każdą z nich przygotowano dla widoku na komputerze o szerokości ekranu 1280 pikseli, w jasnym motywie aplikacji. Każdy ekran po zalogowaniu
 składa się z górnego paska z nazwą systemu, ikoną zaproszeń i przyciskiem wylogowania oraz z bocznego menu nawigacyjnego. Dane widoczne na makietach są przykładowe.
