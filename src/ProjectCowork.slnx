@@ -34,6 +34,9 @@
   <Folder Name="/Infrastructure/Persistence/">
     <Project Path="Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
   <Folder Name="/Web/">
     <Project Path="Web/ProjectCowork.Api/ProjectCowork.Api.csproj" />
     <Project Path="Web/ProjectCowork.App/ProjectCowork.App.esproj" />

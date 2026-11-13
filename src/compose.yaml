@@ -1,0 +1,72 @@
+﻿services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ProjectCowork}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Od PostgreSQL 18 dane trzymane są w /var/lib/postgresql/<wersja>/docker.
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    restart: unless-stopped
+    command: azurite-blob --blobHost 0.0.0.0 --blobPort 10000 --loose --skipApiVersionCheck
+    ports:
+      - "10000:10000"
+    volumes:
+      - azurite-data:/data
+
+  projectcowork.api:
+    image: projectcowork.api
+    build:
+      context: .
+      dockerfile: Web/ProjectCowork.Api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      azurite:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-ProjectCowork};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
+      Integrations__BlobStorage__ConnectionString: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFeyLM+SR4UcR+JdBqDBwqD4l4hxsRJtCeZ6EPgnYQ==;BlobEndpoint=http://azurite:10000/devstoreaccount1;"
+      Cors__AllowedOrigins__0: "http://localhost:${APP_PORT:-3000}"
+      # Kontenery działają po HTTP, więc ciasteczko z refresh tokenem nie może mieć flagi Secure.
+      # Front i API na localhost z różnymi portami to ta sama "strona", więc wystarcza SameSite=Lax.
+      AuthCookie__SameSite: Lax
+      AuthCookie__Secure: "false"
+    ports:
+      - "${API_PORT:-8080}:8080"
+    volumes:
+      # Repozytoria git tworzone przez aplikację (Repos/{projectId}/{nazwa}.git).
+      - git-repos:/app/Repos
+
+  projectcowork.app:
+    image: projectcowork.app
+    build:
+      context: .
+      dockerfile: Web/ProjectCowork.App/Dockerfile
+      args:
+        VITE_API_URL: "http://localhost:${API_PORT:-8080}"
+    restart: unless-stopped
+    depends_on:
+      - projectcowork.api
+    ports:
+      - "${APP_PORT:-3000}:80"
+
+volumes:
+  postgres-data:
+  azurite-data:
+  git-repos:

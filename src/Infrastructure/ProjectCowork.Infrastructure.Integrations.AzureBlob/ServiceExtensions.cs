@@ -31,8 +31,9 @@ public static class ServiceExtensions
             var blobServiceClient = sp.GetRequiredService<BlobServiceClient>();
             var settings = sp.GetRequiredService<IOptions<BlobStorageSettings>>().Value;
             
-            return blobServiceClient.GetBlobContainerClient("test");
+            return blobServiceClient.GetBlobContainerClient(settings.ContainerName);
         });
+        services.AddHostedService<BlobContainerInitializer>();
         
         services.AddScoped<IBlobService, BlobService>();
         
