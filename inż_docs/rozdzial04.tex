@@ -79,7 +79,37 @@ Na rysunku \ref{fig:diag_mediator} przedstawiono diagram przepływu danych w sys
     \caption{Diagram przepływu danych w systemie z wykorzystaniem wzorca Mediator}
     \label{fig:diag_mediator}
 \end{figure}
+W celu uzupełnienia wizualizacji, w listingu \ref{lst:repo} przedstawiono fragment kodu odpowiedzialnego za inicjalizacje pustego repozytorium \textit{Git}. Realizowane jest to poprzez
+nakładkę na bibliotekę \textit{LibGit2} \cite{libGit2}.
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Fragment usługi obsługującej inicjalizację pustego repozytorium}, label={lst:repo}]
+  public async Task<string> InitBareRepositoryAsync(string repositoryName, Guid projectId)
+  {
+      // Repos/{projectId}/{repositoryName}.git - one folder per project, many repos inside.
+      var projectRoot = GitRepositoryPaths.GetProjectRoot(projectId);
+      var gitPath = GitRepositoryPaths.GetRepositoryPath(projectId, repositoryName);
 
+      if (Directory.Exists(gitPath))
+      {
+          throw new InvalidOperationException(
+              $"Repository '{repositoryName}' already exists in project {projectId}.");
+      }
+
+      Directory.CreateDirectory(projectRoot);
+      Repository.Init(gitPath, isBare: true);
+
+      using (var repo = new Repository(gitPath))
+      {
+          repo.Config.Set("http.receivepack", true);
+      }
+
+      await File.WriteAllTextAsync(Path.Combine(gitPath, "HEAD"), "ref: refs/heads/main\n");
+
+      var request = _httpContextAccessor.HttpContext!.Request;
+      var cloneUrl = $"{request.Scheme}://{request.Host}/api/git/{projectId}/{repositoryName}.git";
+
+      return cloneUrl;
+  }
+\end{lstlisting}
 \subsection{Warstwa domenowa}
 Warstwa domenowa odpowiada tylko i wyłącznie za model domeny systemu, który w tym przypadku jest anemiczny i dopiero jest wzbogacany w warstwie infrastruktury. Każda encja posiada swoje własności
 i definiuje relacje z innymi encjami. W tej warstwie również znajdują się wyjątki domenowe, które są wykorzystywane w logice biznesowej.
@@ -88,7 +118,169 @@ i definiuje relacje z innymi encjami. W tej warstwie również znajdują się wy
 W warstwie infrastruktury znajdują się wszystkie integracje z systemami zewnętrznymi, konfiguracja encji w bazie danych, konfiguracja \textit{ORM},
 konfiguracja uwierzytelniania i autoryzacji, konfiguracja zdarzeń domenowych i pomniejsze klasy wspomagające działanie systemu takie jak chociażby Agregaty wykorzystywane w logice biznesowej.
 Warstwa ta, jak wskazuje nazwa, jest odpowiedzialna za cześć typowo infrastrukturalną systemu i jest niezależna od logiki biznesowej.
+W warstwie tej znajduje się również dokładna integracja z \textit{Git}, która jest realizowana poprzez mieszankę wcześniej opisanej nakładki na bibliotekę \textit{LibGit2} i
+systemowego procesu samego systemu \textit{Git}. Wynika to z tego, że nie wszystkie funkcjonalności zostały oddane w nakładce na bibliotekę i w celu sprawnej realizacji takich komend jak \textit{push} i \textit{pull},
+wykorzystano gotowe rozwiązania istniejące w systemie kontroli wersji \textit{Git}. Pokazano to na listingach \ref{lst:kontroler_git} i \ref{lst:obsługa_żądania_git}. Listing \ref{lst:kontroler_git} pokazuje realizację od strony punktu wejściowego w interfejsie \textit{API}, gdzie 
+jest używana dynamicznie tworzona metoda w kontrolerze, która wywołuje handler komendy obsługującej żądanie. Zostało to zrealizowane w ten specyficzny sposób, ze względu na to że istniejący serwer tworzony przez \textit{Git} obsłuhuje oba typy żądań
+automatycznie, na tej samej ścieżce dostępowej.
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Kontroler obsługujący żądania Git}, label={lst:kontroler_git}]
+  public static IEndpointRouteBuilder MapGitEndpoints(this IEndpointRouteBuilder endpoints)
+  {
+      var group = endpoints.MapGroup("/api/git");
+      
+      group.MapPost("/repository/create", CreateRepositoryAsync);
+      
+      group.MapMethods("/{projectId:guid}/{name}.git/{*path}", [HttpMethods.Get, HttpMethods.Post], PushToRepositoryAsync);
+      
+      return endpoints;     
+  }
 
+  private static async Task<Ok<string>> CreateRepositoryAsync([FromServices] IMediator mediator, [FromBody] CreateRepositoryRequest request, CancellationToken ct)
+  {
+      var clonePath = await mediator.Send(new CreateRepositoryCommand
+      {
+          Name = request.Name,
+          ProjectId = request.ProjectId
+      }, ct);
+      
+      return TypedResults.Ok(clonePath);
+  }
+\end{lstlisting}
+Wysłanie komendy \textit{CreateRepositoryCommand} powoduje wywołanie handlera, który w zależności od typu żądania, wywołuje metodę obsługującą żądanie \textit{push} lub \textit{pull}. Metoda ta jest pokazana na listingu \ref{lst:obsługa_żądania_git}.
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Obsługa żadania \textit{push} lub \textit{pull}}, label={lst:obsługa_żądania_git}]
+public async Task<string> UploadAndCreateRemoteRepositoryAsync(Guid projectId, string name, string gitAction, CancellationToken ct)
+  {
+      var httpContext = _httpContextAccessor.HttpContext
+                        ?? throw new InvalidOperationException("No active HTTP context.");
+
+      // Repos/{projectId}/{name}.git - same layout as GitClientService.
+      var projectRoot = GitRepositoryPaths.GetProjectRoot(projectId);
+      var gitPath = GitRepositoryPaths.IsValidName(name)
+          ? GitRepositoryPaths.GetRepositoryPath(projectId, name)
+          : null;
+
+      if (gitPath is null || !Directory.Exists(gitPath))
+      {
+          httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+          return string.Empty;
+      }
+
+      var startInfo = new ProcessStartInfo
+      {
+          FileName = "git",
+          Arguments = "http-backend",
+          RedirectStandardInput = true,
+          RedirectStandardOutput = true,
+          RedirectStandardError = true,
+          UseShellExecute = false,
+          CreateNoWindow = true,
+          WorkingDirectory = gitPath,
+      };
+
+      void SetEnv(string key, string? value)
+      {
+          if (!string.IsNullOrEmpty(value))
+              startInfo.Environment[key] = value;
+      }
+
+      var request = httpContext.Request;
+      SetEnv("GIT_HTTP_EXPORT_ALL", "1");
+      SetEnv("GIT_PROJECT_ROOT", projectRoot);
+      SetEnv("PATH_INFO", $"/{name}.git/{gitAction}");
+      SetEnv("REQUEST_METHOD", request.Method);
+      SetEnv("QUERY_STRING", request.QueryString.ToUriComponent().TrimStart('?'));
+      SetEnv("CONTENT_TYPE", request.ContentType);
+      SetEnv("CONTENT_LENGTH", request.ContentLength?.ToString());
+      SetEnv("HTTP_CONTENT_ENCODING", request.Headers["Content-Encoding"].ToString());
+      SetEnv("GIT_PROTOCOL", request.Headers["Git-Protocol"].ToString());
+      SetEnv("REMOTE_USER", httpContext.User.Identity?.Name);
+      SetEnv("REMOTE_ADDR", httpContext.Connection.RemoteIpAddress?.ToString());
+
+      using var process = new Process { StartInfo = startInfo };
+      process.Start();
+
+      var stderrTask = process.StandardError.ReadToEndAsync(ct);
+
+      var inputTask = Task.Run(async () =>
+      {
+          try
+          {
+              await request.Body.CopyToAsync(process.StandardInput.BaseStream, ct);
+          }
+          finally
+          {
+              process.StandardInput.Close();
+          }
+      }, ct);
+
+      var pipeReader = PipeReader.Create(process.StandardOutput.BaseStream);
+      await ReadResponse(pipeReader, httpContext, ct);
+      await pipeReader.CopyToAsync(httpContext.Response.Body, ct);
+      await pipeReader.CompleteAsync();
+
+      await inputTask;
+      await process.WaitForExitAsync(ct);
+
+      var stderr = await stderrTask;
+      if (process.ExitCode != 0 || !string.IsNullOrWhiteSpace(stderr))
+      {
+          _logger.LogWarning("git http-backend exited with {ExitCode} for {GitPath}: {Stderr}",
+              process.ExitCode, gitPath, stderr);
+      }
+
+      return gitPath;
+  }
+
+  private static async Task ReadResponse(PipeReader pipeReader, HttpContext httpContext, CancellationToken cancellationToken)
+  {
+      while (true)
+      {
+          var result = await pipeReader.ReadAsync(cancellationToken);
+          var buffer = result.Buffer;
+          var (position, isFinished) = ReadHeaders(httpContext, buffer);
+          pipeReader.AdvanceTo(position, buffer.End);
+
+          if (result.IsCompleted || isFinished)
+              break;
+      }
+  }
+
+  private static (SequencePosition Position, bool IsFinished) ReadHeaders(
+      HttpContext httpContext,
+      in ReadOnlySequence<byte> sequence)
+  {
+      var reader = new SequenceReader<byte>(sequence);
+      while (!reader.End)
+      {
+          if (!reader.TryReadTo(out ReadOnlySpan<byte> line, (byte)'\n'))
+              break;
+
+          // Empty line ("\r" or "") terminates the CGI header block.
+          if (line.Length == 0 || (line.Length == 1 && line[0] == (byte)'\r'))
+              return (reader.Position, true);
+
+          var colon = line.IndexOf((byte)':');
+          if (colon == -1)
+              break;
+
+          var headerName = Encoding.UTF8.GetString(line[..colon]);
+          var headerValue = Encoding.UTF8.GetString(line[(colon + 1)..]).Trim();
+
+          // CGI "Status: 404 Not Found" must become the HTTP status code, not a header.
+          if (headerName.Equals("Status", StringComparison.OrdinalIgnoreCase))
+          {
+              var code = headerValue.Split(' ', 2)[0];
+              if (int.TryParse(code, out var statusCode))
+                  httpContext.Response.StatusCode = statusCode;
+              continue;
+          }
+
+          httpContext.Response.Headers[headerName] = headerValue;
+      }
+
+      return (reader.Position, false);
+  }
+\end{lstlisting}
 \subsection{Warstwa aplikacji}
 Warstwa aplikacji została zgodnie z założeniami \textit{CQRS} \cite{CQRS}. Zamiast zwykłych serwisów (klas zawierających metody logiki biznesowej), zgodnie z tym 
 wzorcem logika pobierania danych i ich zapisu została od siebie rozdzielona. Każdy moduł systemu posiada katalog \texttt{Commands}, w którym znajdują się klasy komend, które są wywoływane w momencie kiedy użytkownik chce zmienić stan systemu.
