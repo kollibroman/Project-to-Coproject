@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFramework>net11.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -14,6 +14,7 @@
         <ProjectReference Include="..\..\Domain\ProjectCowork.Domain.Exceptions\ProjectCowork.Domain.Exceptions.csproj" />
         <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Authorization\ProjectCowork.Infrastructure.Authorization.csproj" />
         <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Domain\ProjectCowork.Infrastructure.Domain.csproj" />
+        <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Integrations.Email\ProjectCowork.Infrastructure.Integrations.Email.csproj" />
         <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Integrations.Github\ProjectCowork.Infrastructure.Integrations.Github.csproj" />
         <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Integrations.Git\ProjectCowork.Infrastructure.Integrations.Git.csproj" />
         <ProjectReference Include="..\..\Infrastructure\ProjectCowork.Infrastructure.Persistence\ProjectCowork.Infrastructure.Persistence.csproj" />

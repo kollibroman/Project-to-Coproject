@@ -1,10 +1,12 @@
 using System.Net;
+using DispatchR;
 using DispatchR.Abstractions.Send;
 using Microsoft.EntityFrameworkCore;
 using ProjectCowork.Domain.Enums.Permissions;
 using ProjectCowork.Domain.Exceptions.Common;
 using ProjectCowork.Domain.Exceptions.Projects;
 using ProjectCowork.Infrastructure.Authorization.Abstractions;
+using ProjectCowork.Infrastructure.Domain.Abstractions;
 using ProjectCowork.Infrastructure.Domain.Aggregates;
 using ProjectCowork.Persistence;
 
@@ -25,11 +27,14 @@ internal class InviteUserToProjectCommandHandler : IRequestHandler<InviteUserToP
 {
     private readonly ProjectCoworkDbContext _context;
     private readonly IPermissionService _permissionService;
+    private readonly IMediator _mediator;
 
-    public InviteUserToProjectCommandHandler(ProjectCoworkDbContext context, IPermissionService permissionService)
+    public InviteUserToProjectCommandHandler(ProjectCoworkDbContext context, IPermissionService permissionService,
+        IMediator mediator)
     {
         _context = context;
         _permissionService = permissionService;
+        _mediator = mediator;
     }
 
     public async Task Handle(InviteUserToProjectCommand request, CancellationToken ct)
@@ -68,10 +73,14 @@ internal class InviteUserToProjectCommandHandler : IRequestHandler<InviteUserToP
             throw new ProjectAccessException("User has already been invited to the project.");
         }
 
-        // TODO: Add invitation via mail
         var invitation = ProjectInvitationAggregate.Create(request.InvitationContent, user.Id, project.Id, request.RoleId);
         
         _context.Add(invitation);
         await _context.SaveChangesAsync(ct);
+        
+        var aggregate = new ProjectInvitationAggregate(invitation);
+        aggregate.AfterCreationProcess();
+
+        await _mediator.PublishDomainEventsAsync(aggregate, ct);
     }
 }

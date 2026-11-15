@@ -59,3 +59,30 @@ export function getEmailFromToken(token: string | null): string | null {
 
     return null;
 }
+
+// ClaimTypes.Role trafia do tokena pod pełnym URI albo skrótem „role”. Przy kilku rolach wartością jest tablica.
+const ROLE_CLAIMS = [
+    'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
+    'role',
+];
+
+/** Role systemowe (User, Business, Admin) odczytane z access tokena. */
+export function getRolesFromToken(token: string | null): string[] {
+    const payload = token ? decodePayload(token) : null;
+
+    if (!payload) {
+        return [];
+    }
+
+    for (const claim of ROLE_CLAIMS) {
+        const value = payload[claim];
+        if (typeof value === 'string' && value.length > 0) {
+            return [value];
+        }
+        if (Array.isArray(value)) {
+            return value.filter((item): item is string => typeof item === 'string');
+        }
+    }
+
+    return [];
+}

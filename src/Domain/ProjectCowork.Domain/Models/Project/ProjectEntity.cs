@@ -11,6 +11,9 @@ public class ProjectEntity : BaseTrackedEntity
     public required string Name { get; set; }
     public required string Description { get; set; }
     
+    public string? ContactEmail { get; set; }
+    public string? ContactPhone { get; set; } 
+    
     public required Guid OwnerId { get; set; }
 
     public UserEntity Owner { get; set; } = null!;

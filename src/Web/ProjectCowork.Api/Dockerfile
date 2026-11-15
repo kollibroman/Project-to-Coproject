@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:11.0 AS base
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
@@ -9,7 +9,7 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Web/ProjectCowork.Api/ProjectCowork.Api.csproj", "Web/ProjectCowork.Api/"]
@@ -34,6 +34,7 @@ COPY ["Application/ProjectCowork.Core.Features.User/ProjectCowork.Core.Features.
 COPY ["Application/ProjectCowork.Core/ProjectCowork.Core.csproj", "Application/ProjectCowork.Core/"]
 COPY ["Infrastructure/ProjectCowork.Infrastructure/ProjectCowork.Infrastructure.csproj", "Infrastructure/ProjectCowork.Infrastructure/"]
 COPY ["Infrastructure/ProjectCowork.Infrastructure.Integrations/ProjectCowork.Infrastructure.Integrations.csproj", "Infrastructure/ProjectCowork.Infrastructure.Integrations/"]
+COPY ["Infrastructure/ProjectCowork.Infrastructure.Integrations.Email/ProjectCowork.Infrastructure.Integrations.Email.csproj", "Infrastructure/ProjectCowork.Infrastructure.Integrations.Email/"]
 RUN dotnet restore "Web/ProjectCowork.Api/ProjectCowork.Api.csproj"
 COPY . .
 WORKDIR "/src/Web/ProjectCowork.Api"

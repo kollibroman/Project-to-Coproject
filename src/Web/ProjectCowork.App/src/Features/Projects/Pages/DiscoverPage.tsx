@@ -1,18 +1,21 @@
 import { ActionIcon, Alert, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { ArrowRightIcon } from '@phosphor-icons/react';
 import { Link } from 'react-router';
-import { useDiscoverProjects } from '../../../hooks';
+import { useAuth, useDiscoverProjects } from '../../../hooks';
 import type { ProjectModel } from "../../../client";
 
 export const DiscoverPage = () => {
     const { data, isLoading, isError, error } = useDiscoverProjects();
+    const { isBusiness } = useAuth();
 
     return (
         <Stack gap="md">
             <Stack gap="xs">
                 <Title order={1}>Odkryj</Title>
                 <Text c="dimmed">
-                    Projekty na platformie, do których nie należysz. Wejdź, aby zobaczyć ich oferty.
+                    {isBusiness
+                        ? 'Projekty na platformie. Wejdź, aby zobaczyć szczegóły i dane kontaktowe.'
+                        : 'Projekty na platformie, do których nie należysz. Wejdź, aby zobaczyć ich oferty.'}
                 </Text>
             </Stack>
 

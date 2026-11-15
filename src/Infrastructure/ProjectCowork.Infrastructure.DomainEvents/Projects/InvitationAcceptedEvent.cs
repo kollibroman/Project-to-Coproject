@@ -4,5 +4,5 @@ namespace ProjectCowork.Infrastructure.DomainEvents.Projects;
 
 public record InvitationAcceptedEvent : INotification
 {
-    public required Guid InvitationId { get; set; }
+    public required Guid InvitationId { get; init; }
 }

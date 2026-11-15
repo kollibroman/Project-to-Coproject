@@ -6,10 +6,10 @@ import { heyApiPlugin } from '@hey-api/vite-plugin';
 export default defineConfig({
   plugins: [heyApiPlugin({
     config: {
-      client: '@hey-api/client-fetch',
-      input: '../ProjectCowork.Api/project-cowork.json', // sign up at app.heyapi.dev
+      input: '../ProjectCowork.Api/project-cowork.json',
       output: 'src/client',
       plugins: [
+        '@hey-api/client-fetch',
         '@tanstack/react-query'
       ]
     },}),

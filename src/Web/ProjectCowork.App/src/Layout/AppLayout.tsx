@@ -24,13 +24,21 @@ const navItems: NavItem[] = [
   { label: 'Konto', path: '/account' },
 ];
 
+// Firma nie należy do projektów, więc zamiast „Projekty” dostaje stronę odkrywania.
+const businessNavItems: NavItem[] = [
+  { label: 'Pulpit', path: '/' },
+  { label: 'Odkryj', path: '/discover' },
+  { label: 'Konto', path: '/account' },
+];
+
 export function AppLayout() {
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure(false);
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuth();
+  const { logout, isBusiness } = useAuth();
+  const items = isBusiness ? businessNavItems : navItems;
 
   return (
     <AppShell
@@ -70,7 +78,7 @@ export function AppLayout() {
 
       <AppShell.Navbar p="md">
         <AppShell.Section grow component={ScrollArea}>
-          {navItems.map((item) => (
+          {items.map((item) => (
             <NavLink
               key={item.path}
               label={item.label}

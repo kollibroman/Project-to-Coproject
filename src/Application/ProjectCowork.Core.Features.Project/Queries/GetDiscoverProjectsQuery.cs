@@ -27,13 +27,16 @@ internal class GetDiscoverProjectsQueryHandler : IStreamRequestHandler<GetDiscov
         return _context.Projects
             .Where(x => x.OwnerId != userId)
             .Where(x => x.ProjectMembers.All(m => m.UserId != userId))
+            .OrderByDescending(x => x.CreatedAt)
             .Select(x => new ProjectModel
             {
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 OwnerId = x.OwnerId,
-                RoleName = "Podgląd"
+                RoleName = "Podgląd",
+                ContactEmail = x.ContactEmail,
+                ContactPhone = x.ContactPhone
             })
             .AsAsyncEnumerable();
     }
