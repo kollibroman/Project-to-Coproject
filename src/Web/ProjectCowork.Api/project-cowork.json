@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.1",
+  "openapi": "3.2.0",
   "info": {
     "title": "ProjectCowork.Api | v1",
     "version": "1.0.0"
@@ -421,6 +421,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -2450,6 +2453,8 @@
         "required": [
           "id",
           "name",
+          "contactEmail",
+          "contactPhone",
           "description",
           "ownerId",
           "roleName"
@@ -2462,6 +2467,18 @@
           },
           "name": {
             "type": "string"
+          },
+          "contactEmail": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "contactPhone": {
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "description": {
             "type": "string"
@@ -2793,16 +2810,22 @@
   },
   "tags": [
     {
-      "name": "ProjectsController"
+      "name": "AuthController"
     },
     {
-      "name": "AuthController"
+      "name": "GitController"
+    },
+    {
+      "name": "GithubController"
+    },
+    {
+      "name": "PermissionsController"
     },
     {
       "name": "PostingController"
     },
     {
-      "name": "GitController"
+      "name": "ProjectsController"
     },
     {
       "name": "RepositoryController"
@@ -2812,12 +2835,6 @@
     },
     {
       "name": "TasksController"
-    },
-    {
-      "name": "PermissionsController"
-    },
-    {
-      "name": "GithubController"
     }
   ]
 }

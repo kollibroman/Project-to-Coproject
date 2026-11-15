@@ -165,6 +165,8 @@ export type ProjectMemberDto = {
 export type ProjectModel = {
     id: string;
     name: string;
+    contactEmail: null | string;
+    contactPhone: null | string;
     description: string;
     ownerId: string;
     roleName: string;
@@ -474,6 +476,13 @@ export type PostApiAuthTokenRefreshData = {
     path?: never;
     query?: never;
     url: '/api/auth/token/refresh';
+};
+
+export type PostApiAuthTokenRefreshErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
 };
 
 export type PostApiAuthTokenRefreshResponses = {

@@ -40,7 +40,9 @@ internal class GetProjectsQueryHandler : IStreamRequestHandler<GetProjectsQuery,
                     : x.ProjectMembers
                         .Where(member => member.UserId == userId)
                         .Select(member => member.ProjectRole.Name)
-                        .First()
+                        .First(),
+                ContactEmail = x.ContactEmail,
+                ContactPhone = x.ContactPhone
             })
             .AsAsyncEnumerable();
     }

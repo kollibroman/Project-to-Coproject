@@ -47,7 +47,9 @@ internal class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, Task<Pr
                     : x.ProjectMembers
                         .Where(member => member.UserId == userId)
                         .Select(member => member.ProjectRole.Name)
-                        .First()
+                        .First(),
+                ContactEmail = x.ContactEmail,
+                ContactPhone = x.ContactPhone
             })
             .FirstOrDefaultAsync(ct);
 

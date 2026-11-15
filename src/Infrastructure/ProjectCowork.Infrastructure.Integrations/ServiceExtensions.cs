@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectCowork.Infrastructure.Integrations.AzureBlob;
+using ProjectCowork.Infrastructure.Integrations.Email;
 using ProjectCowork.Infrastructure.Integrations.Git;
 using ProjectCowork.Infrastructure.Integrations.Github;
 
@@ -13,6 +14,7 @@ public static class ServiceExtensions
         services.AddAzureBlob(configuration);
         services.AddGitServices();
         services.AddGithubServices();
+        services.AddEmailIntegration();
         
         return services;
     }

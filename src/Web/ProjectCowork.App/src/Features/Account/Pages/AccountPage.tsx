@@ -9,7 +9,7 @@ import {
     type MantineColorScheme,
 } from '@mantine/core';
 import { useAuth } from '../../../hooks';
-import { getEmailFromToken, getUserIdFromToken } from '../../../auth/claims.ts';
+import {getEmailFromToken, getRolesFromToken, getUserIdFromToken} from '../../../auth/claims.ts';
 import { GithubConnectionSection } from '../Components/GithubConnectionSection.tsx';
 import { InvitationsSection } from '../Components/InvitationsSection.tsx';
 
@@ -25,6 +25,9 @@ export const AccountPage = () => {
 
     const email = getEmailFromToken(token);
     const userId = getUserIdFromToken(token);
+    const userRoles = getRolesFromToken(token);
+
+    const isBusiness = userRoles.includes('Business');
 
     return (
         <Stack gap="md">
@@ -56,10 +59,8 @@ export const AccountPage = () => {
                     />
                 </Stack>
             </Paper>
-
-            <InvitationsSection />
-
-            <GithubConnectionSection />
+            {!isBusiness && (<InvitationsSection />)}
+            {!isBusiness && (<GithubConnectionSection />)}
         </Stack>
     );
 };

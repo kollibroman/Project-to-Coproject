@@ -6,6 +6,7 @@ import {
   postApiAuthRegisterUserMutation,
 } from '../client/@tanstack/react-query.gen';
 import { getAuthState, logout, setAccessToken, subscribe } from '../auth/session';
+import { getRolesFromToken } from '../auth/claims';
 
 export const useAuth = () => {
   const { status, token } = useSyncExternalStore(subscribe, getAuthState, getAuthState);
@@ -16,6 +17,7 @@ export const useAuth = () => {
     status,
     isAuthenticated: status === 'authenticated',
     isLoading: status === 'unknown',
+    isBusiness: getRolesFromToken(token).includes('Business'),
     logout: async () => {
       await logout();
       queryClient.clear();

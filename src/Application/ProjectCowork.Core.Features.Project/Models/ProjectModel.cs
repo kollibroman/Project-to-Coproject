@@ -4,6 +4,8 @@ public record ProjectModel
 {
     public required Guid Id { get; init; }
     public required string Name { get; init; }
+    public required string? ContactEmail { get; init; }
+    public required string? ContactPhone { get; init; }
     public required string Description { get; init; }
     public required Guid OwnerId { get; init; }
     public required string RoleName { get; init; }

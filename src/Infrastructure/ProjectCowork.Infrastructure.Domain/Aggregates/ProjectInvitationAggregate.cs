@@ -26,6 +26,14 @@ public class ProjectInvitationAggregate : AggregateRoot
         };
     }
 
+    public void AfterCreationProcess()
+    {
+        RaiseDomainEvent(new InvitationCreatedEvent
+        {
+            InvitationId = ProjectInvitation.Id
+        });
+    }
+
     public void AcceptInvitation()
     {
         EnsureActive();

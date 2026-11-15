@@ -2,11 +2,43 @@ import { Alert, Badge, Button, Group, Loader, Paper, Stack, Text, Title } from '
 import { useDisclosure } from '@mantine/hooks';
 import { useMemo, useState } from 'react';
 import { Navigate, useParams } from 'react-router';
-import { useDiscoverProjects, usePostings } from '../../../hooks';
+import { useAuth, useDiscoverProjects, usePostings } from '../../../hooks';
+import { BusinessProjectPreview } from '../../Business/Components/BusinessProjectPreview.tsx';
 import type { ProjectPostingDto } from '../../../client';
 import { ApplyForPostingDialog } from '../../Postings/Dialogs/ApplyForPostingDialog.tsx';
 
 export const ProjectPreviewPage = () => {
+    const { isBusiness } = useAuth();
+
+    return isBusiness ? <BusinessProjectPreviewPage /> : <UserProjectPreviewPage />;
+};
+
+// Firma widzi tylko szczegóły i dane kontaktowe, więc nie pobieramy ogłoszeń.
+const BusinessProjectPreviewPage = () => {
+    const { projectId } = useParams<{ projectId: string }>();
+    const projectsQuery = useDiscoverProjects();
+    const project = projectsQuery.data?.find((item) => item.id === projectId);
+
+    if (!projectId) {
+        return <Navigate to="/discover" replace />;
+    }
+
+    if (projectsQuery.isLoading) {
+        return <Loader />;
+    }
+
+    if (projectsQuery.isError || !project) {
+        return (
+            <Alert color="red" title="Nie udało się otworzyć projektu">
+                Projekt nie jest dostępny w widoku odkrywania.
+            </Alert>
+        );
+    }
+
+    return <BusinessProjectPreview project={project} />;
+};
+
+const UserProjectPreviewPage = () => {
     const { projectId } = useParams<{ projectId: string }>();
     const projectsQuery = useDiscoverProjects();
     const postingsQuery = usePostings(projectId ?? '', true);

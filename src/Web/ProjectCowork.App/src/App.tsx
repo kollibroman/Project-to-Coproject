@@ -2,6 +2,8 @@ import { Card, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import { BriefcaseIcon, CompassIcon, FolderIcon } from '@phosphor-icons/react';
 import { Link } from 'react-router';
 import type { ComponentType } from 'react';
+import { useAuth } from './hooks';
+import { BusinessDashboardPage } from './Features/Business/Pages/BusinessDashboardPage.tsx';
 
 type LandingTile = {
   title: string;
@@ -37,6 +39,12 @@ const tiles: LandingTile[] = [
 ];
 
 function App() {
+  const { isBusiness } = useAuth();
+
+  if (isBusiness) {
+    return <BusinessDashboardPage />;
+  }
+
   return (
     <Stack gap="lg">
       <Stack gap="xs">

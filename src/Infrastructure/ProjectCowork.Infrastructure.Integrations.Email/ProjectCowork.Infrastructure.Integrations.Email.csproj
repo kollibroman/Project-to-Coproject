@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net11.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MailKit" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Abstractions\ProjectCowork.Infrastructure.Abstractions.csproj" />
+      <ProjectReference Include="..\ProjectCowork.Infrastructure.Configuration\ProjectCowork.Infrastructure.Configuration.csproj" />
+    </ItemGroup>
+
+</Project>

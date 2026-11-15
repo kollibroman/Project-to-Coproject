@@ -41,7 +41,7 @@
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ASPNETCORE_HTTP_PORTS: "8080"
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-ProjectCowork};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
-      Integrations__BlobStorage__ConnectionString: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFeyLM+SR4UcR+JdBqDBwqD4l4hxsRJtCeZ6EPgnYQ==;BlobEndpoint=http://azurite:10000/devstoreaccount1;"
+      Integrations__BlobStorage__ConnectionString: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;"
       Cors__AllowedOrigins__0: "http://localhost:${APP_PORT:-3000}"
       # Kontenery działają po HTTP, więc ciasteczko z refresh tokenem nie może mieć flagi Secure.
       # Front i API na localhost z różnymi portami to ta sama "strona", więc wystarcza SameSite=Lax.
