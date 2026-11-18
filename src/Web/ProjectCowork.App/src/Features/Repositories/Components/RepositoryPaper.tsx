@@ -23,7 +23,8 @@ export const RepositoryPaper = ({repository: { id, name }}: Props) => {
                         </Stack>
                     </Grid.Col>
                     <Grid.Col span={1}>
-                        <ActionIcon variant="filled" size="lg" radius="sm" component={Link} to={`/repository/${id}`}>
+                        <ActionIcon variant="filled" size="lg" radius="sm" component={Link} to={`/repository/${id}`}
+                                    aria-label={`Otwórz repozytorium ${name}`}>
                             <ArrowRightIcon style={{ width: '70%', height: '70%' }}/>
                         </ActionIcon>
                     </Grid.Col>

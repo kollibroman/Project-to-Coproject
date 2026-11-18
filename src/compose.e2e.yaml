@@ -1,0 +1,16 @@
+services:
+  postgres:
+    ports: !reset []
+    volumes: !reset []
+    tmpfs:
+      - /var/lib/postgresql
+
+  azurite:
+    ports: !reset []
+    volumes: !reset []
+
+  projectcowork.api:
+    volumes: !reset []
+    tmpfs:
+      # Kontener API działa jako użytkownik bez uprawnień roota, stąd mode=1777.
+      - /app/Repos:mode=1777

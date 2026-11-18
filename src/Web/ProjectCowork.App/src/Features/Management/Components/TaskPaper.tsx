@@ -18,7 +18,7 @@ export const TaskPaper = ({ task, onEdit, onDelete, onStatusChange, updating, hi
     const isDone = task.status === TaskStatusValue.Done;
 
     return (
-        <Paper withBorder radius="sm" p="md">
+        <Paper withBorder radius="sm" p="md" data-testid="task" data-task-name={task.name}>
             <Group justify="space-between" align="flex-start" wrap="nowrap">
                 <Stack gap={4} style={{ minWidth: 0 }}>
                     <Group gap="xs">
@@ -62,7 +62,8 @@ export const TaskPaper = ({ task, onEdit, onDelete, onStatusChange, updating, hi
                         }}
                     />
                     <Tooltip label="Edytuj">
-                        <ActionIcon variant="light" size="lg" radius="sm" onClick={() => onEdit(task)}>
+                        <ActionIcon variant="light" size="lg" radius="sm" onClick={() => onEdit(task)}
+                                    aria-label="Edytuj zadanie">
                             <PencilSimpleIcon style={{ width: '70%', height: '70%' }} />
                         </ActionIcon>
                     </Tooltip>
@@ -73,6 +74,7 @@ export const TaskPaper = ({ task, onEdit, onDelete, onStatusChange, updating, hi
                             size="lg"
                             radius="sm"
                             onClick={() => onDelete(task)}
+                            aria-label="Usuń zadanie"
                         >
                             <TrashIcon style={{ width: '70%', height: '70%' }} />
                         </ActionIcon>

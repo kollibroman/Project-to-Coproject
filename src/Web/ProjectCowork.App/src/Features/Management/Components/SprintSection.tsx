@@ -31,7 +31,8 @@ export const SprintSection = ({ sprint, tasks, isActive, to, onAddTask, onEdit, 
     const progress = tasks.length === 0 ? 0 : Math.round((done / tasks.length) * 100);
 
     return (
-        <Paper withBorder shadow="md" radius="sm" p="xl">
+        <Paper withBorder shadow="md" radius="sm" p="xl" data-testid="sprint-section"
+               data-sprint-name={sprint ? sprint.name : 'Backlog'}>
             <Stack gap="md">
                 <Group justify="space-between" align="flex-start" wrap="nowrap">
                     <Stack gap={4}>
@@ -59,26 +60,30 @@ export const SprintSection = ({ sprint, tasks, isActive, to, onAddTask, onEdit, 
                     <Group gap="xs" wrap="nowrap">
                         {to && (
                             <Tooltip label="Otwórz sprint">
-                                <ActionIcon component={Link} to={to} variant="light" size="lg" radius="sm">
+                                <ActionIcon component={Link} to={to} variant="light" size="lg" radius="sm"
+                                            aria-label="Otwórz sprint">
                                     <ArrowRightIcon style={{ width: '70%', height: '70%' }} />
                                 </ActionIcon>
                             </Tooltip>
                         )}
                         <Tooltip label="Dodaj zadanie">
-                            <ActionIcon variant="light" size="lg" radius="sm" onClick={onAddTask}>
+                            <ActionIcon variant="light" size="lg" radius="sm" onClick={onAddTask}
+                                        aria-label="Dodaj zadanie">
                                 <PlusIcon style={{ width: '70%', height: '70%' }} />
                             </ActionIcon>
                         </Tooltip>
                         {onEdit && (
                             <Tooltip label="Edytuj sprint">
-                                <ActionIcon variant="light" size="lg" radius="sm" onClick={onEdit}>
+                                <ActionIcon variant="light" size="lg" radius="sm" onClick={onEdit}
+                                            aria-label="Edytuj sprint">
                                     <PencilSimpleIcon style={{ width: '70%', height: '70%' }} />
                                 </ActionIcon>
                             </Tooltip>
                         )}
                         {onDelete && (
                             <Tooltip label="Usuń sprint">
-                                <ActionIcon variant="light" color="red" size="lg" radius="sm" onClick={onDelete}>
+                                <ActionIcon variant="light" color="red" size="lg" radius="sm" onClick={onDelete}
+                                            aria-label="Usuń sprint">
                                     <TrashIcon style={{ width: '70%', height: '70%' }} />
                                 </ActionIcon>
                             </Tooltip>

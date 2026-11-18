@@ -1,0 +1,15 @@
+{
+  // Tylko do sprawdzania typów testów E2E: npx tsc -p tsconfig.e2e.json
+  // Playwright sam transpiluje te pliki, więc nie są częścią `npm run build`.
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["playwright.config.ts", "e2e/**/*.ts"]
+}

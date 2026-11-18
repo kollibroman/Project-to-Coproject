@@ -27,7 +27,8 @@ export const ProjectUserPaper = ({ project: { id, name, description, roleName } 
                         </Stack>
                     </Grid.Col>
                     <Grid.Col span={1}>
-                        <ActionIcon variant="filled" size="lg" radius="sm" component={Link} to={`/project/${id}`}>
+                        <ActionIcon variant="filled" size="lg" radius="sm" component={Link} to={`/project/${id}`}
+                                    aria-label={`Otwórz projekt ${name}`}>
                             <ArrowRightIcon style={{ width: '70%', height: '70%' }}/>
                         </ActionIcon>
                     </Grid.Col>

@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'playwright-report', 'test-results']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -17,6 +17,18 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+  },
+  {
+    // Testy Playwright działają w Node. Fixture'y mają postać `async ({}, use) => …`,
+    // co reguły Reacta biorą za hooki.
+    files: ['e2e/**/*.ts', 'playwright.config.ts'],
+    languageOptions: {
+      globals: globals.node,
+    },
+    rules: {
+      'no-empty-pattern': 'off',
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
 ])

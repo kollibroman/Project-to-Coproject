@@ -22,6 +22,7 @@
     <Project Path="Infrastructure/ProjectCowork.Infrastructure/ProjectCowork.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Infrastructure/Domain/">
+    <Project Path="Infrastructure/ProjectCowork.Infrastructure.Domain.Tests/ProjectCowork.Infrastructure.Domain.Tests.csproj" />
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.Domain/ProjectCowork.Infrastructure.Domain.csproj" />
     <Project Path="Infrastructure/ProjectCowork.Infrastructure.DomainEvents/ProjectCowork.Infrastructure.DomainEvents.csproj" />
   </Folder>
@@ -40,6 +41,7 @@
   </Folder>
   <Folder Name="/Web/">
     <Project Path="Web/ProjectCowork.Api/ProjectCowork.Api.csproj" />
+    <Project Path="Web/ProjectCowork.Api.IntegrationTests/ProjectCowork.Api.IntegrationTests.csproj" />
     <Project Path="Web/ProjectCowork.App/ProjectCowork.App.esproj" />
   </Folder>
 </Solution>
