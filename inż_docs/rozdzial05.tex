@@ -1,7 +1,824 @@
 \chapter{Testy aplikacji}
-
+Aplikacja powinna być testowalna w każdej jej warstwie. W zależności od warstwy, testy podzielono na testy jednostkowe,
+integracyjne, i testy akceptacyjne (End to End). Testy jednostkowe sprawdzają poprawność logiki zawartej w kodzie aplikacji
+testy integracyjne sprawdzają poprawność współpracy między komponentami aplikacji, a testy akceptacyjne sprawdzają
+poprawność działania aplikacji z perspektywy użytkownika końcowego. W tym rozdziale przedstawiono podejście do testowania aplikacji, wraz z opisem narzędzi wykorzystanych do przeprowadzenia
+testów. W rozdziale przedstawiono również przykłady testów jednostkowych, integracyjnych i akceptacyjnych razem ze scenariuszami.
+\section{Narzędzia}
+Do implementacji testów wykorzystano frameworki i biblioteki testowe, które pozwalają na automatyzację procesu testowania. W zależności od rodzaju testów, zastosowano różne narzędzia:
+\begin{itemize}
+\item \textbf{TUnit} - framework do testów w języku C\#.
+\item \textbf{Microsoft Testing platform} - Runner testów jednostkowych i integracyjnych w języku C\#.
+\item \textbf{Microsoft Playwright} - Narzędzie do testów akceptacyjnych, emuluje przeglądarkę
+\item \textbf{Docker i testcontainers} - narzędzie do konteneryzacji aplikacji, tworzy małe kontenery za pomocą narzędzia \textit{Docker}
+\end{itemize}
+Ich dobór pozwala na automatyzację procesu testowania i przyspieszenie procesu weryfikacji poprawności działania systemu.
 \section{Testy jednostkowe}
+Testy jednostkowe obejmują warstwę infrastruktury aplikacji, gdzie znajdują się agregaty, w których jest zawarta logika biznesowa.
+Testowano poprawność wytwarzania danych, poprawność interakcji między obiektami, poprawność walidacji i zachowania samych obiektów.
+Testy jednostkowe zostały zaimplementowane w języku C\# z wykorzystaniem frameworka TUnit. W sekcji tej przedstawiono
+kilka scenariuszy testowych, które zostały stworzone na potrzeby testowania systemu. 
+
+Każdy test tworzy encje bezpośrednio w pamięci i wywołuje metody agregatu, bez bazy danych i bez warstwy HTTP.
+Testy są asynchroniczne. Testy oznaczone atrybutem \texttt{[Arguments]} są uruchamiane osobno dla każdego zestawu
+podanych argumentów.
+
+\subsection{Scenariusz 1: domyślne role nowego projektu}
+Utworzenie projektu tworzy trzy role: \textit{Administrator}, \textit{Członek} i \textit{Obserwator}. Uprawnienia ról są
+wyliczane z katalogu uprawnień, czyli ze wszystkich par zasób i akcja. Scenariusz sprawdza, czy rola \textit{Członek}
+dostaje dokładnie te uprawnienia, które przewiduje model uprawnień. Opis scenariusza zawiera tabela \ref{tab:ut-role}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: domyślne role nowego projektu}
+    \label{tab:ut-role}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{ProjectAggregateTests.\allowbreak{}Create\_\allowbreak{}Member\_\allowbreak{}HasViewEverywhere\_\allowbreak{}FullManagement\_\allowbreak{}AndRepositoryCreate} \\ \hline
+        Warunki początkowe & Katalog uprawnień zawiera wszystkie pary zasób i akcja (6 zasobów, 4 akcje) \\ \hline
+        Kroki & Wywołanie \texttt{ProjectAggregate.Create} z nazwą, opisem, identyfikatorem właściciela i katalogiem uprawnień \\ \hline
+        Oczekiwany wynik & Rola \textit{Członek} ma uprawnienie \textit{View} do każdego zasobu, wszystkie akcje na zasobie \textit{Management} oraz uprawnienie \textit{Create} na zasobie \textit{Repositories}. Nie ma żadnych innych uprawnień \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:ut-role}. Oczekiwany zbiór uprawnień jest budowany z typów
+wyliczeniowych \texttt{ResourceType} i \texttt{ActionType}, dzięki czemu po dodaniu nowego zasobu test nadal sprawdza
+poprawną regułę.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test uprawnień domyślnej roli \textit{Członek}}, label={lst:ut-role}]
+[Test]
+public async Task Create_Member_HasViewEverywhere_FullManagement_AndRepositoryCreate()
+{
+    var project = ProjectAggregate.Create("Nazwa", "Opis", Guid.NewGuid(), _catalog);
+
+    var permissions = project.Role(Member).FeatureActions.Select(x => x.Key());
+    var expected = Enum.GetValues<ResourceType>().Select(r => $"{r}.{ActionType.View}")
+        .Concat(Enum.GetValues<ActionType>().Select(a => $"{ResourceType.Management}.{a}"))
+        .Append($"{ResourceType.Repositories}.{ActionType.Create}")
+        .Distinct();
+
+    await Assert.That(permissions).IsEquivalentTo(expected);
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 2: unikalna nazwa roli w projekcie}
+Nazwa roli musi być unikalna w obrębie projektu. Porównanie ignoruje wielkość liter i białe znaki na początku i końcu
+nazwy, ponieważ użytkownik nie odróżni ról \textit{Członek} i \textit{członek}. Opis scenariusza zawiera tabela
+\ref{tab:ut-nazwa-roli}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: unikalna nazwa roli}
+    \label{tab:ut-nazwa-roli}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{ProjectAggregateTests.\allowbreak{}AddRole\_\allowbreak{}DuplicateNameIgnoringCaseAndWhitespace\_\allowbreak{}ThrowsConflict} \\ \hline
+        Warunki początkowe & Projekt z trzema domyślnymi rolami \\ \hline
+        Dane wejściowe & \texttt{"Członek"}, \texttt{"członek"}, \texttt{"  ADMINISTRATOR  "} \\ \hline
+        Kroki & Wywołanie \texttt{AddRole} z nazwą istniejącej roli \\ \hline
+        Oczekiwany wynik & Wyjątek \texttt{ProjectAccessException} z kodem \texttt{409 Conflict}. Projekt nadal ma trzy role \\ \hline
+    \end{tabularx}
+\end{table}
+
+Test z listingu \ref{lst:ut-nazwa-roli} sprawdza także, że nieudana operacja nie zmieniła stanu agregatu.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test odrzucenia zduplikowanej nazwy roli}, label={lst:ut-nazwa-roli}]
+[Test]
+[Arguments("Członek")]
+[Arguments("członek")]
+[Arguments("  ADMINISTRATOR  ")]
+public async Task AddRole_DuplicateNameIgnoringCaseAndWhitespace_ThrowsConflict(string name)
+{
+    var project = TestEntities.Project(catalog: _catalog);
+    var aggregate = new ProjectAggregate(project);
+
+    var exception = await Assert.That(() => aggregate.AddRole(name, false, []))
+        .Throws<ProjectAccessException>();
+
+    await Assert.That(exception!.StatusCode).IsEqualTo(HttpStatusCode.Conflict);
+    await Assert.That(project.ProjectRoles.Count).IsEqualTo(3);
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 3: kolejne numery zadań w projekcie}
+Każde zadanie ma przyjazny numer (\textit{FriendlyId}) wyświetlany użytkownikowi, np. \texttt{\#3}. Numery są nadawane
+kolejno w obrębie projektu na podstawie licznika \texttt{LastTaskFriendlyId}. Scenariusz sprawdza nadawanie numerów oraz to,
+że odrzucone zadanie nie zużywa numeru. Opis scenariusza zawiera tabela \ref{tab:ut-numery}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: kolejne numery zadań}
+    \label{tab:ut-numery}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Testy & \texttt{TaskAggregateTests.\allowbreak{}Create\_\allowbreak{}AssignsConsecutiveFriendlyIds}, \texttt{TaskAggregateTests.\allowbreak{}Create\_\allowbreak{}SprintFromAnotherProject\_\allowbreak{}Throws\_\allowbreak{}AndDoesNotConsumeFriendlyId} \\ \hline
+        Warunki początkowe & Nowy projekt z licznikiem zadań równym 0 \\ \hline
+        Kroki & 1. Utworzenie trzech zadań w projekcie. \newline 2. W osobnym teście: próba utworzenia zadania w sprincie należącym do innego projektu \\ \hline
+        Oczekiwany wynik & 1. Zadania mają numery 1, 2 i 3, a licznik projektu wynosi 3. \newline 2. Wyjątek \texttt{InvalidOperationException}, a licznik projektu pozostaje równy 0 \\ \hline
+    \end{tabularx}
+\end{table}
+
+Oba testy przedstawiono na listingu \ref{lst:ut-numery}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Testy nadawania numerów zadań}, label={lst:ut-numery}]
+[Test]
+public async Task Create_AssignsConsecutiveFriendlyIds()
+{
+    var first = TaskAggregate.Create(_project, "A", "", TaskPriority.Normal, TaskStatus.Todo, null, null);
+    var second = TaskAggregate.Create(_project, "B", "", TaskPriority.Normal, TaskStatus.Todo, null, null);
+    var third = TaskAggregate.Create(_project, "C", "", TaskPriority.Normal, TaskStatus.Todo, null, null);
+
+    await Assert.That(new[] { first.FriendlyId, second.FriendlyId, third.FriendlyId })
+        .IsEquivalentTo(new[] { 1L, 2L, 3L });
+    await Assert.That(_project.LastTaskFriendlyId).IsEqualTo(3L);
+}
+
+[Test]
+public async Task Create_SprintFromAnotherProject_Throws_AndDoesNotConsumeFriendlyId()
+{
+    var foreignSprint = TestEntities.Sprint(Guid.NewGuid());
+
+    await Assert.That(() =>
+            TaskAggregate.Create(_project, "A", "", TaskPriority.Normal, TaskStatus.Todo, foreignSprint, null))
+        .Throws<InvalidOperationException>();
+
+    await Assert.That(_project.LastTaskFriendlyId).IsEqualTo(0L);
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 4: data ukończenia zadania}
+Zmiana statusu zadania na \textit{Done} zapisuje datę ukończenia. Przywrócenie zadania do statusu \textit{Todo} lub
+\textit{InProgress} usuwa tę datę, żeby statystyki sprintu nie liczyły go jako ukończonego. Opis scenariusza zawiera
+tabela \ref{tab:ut-status}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: data ukończenia zadania}
+    \label{tab:ut-status}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Testy & \texttt{TaskAggregateTests.\allowbreak{}SetStatus\_\allowbreak{}ToDone\_\allowbreak{}SetsFinishedDate}, \texttt{TaskAggregateTests.\allowbreak{}SetStatus\_\allowbreak{}FromDoneToOther\_\allowbreak{}ClearsFinishedDate} \\ \hline
+        Warunki początkowe & 1. Zadanie w statusie \textit{InProgress}. \newline 2. Zadanie w statusie \textit{Done} z datą ukończenia 1 stycznia 2026 \\ \hline
+        Dane wejściowe & Dla drugiego testu: \textit{Todo} i \textit{InProgress} \\ \hline
+        Kroki & Wywołanie \texttt{SetStatus} z nowym statusem \\ \hline
+        Oczekiwany wynik & 1. Status \textit{Done}, data ukończenia jest ustawiona. \newline 2. Nowy status, brak daty ukończenia \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testów przedstawiono na listingu \ref{lst:ut-status}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Testy daty ukończenia przy zmianie statusu zadania}, label={lst:ut-status}]
+[Test]
+public async Task SetStatus_ToDone_SetsFinishedDate()
+{
+    var task = TestEntities.Task(_project.Id, TaskStatus.InProgress);
+
+    new TaskAggregate(task).SetStatus(TaskStatus.Done);
+
+    await Assert.That(task.Status).IsEqualTo(TaskStatus.Done);
+    await Assert.That(task.FinishedDate).IsNotNull();
+}
+
+[Test]
+[Arguments(TaskStatus.Todo)]
+[Arguments(TaskStatus.InProgress)]
+public async Task SetStatus_FromDoneToOther_ClearsFinishedDate(TaskStatus status)
+{
+    var task = TestEntities.Task(_project.Id, TaskStatus.Done);
+    task.FinishedDate = new DateOnly(2026, 1, 1);
+
+    new TaskAggregate(task).SetStatus(status);
+
+    await Assert.That(task.Status).IsEqualTo(status);
+    await Assert.That(task.FinishedDate).IsNull();
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 5: jednokrotna odpowiedź na zaproszenie}
+Na zaproszenie do projektu można odpowiedzieć tylko raz. Przyjęcie zaproszenia podnosi zdarzenie domenowe
+\texttt{InvitationAcceptedEvent}, którego obsługa dodaje użytkownika do projektu. Druga odpowiedź mogłaby dodać członka
+po wcześniejszej odmowie, dlatego agregat ją odrzuca. Test sprawdza wszystkie cztery kombinacje pierwszej i drugiej
+odpowiedzi. Opis scenariusza zawiera tabela \ref{tab:ut-zaproszenie}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: jednokrotna odpowiedź na zaproszenie}
+    \label{tab:ut-zaproszenie}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{ProjectInvitationAggregateTests.\allowbreak{}AnsweringTwice\_\allowbreak{}ThrowsConflict\_\allowbreak{}AndKeepsFirstAnswer} \\ \hline
+        Warunki początkowe & Aktywne zaproszenie do projektu \\ \hline
+        Dane wejściowe & Pary (pierwsza odpowiedź, druga odpowiedź): (przyjęcie, przyjęcie), (przyjęcie, odmowa), (odmowa, przyjęcie), (odmowa, odmowa) \\ \hline
+        Kroki & 1. Pierwsza odpowiedź na zaproszenie. \newline 2. Druga odpowiedź na to samo zaproszenie \\ \hline
+        Oczekiwany wynik & Druga odpowiedź kończy się wyjątkiem \texttt{ProjectAccessException} z kodem \texttt{409 Conflict}. Zaproszenie zachowuje pierwszą odpowiedź, a liczba zdarzeń domenowych się nie zmienia \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:ut-zaproszenie}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test ponownej odpowiedzi na zaproszenie}, label={lst:ut-zaproszenie}]
+[Test]
+[Arguments(true, true)]
+[Arguments(true, false)]
+[Arguments(false, true)]
+[Arguments(false, false)]
+public async Task AnsweringTwice_ThrowsConflict_AndKeepsFirstAnswer(bool firstAccept, bool secondAccept)
+{
+    var invitation = NewInvitation();
+    var aggregate = new ProjectInvitationAggregate(invitation);
+    Answer(aggregate, firstAccept);
+    var eventsAfterFirstAnswer = aggregate.DomainEvents.Count;
+
+    var exception = await Assert.That(() => Answer(aggregate, secondAccept))
+        .Throws<ProjectAccessException>();
+
+    await Assert.That(exception!.StatusCode).IsEqualTo(HttpStatusCode.Conflict);
+    await Assert.That(invitation.UserAccepted).IsEqualTo(firstAccept);
+    await Assert.That(aggregate.DomainEvents.Count).IsEqualTo(eventsAfterFirstAnswer);
+}
+\end{lstlisting}
 
 \section{Testy integracyjne}
+Testy integracyjne pokrywają kilka warstw aplikacji, w tym warstwę domeny, infrastruktury i warstwę aplikacji.
+Mają one na celu weryfikację, czy system poprawnie komunikuje się bazą danych, zewnętrznymi usługami i czy poprawnie przetwarza dane w całym cyklu życia żądania. Testy integracyjne są uruchamiane w środowisku zbliżonym do produkcyjnego, często z użyciem kontenerów Docker, aby zapewnić spójność środowiska testowego.
+W tym przypadku do nich wykorzystano \textit{TestContainers}, czyli tymczasowe kontenery \textit{Docker}, tworzone na czas przeprowadzania testów.
+Testowano tutaj, czy aplikacji poprawnie zapisuje i odczytuje dane z bazy danych, czy wysyła powiadomienia e-mail do właściwych odbiorców, czy poprawnie
+obsługuje repozytoria \textit{Git} i czy poprawnie rotuje \textit{RefreshToken}.
 
+Testy zaimplementowano w języku C\# z wykorzystaniem frameworka TUnit oraz klasy \texttt{WebApplicationFactory}
+z biblioteki \textit{Microsoft.AspNetCore.Mvc.Testing}. Klasa ta uruchamia całe API w procesie testów, razem z migracjami
+bazy danych i danymi początkowymi. Bazą danych jest PostgreSQL w kontenerze tworzonym przez \textit{TestContainers}.
+API nasłuchuje na prawdziwym porcie, dzięki czemu do testów repozytoriów można użyć klienta \textit{Git} z wiersza poleceń.
+Usługa wysyłki wiadomości e-mail jest zastąpiona implementacją testową, która zapisuje wiadomości w pamięci.
+Jedna instancja API i jeden kontener są współdzielone przez wszystkie testy. Każdy test rejestruje własnych użytkowników
+i tworzy własne projekty, więc testy mogą działać równolegle i nie trzeba czyścić bazy danych między nimi.
+Konfigurację środowiska testowego przedstawiono na listingu \ref{lst:it-fabryka}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Fragment klasy uruchamiającej API na potrzeby testów integracyjnych}, label={lst:it-fabryka}]
+public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncInitializer
+{
+    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
+        .WithImage("postgres:18-alpine")
+        .WithDatabase("ProjectCowork")
+        .Build();
+
+    public FakeMailService Mail { get; } = new();
+
+    public ApiFactory()
+    {
+        UseKestrel(0);
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment("Testing");
+        builder.UseSetting("ConnectionStrings:DefaultConnection", _postgres.GetConnectionString());
+
+        builder.ConfigureTestServices(services =>
+        {
+            services.RemoveAll<IMailService>();
+            services.AddSingleton<IMailService>(Mail);
+        });
+    }
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 1: rotacja tokena odświeżania}
+Token odświeżania (\textit{refresh token}) jest przechowywany w ciasteczku \texttt{HttpOnly}. Przy każdym odświeżeniu
+sesji API wydaje nowy token i unieważnia poprzedni. Dzięki temu skradziony token można wykorzystać najwyżej raz.
+Scenariusz sprawdza, czy po odświeżeniu sesji stary token przestaje działać. Opis scenariusza zawiera tabela
+\ref{tab:it-rotacja}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: rotacja tokena odświeżania}
+    \label{tab:it-rotacja}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{AuthTests.\allowbreak{}Refresh\_\allowbreak{}RotatesToken\_\allowbreak{}OldTokenCannotBeReused} \\ \hline
+        Warunki początkowe & Nowo zarejestrowany użytkownik z tokenem odświeżania z odpowiedzi na rejestrację \\ \hline
+        Kroki & 1. Wywołanie \texttt{POST /api/auth/token/refresh} z tokenem z rejestracji. \newline 2. Ponowne wywołanie z tym samym tokenem \\ \hline
+        Oczekiwany wynik & 1. Kod \texttt{200 OK} i nowy token. \newline 2. Kod \texttt{401 Unauthorized} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:it-rotacja}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test rotacji tokena odświeżania}, label={lst:it-rotacja}]
+[Test]
+public async Task Refresh_RotatesToken_OldTokenCannotBeReused()
+{
+    var user = await RegisterAsync();
+    var first = await PostWithRefreshCookieAsync("/api/auth/token/refresh", user.RefreshToken);
+    await EnsureStatusAsync(first, HttpStatusCode.OK);
+
+    var replay = await PostWithRefreshCookieAsync("/api/auth/token/refresh", user.RefreshToken);
+
+    await Assert.That(replay.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 2: uprawnienia do tworzenia zadań}
+Uprawnienia są sprawdzane w obrębie projektu na podstawie roli członka. Scenariusz sprawdza, czy reguły z domyślnych ról
+działają po przejściu przez całą ścieżkę żądania: uwierzytelnienie tokenem JWT, sprawdzenie uprawnień w bazie danych
+i obsługę wyjątków w API. Wszystkie przypadki testowe korzystają z jednego projektu, do którego dołączono użytkowników
+z każdą z domyślnych ról. Opis scenariusza zawiera tabela \ref{tab:it-uprawnienia}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: uprawnienia do tworzenia zadań}
+    \label{tab:it-uprawnienia}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{PermissionMatrixTests.\allowbreak{}AddTask\_\allowbreak{}RequiresManagementCreate} \\ \hline
+        Warunki początkowe & Projekt z właścicielem oraz członkami w rolach \textit{Administrator}, \textit{Członek} i \textit{Obserwator} \\ \hline
+        Dane wejściowe & Właściciel, Administrator, Członek, Obserwator, użytkownik spoza projektu, użytkownik niezalogowany \\ \hline
+        Kroki & Wywołanie \texttt{POST /api/tasks} w imieniu każdego z użytkowników \\ \hline
+        Oczekiwany wynik & Właściciel, Administrator i Członek: \texttt{201 Created}. Obserwator i użytkownik spoza projektu: \texttt{403 Forbidden}. Użytkownik niezalogowany: \texttt{401 Unauthorized} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:it-uprawnienia}. W ten sam sposób przetestowano pozostałe
+endpointy, m.in. odczyt projektu, edycję projektu, tworzenie sprintów i zarządzanie rolami.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test uprawnień do tworzenia zadań}, label={lst:it-uprawnienia}]
+[Test]
+[Arguments(Actor.Owner, HttpStatusCode.Created)]
+[Arguments(Actor.Administrator, HttpStatusCode.Created)]
+[Arguments(Actor.Member, HttpStatusCode.Created)]
+[Arguments(Actor.Observer, HttpStatusCode.Forbidden)]
+[Arguments(Actor.Outsider, HttpStatusCode.Forbidden)]
+[Arguments(Actor.Anonymous, HttpStatusCode.Unauthorized)]
+public async Task AddTask_RequiresManagementCreate(Actor actor, HttpStatusCode expected)
+{
+    var scenario = await GetScenarioAsync();
+
+    var response = await PostTaskAsync(ClientFor(scenario, actor), scenario.Project.Id, Unique("Zadanie"));
+
+    await Assert.That(response.StatusCode).IsEqualTo(expected);
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 3: dołączenie do projektu przez zaproszenie}
+Użytkownik dołącza do projektu, akceptując zaproszenie. Akceptacja podnosi zdarzenie domenowe, którego obsługa dodaje
+użytkownika do projektu z rolą wskazaną w zaproszeniu. Scenariusz sprawdza, czy zdarzenie zostało obsłużone, a zmiany
+zapisane w bazie danych. Opis scenariusza zawiera tabela \ref{tab:it-zaproszenie}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: dołączenie do projektu przez zaproszenie}
+    \label{tab:it-zaproszenie}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{InvitationTests.\allowbreak{}Accept\_\allowbreak{}WithRole\_\allowbreak{}AddsMemberWithThatRole} \\ \hline
+        Warunki początkowe & Dwóch zarejestrowanych użytkowników. Pierwszy z nich jest właścicielem projektu \\ \hline
+        Kroki & 1. Właściciel zaprasza drugiego użytkownika z rolą \textit{Obserwator}. \newline 2. Zaproszony pobiera listę swoich zaproszeń i akceptuje zaproszenie. \newline 3. Właściciel pobiera listę członków projektu \\ \hline
+        Oczekiwany wynik & Lista zawiera dwie osoby. Pierwszy jest właściciel, oznaczony jako właściciel. Drugi jest zaproszony użytkownik z rolą \textit{Obserwator} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:it-zaproszenie}. Zaproszenie i jego akceptację wykonuje metoda
+pomocnicza \texttt{AddMemberAsync}, która wywołuje kolejno endpointy zaproszenia, listy zaproszeń i akceptacji.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test dołączenia do projektu z wybraną rolą}, label={lst:it-zaproszenie}]
+[Test]
+public async Task Accept_WithRole_AddsMemberWithThatRole()
+{
+    var owner = await RegisterAsync();
+    var invitee = await RegisterAsync();
+    var project = await CreateProjectAsync(owner);
+
+    await AddMemberAsync(owner, project.Id, invitee, ObserverRole);
+
+    var members = await GetListAsync<ProjectMemberDto>(owner.Client, $"/api/projects/{project.Id}/members");
+    await Assert.That(members.Count).IsEqualTo(2);
+    await Assert.That(members[0].IsOwner).IsTrue();
+    await Assert.That(members[0].UserId).IsEqualTo(owner.Id);
+
+    var member = members.Single(x => x.UserId == invitee.Id);
+    await Assert.That(member.RoleName).IsEqualTo(ObserverRole);
+    await Assert.That(member.IsOwner).IsFalse();
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 4: usunięcie sprintu}
+Usunięcie sprintu nie może usuwać jego zadań. Zadania wracają do backlogu, czyli tracą przypisanie do sprintu. Odpowiada
+za to obsługa zdarzenia domenowego \texttt{SprintDeletedEvent}, a zmiany są zapisywane razem z usunięciem sprintu.
+Scenariusz sprawdza także, że zadania z innego sprintu pozostają bez zmian. Opis scenariusza zawiera tabela
+\ref{tab:it-sprint}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: usunięcie sprintu}
+    \label{tab:it-sprint}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{SprintAndTaskTests.\allowbreak{}DeleteSprint\_\allowbreak{}MovesItsTasksToBacklog} \\ \hline
+        Warunki początkowe & Projekt z dwoma sprintami. W pierwszym sprincie są dwa zadania, w drugim jedno \\ \hline
+        Kroki & 1. Wywołanie \texttt{DELETE /api/sprints/\{id\}} dla pierwszego sprintu. \newline 2. Pobranie zadań i sprintów projektu \\ \hline
+        Oczekiwany wynik & Kod \texttt{204 No Content}. Projekt nadal ma trzy zadania. Dwa zadania z usuniętego sprintu nie są przypisane do żadnego sprintu, a zadanie z drugiego sprintu jest w nim nadal. Projekt ma jeden sprint \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:it-sprint}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test przeniesienia zadań do backlogu po usunięciu sprintu}, label={lst:it-sprint}]
+[Test]
+public async Task DeleteSprint_MovesItsTasksToBacklog()
+{
+    var owner = await RegisterAsync();
+    var project = await CreateProjectAsync(owner);
+    var sprint = await CreateSprintAsync(owner, project.Id);
+    var otherSprint = await CreateSprintAsync(owner, project.Id);
+    var first = await CreateTaskAsync(owner, project.Id, sprintId: sprint.Id);
+    var second = await CreateTaskAsync(owner, project.Id, sprintId: sprint.Id);
+    var untouched = await CreateTaskAsync(owner, project.Id, sprintId: otherSprint.Id);
+
+    var response = await owner.Client.DeleteAsync($"/api/sprints/{sprint.Id}");
+
+    await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.NoContent);
+
+    var tasks = (await GetTasksAsync(owner, project.Id)).ToDictionary(x => x.Id);
+    await Assert.That(tasks.Count).IsEqualTo(3);
+    await Assert.That(tasks[first.Id].SprintId).IsNull();
+    await Assert.That(tasks[second.Id].SprintId).IsNull();
+    await Assert.That(tasks[untouched.Id].SprintId).IsEqualTo(otherSprint.Id);
+
+    var sprints = await GetListAsync<SprintDto>(owner.Client, $"/api/sprints/project/{project.Id}");
+    await Assert.That(sprints.Select(x => x.Id)).IsEquivalentTo(new[] { otherSprint.Id });
+}
+\end{lstlisting}
+
+\subsection{Scenariusz 5: historia commitów po wypchnięciu zmian}
+Scenariusz sprawdza współpracę API z serwerem \textit{Git}. Test tworzy repozytorium przez API, a następnie klonuje je,
+tworzy dwa commity i wypycha je poleceniem \texttt{git push}, tak jak zrobiłby to użytkownik. Historia commitów
+odczytana przez API musi odpowiadać temu, co zostało wypchnięte. Opis scenariusza zawiera tabela \ref{tab:it-commity}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: historia commitów po wypchnięciu zmian}
+    \label{tab:it-commity}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{RepositoryTests.\allowbreak{}Commits\_\allowbreak{}NewestFirst\_\allowbreak{}WithPaging} \\ \hline
+        Warunki początkowe & Repozytorium utworzone przez API, do którego wypchnięto commity \textit{Pierwszy commit} i \textit{Drugi commit} \\ \hline
+        Kroki & 1. Pobranie wszystkich commitów gałęzi \texttt{main}. \newline 2. Pobranie pierwszej i drugiej strony z jednym commitem na stronę \\ \hline
+        Oczekiwany wynik & 1. Dwa commity, od najnowszego, z autorem i 40-znakowym skrótem SHA. Brak kolejnej strony. \newline 2. Pierwsza strona zawiera \textit{Drugi commit} i informację o kolejnej stronie. Druga strona zawiera \textit{Pierwszy commit} i jest ostatnia \\ \hline
+    \end{tabularx}
+\end{table}
+
+Przygotowanie repozytorium przedstawiono na listingu \ref{lst:it-push}, a sam test na listingu \ref{lst:it-commity}.
+Klasa \texttt{GitCli} uruchamia klienta \textit{Git} z odciętą konfiguracją użytkownika, żeby wynik testu nie zależał
+od ustawień komputera, na którym jest uruchamiany.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Przygotowanie repozytorium z dwoma wypchniętymi commitami}, label={lst:it-push}]
+var owner = await RegisterAsync();
+var project = await CreateProjectAsync(owner);
+var repository = await CreateRepositoryAsync(owner, project.Id);
+
+var work = await git.CloneAsync(repository.RepoUrl, "work");
+await git.RunAsync(work, "checkout", "-b", "main");
+
+await GitCli.WriteFileAsync(work, "README.md", "# Projekt\n");
+await git.CommitAllAsync(work, "Pierwszy commit");
+
+await GitCli.WriteFileAsync(work, "src/app.txt", "Witaj świecie\n");
+await File.WriteAllBytesAsync(Path.Combine(work, "logo.bin"), [0, 1, 2, 0, 255]);
+await git.CommitAllAsync(work, "Drugi commit");
+
+await git.RunAsync(work, "push", "origin", "main");
+\end{lstlisting}
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test historii commitów i stronicowania}, label={lst:it-commity}]
+[Test]
+public async Task Commits_NewestFirst_WithPaging()
+{
+    using var git = new GitCli();
+    var (owner, _, repository) = await CreatePushedRepositoryAsync(git);
+
+    var all = await owner.Client.GetFromJsonAsync<CommitsPageDto>(
+        $"/api/repository/{repository.Id}/commits?branch=main");
+    var firstPage = await owner.Client.GetFromJsonAsync<CommitsPageDto>(
+        $"/api/repository/{repository.Id}/commits?branch=main&page=1&pageSize=1");
+    var secondPage = await owner.Client.GetFromJsonAsync<CommitsPageDto>(
+        $"/api/repository/{repository.Id}/commits?branch=main&page=2&pageSize=1");
+
+    await Assert.That(all!.Items.Select(x => x.Message))
+        .IsEquivalentTo(["Drugi commit", "Pierwszy commit"], CollectionOrdering.Matching);
+    await Assert.That(all.HasMore).IsFalse();
+    await Assert.That(all.Items[0].AuthorName).IsEqualTo("Tester");
+    await Assert.That(all.Items[0].Sha.Length).IsEqualTo(40);
+
+    await Assert.That(firstPage!.Items.Single().Message).IsEqualTo("Drugi commit");
+    await Assert.That(firstPage.HasMore).IsTrue();
+    await Assert.That(secondPage!.Items.Single().Message).IsEqualTo("Pierwszy commit");
+    await Assert.That(secondPage.HasMore).IsFalse();
+}
+\end{lstlisting}
 \section{Testy akceptacyjne}
+Testy akceptacyjne, w przeciwieństwie do testów jednostkowych i integracyjnych, koncentrują się na weryfikacji, czy system spełnia wymagania biznesowe i oczekiwania użytkowników końcowych. 
+Testy te są zwykle przeprowadzane z perspektywy użytkownika i obejmują pełne scenariusze użycia aplikacji, od interakcji z interfejsem użytkownika po weryfikację wyników w systemie.
+Zostały one przeprowadzone w aplikacji klienckiej, za pomocą której użytkownicy działają z systemem.
+Testy przeprowadzono z narzędziem \textit{Playwright}, które umożliwia automatyzację przeglądarki internetowej i symulowanie interakcji użytkownika z aplikacją webową.
+
+Testy akceptacyjne zaimplementowano w języku \textit{TypeScript} z wykorzystaniem biblioteki \textit{Playwright Test}
+i przeglądarki \textit{Chromium}. Testowany jest cały system w takiej postaci, w jakiej jest wdrażany: baza danych,
+emulator \textit{Azure Blob Storage}, API oraz aplikacja kliencka serwowana przez \textit{nginx}. Wszystkie te usługi
+uruchamia \textit{Docker Compose} na podstawie pliku \texttt{compose.yaml}, uzupełnionego o plik
+\texttt{compose.e2e.yaml}. Plik ten przenosi dane bazy i repozytoriów do pamięci (\textit{tmpfs}), więc każde
+uruchomienie testów zaczyna się od pustego systemu. Usługi startuje i zatrzymuje sam \textit{Playwright}. Fragment
+konfiguracji przedstawiono na listingu \ref{lst:e2e-konfiguracja}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Fragment konfiguracji \textit{Playwright} uruchamiającej system przed testami}, label={lst:e2e-konfiguracja}]
+webServer: {
+  command:
+    'docker compose -p projectcowork-e2e -f compose.yaml -f compose.e2e.yaml up --build --abort-on-container-failure',
+  cwd: '../..',
+  env: { API_PORT: '18080', APP_PORT: '13000' },
+  url: `${API_URL}/api/permissions`,
+  reuseExistingServer: !process.env.CI,
+  timeout: 15 * 60_000,
+},
+\end{lstlisting}
+
+Każdy test pracuje na własnym, nowo zarejestrowanym koncie. Testy klikają w interfejsie tylko te elementy, które
+sprawdzają. Dane potrzebne do rozpoczęcia scenariusza, takie jak konta, projekty czy sprinty, są tworzone przez API,
+co skraca czas testów. Logowanie również odbywa się przez API, za pomocą klienta \texttt{page.request}, który dzieli
+ciasteczka z przeglądarką. Dzięki temu ciasteczko z tokenem odświeżania trafia do przeglądarki, a aplikacja kliencka
+odtwarza z niego sesję tak samo jak po zalogowaniu przez formularz. Mechanizm ten przedstawiono na listingu
+\ref{lst:e2e-logowanie}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Logowanie użytkownika testowego przez API}, label={lst:e2e-logowanie}]
+export async function signIn(page: Page, account: Account) {
+  const response = await page.request.post(`${API_URL}/api/auth/login`, {
+    data: { email: account.email, password: account.password },
+  });
+  expect(response.status(), await response.text()).toBe(200);
+}
+
+export const test = base.extend<Fixtures>({
+  user: async ({}, use) => {
+    await use(await registerAccount('user'));
+  },
+  userPage: async ({ page, user }, use) => {
+    await signIn(page, user);
+    await use(page);
+  },
+});
+\end{lstlisting}
+
+Elementy interfejsu są wyszukiwane przede wszystkim po roli i nazwie dostępnej, np. przycisk o nazwie
+\textit{Zaloguj się} albo okno dialogowe o tytule \textit{Nowe zadanie}. Takie selektory odpowiadają temu, co widzi
+użytkownik, i nie zależą od struktury kodu HTML. W kilku miejscach, w których element nie ma unikalnej nazwy
+(karty zadań i sekcje sprintów), dodano do komponentów atrybut \texttt{data-testid}.
+
+\subsection{Scenariusz 1: rejestracja nowego użytkownika}
+Scenariusz odtwarza pierwsze wejście użytkownika do systemu. Użytkownik zakłada konto w formularzu rejestracji, a system
+od razu go loguje i otwiera pulpit. Opis scenariusza zawiera tabela \ref{tab:e2e-rejestracja}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: rejestracja nowego użytkownika}
+    \label{tab:e2e-rejestracja}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{auth.spec.ts}: \textit{rejestracja przez formularz loguje i otwiera pulpit} \\ \hline
+        Warunki początkowe & Użytkownik niezalogowany na stronie \texttt{/auth} \\ \hline
+        Dane wejściowe & Unikalna nazwa użytkownika, adres e-mail i hasło \texttt{Test1234!} \\ \hline
+        Kroki & 1. Wybranie zakładki \textit{Rejestracja}. \newline 2. Wypełnienie pól \textit{Nazwa użytkownika}, \textit{E-mail}, \textit{Hasło} i \textit{Powtórz hasło}. \newline 3. Kliknięcie przycisku \textit{Zarejestruj się} \\ \hline
+        Oczekiwany wynik & Przejście na stronę główną \texttt{/} z nagłówkiem \textit{Pulpit} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:e2e-rejestracja}. Pole hasła jest wyszukiwane po dokładnej
+nazwie, ponieważ nazwa \textit{Hasło} jest też częścią nazwy pola \textit{Powtórz hasło}.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test rejestracji przez formularz}, label={lst:e2e-rejestracja}]
+test('rejestracja przez formularz loguje i otwiera pulpit', async ({ page }) => {
+  const username = unique('ui');
+
+  await page.goto('/auth');
+  await page.getByRole('tab', { name: 'Rejestracja' }).click();
+  const panel = page.getByRole('tabpanel', { name: 'Rejestracja' });
+
+  await panel.getByLabel('Nazwa użytkownika').fill(username);
+  await panel.getByLabel('E-mail').fill(`${username}@example.com`);
+  await panel.getByRole('textbox', { name: 'Hasło', exact: true }).fill(PASSWORD);
+  await panel.getByLabel('Powtórz hasło').fill(PASSWORD);
+  await panel.getByRole('button', { name: 'Zarejestruj się' }).click();
+
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByRole('heading', { name: 'Pulpit' })).toBeVisible();
+});
+\end{lstlisting}
+
+\subsection{Scenariusz 2: wylogowanie we wszystkich kartach}
+Użytkownik może mieć aplikację otwartą w kilku kartach przeglądarki. Wylogowanie w jednej z nich musi zakończyć sesję
+we wszystkich, żeby na współdzielonym komputerze nie została otwarta karta z dostępem do konta. Karty powiadamiają się
+o wylogowaniu przez mechanizm \texttt{BroadcastChannel} przeglądarki. Opis scenariusza zawiera tabela
+\ref{tab:e2e-karty}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: wylogowanie we wszystkich kartach}
+    \label{tab:e2e-karty}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{auth.spec.ts}: \textit{wylogowanie w jednej karcie wylogowuje drugą} \\ \hline
+        Warunki początkowe & Zalogowany użytkownik z dwiema kartami otwartymi na stronie \texttt{/projects} \\ \hline
+        Kroki & Kliknięcie przycisku \textit{Wyloguj} w pierwszej karcie \\ \hline
+        Oczekiwany wynik & Druga karta, bez żadnej akcji użytkownika, przechodzi na stronę logowania \texttt{/auth} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:e2e-karty}. Obie karty należą do tego samego kontekstu
+przeglądarki, więc dzielą ciasteczka tak jak karty w zwykłej przeglądarce.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test wylogowania w wielu kartach}, label={lst:e2e-karty}]
+test('wylogowanie w jednej karcie wylogowuje drugą', async ({ userPage: page }) => {
+  const secondTab = await page.context().newPage();
+  await page.goto('/projects');
+  await secondTab.goto('/projects');
+  await expect(secondTab.getByRole('heading', { name: 'Projekty' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Wyloguj' }).click();
+
+  await expect(secondTab).toHaveURL(/\/auth$/);
+});
+\end{lstlisting}
+
+\subsection{Scenariusz 3: zaproszenie użytkownika do projektu}
+Scenariusz obejmuje dwóch użytkowników, z których każdy korzysta z własnej przeglądarki. Właściciel projektu zaprasza
+drugiego użytkownika, a ten dowiaduje się o zaproszeniu z ikony dzwonka w nagłówku i dołącza do projektu.
+Na końcu właściciel widzi nowego członka na liście. Opis scenariusza zawiera tabela \ref{tab:e2e-zaproszenie}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: zaproszenie użytkownika do projektu}
+    \label{tab:e2e-zaproszenie}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{projects.spec.ts}: \textit{zaproszenie przez UI, akceptacja dzwonkiem i nowy członek na liście} \\ \hline
+        Warunki początkowe & Dwóch zarejestrowanych użytkowników. Pierwszy z nich jest właścicielem projektu \\ \hline
+        Kroki & 1. Właściciel otwiera zakładkę \textit{Członkowie i role}, klika \textit{Zaproś}, wpisuje adres e-mail drugiego użytkownika i zatwierdza. \newline 2. Zaproszony klika ikonę dzwonka, a następnie przycisk \textit{Dołącz}. \newline 3. Właściciel odświeża stronę \\ \hline
+        Oczekiwany wynik & Zaproszony trafia na stronę projektu. Na liście członków u właściciela widnieje nowy użytkownik z rolą domyślną \textit{Członek} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:e2e-zaproszenie}. Funkcja \texttt{openAs} tworzy osobny
+kontekst przeglądarki, czyli osobny zestaw ciasteczek, i loguje w nim wskazanego użytkownika.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test zaproszenia z udziałem dwóch użytkowników}, label={lst:e2e-zaproszenie}]
+test('zaproszenie przez UI, akceptacja dzwonkiem i nowy członek na liście', async ({ browser, user: owner }) => {
+  const invitee = await registerAccount();
+  const project = await createProject(owner);
+
+  const ownerPage = await openAs(browser, owner);
+  await ownerPage.goto(`/project/${project.id}?tab=access`);
+  await ownerPage.getByRole('button', { name: 'Zaproś' }).click();
+  const dialog = ownerPage.getByRole('dialog', { name: 'Zaproś do projektu' });
+  await dialog.getByLabel('E-mail').fill(invitee.email);
+  await dialog.getByRole('button', { name: 'Zaproś' }).click();
+  await expect(dialog).toBeHidden();
+
+  const inviteePage = await openAs(browser, invitee);
+  await inviteePage.goto('/');
+  await inviteePage.getByRole('button', { name: 'Masz zaproszenie do projektu' }).click();
+
+  await expect(inviteePage).toHaveURL(/\/account#invitations$/);
+  await expect(inviteePage.getByText(project.name)).toBeVisible();
+  await inviteePage.getByRole('button', { name: 'Dołącz' }).click();
+
+  await expect(inviteePage).toHaveURL(new RegExp(`/project/${project.id}$`));
+  await expect(inviteePage.getByRole('heading', { name: project.name, level: 1 })).toBeVisible();
+
+  await ownerPage.reload();
+  await expect(ownerPage.getByText(invitee.username, { exact: true })).toBeVisible();
+  await expect(ownerPage.getByRole('combobox', { name: `Rola użytkownika ${invitee.username}` }))
+    .toHaveValue('Członek');
+});
+\end{lstlisting}
+
+\subsection{Scenariusz 4: zadanie w sprincie i zmiana jego statusu}
+Scenariusz odtwarza podstawową pracę zespołu ze sprintem. Użytkownik dodaje zadanie do sprintu, otwiera stronę sprintu
+i oznacza zadanie jako zrobione. Test sprawdza, czy zmiana jest zapisana na serwerze, czyli czy zostaje po odświeżeniu
+strony, oraz czy podsumowanie sprintu na stronie projektu uwzględnia ukończone zadanie. Opis scenariusza zawiera tabela
+\ref{tab:e2e-sprint}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: zadanie w sprincie i zmiana jego statusu}
+    \label{tab:e2e-sprint}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{management.spec.ts}: \textit{nowe zadanie w sprincie, zmiana statusu na \quotedblbase{}Zrobione\textquotedblright{}} \\ \hline
+        Warunki początkowe & Zalogowany właściciel projektu z jednym sprintem \\ \hline
+        Kroki & 1. W zakładce \textit{Sprinty i zadania} kliknięcie \textit{Nowe zadanie}, wpisanie nazwy, wybór priorytetu \textit{Pilny} i sprintu, zatwierdzenie. \newline 2. Przejście na stronę sprintu i zmiana statusu zadania na \textit{Zrobione}. \newline 3. Odświeżenie strony. \newline 4. Powrót na stronę projektu \\ \hline
+        Oczekiwany wynik & 1. Sekcja sprintu pokazuje \textit{1 zadanie} i \textit{Ukończone: 0/1}. \newline 2. Zadanie ma numer \#1 i datę ukończenia. \newline 3. Status \textit{Zrobione} pozostaje. \newline 4. Sekcja sprintu pokazuje \textit{Ukończone: 1/1} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:e2e-sprint}. Pola wyboru biblioteki \textit{Mantine} mają rolę
+\texttt{combobox}, a lista opcji jest wyświetlana poza oknem dialogowym, dlatego funkcja \texttt{pick} najpierw klika
+pole, a następnie opcję na całej stronie.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test dodania zadania do sprintu i zmiany jego statusu}, label={lst:e2e-sprint}]
+test('nowe zadanie w sprincie, zmiana statusu na „Zrobione”', async ({ userPage: page, user }) => {
+  const project = await createProject(user);
+  const sprint = await createSprint(user, project.id);
+  const taskName = unique('Zadanie');
+
+  await page.goto(`/project/${project.id}?tab=sprints`);
+  await page.getByRole('button', { name: 'Nowe zadanie' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Nowe zadanie' });
+  await dialog.getByLabel('Nazwa').fill(taskName);
+  await pick(page, dialog.getByRole('combobox', { name: 'Priorytet' }), 'Pilny');
+  await pick(page, dialog.getByRole('combobox', { name: 'Sprint' }), sprint.name);
+  await dialog.getByRole('button', { name: 'Utwórz' }).click();
+  await expect(dialog).toBeHidden();
+
+  const section = sprintSection(page, sprint.name);
+  await expect(section.getByText('1 zadanie')).toBeVisible();
+  await expect(section.getByText('Ukończone: 0/1')).toBeVisible();
+
+  await section.getByRole('link', { name: 'Otwórz sprint' }).click();
+  const task = taskCard(page, taskName);
+  await expect(task.getByText('#1')).toBeVisible();
+
+  await pick(page, task.getByRole('combobox', { name: 'Status' }), 'Zrobione');
+  await expect(task.getByText(/^Ukończono: \d{4}-\d{2}-\d{2}$/)).toBeVisible();
+
+  await page.reload();
+  await expect(taskCard(page, taskName).getByRole('combobox', { name: 'Status' })).toHaveValue('Zrobione');
+
+  await page.goto(`/project/${project.id}?tab=sprints`);
+  await expect(sprintSection(page, sprint.name).getByText('Ukończone: 1/1')).toBeVisible();
+});
+\end{lstlisting}
+
+\subsection{Scenariusz 5: przeglądanie kodu repozytorium}
+Scenariusz łączy pracę programisty w wierszu poleceń z interfejsem aplikacji. Przed testem do repozytorium projektu
+wypychane są pliki poleceniem \texttt{git push}, tak jak zrobiłby to programista. Następnie użytkownik przegląda
+w aplikacji strukturę katalogów, otwiera plik i sprawdza historię commitów. Opis scenariusza zawiera tabela
+\ref{tab:e2e-repozytorium}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Scenariusz testowy: przeglądanie kodu repozytorium}
+    \label{tab:e2e-repozytorium}
+    \small
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X@{}}
+        \hline
+        Test & \texttt{repositories.spec.ts}: \textit{po git push widać pliki, foldery, zawartość i commity} \\ \hline
+        Warunki początkowe & Repozytorium projektu, do którego wypchnięto jeden commit z plikami \texttt{README.md} i \texttt{src/main.ts} \\ \hline
+        Kroki & 1. Otwarcie repozytorium ze strony projektu. \newline 2. Kliknięcie folderu \texttt{src}, a następnie pliku \texttt{main.ts}. \newline 3. Przejście do zakładki \textit{Commity} \\ \hline
+        Oczekiwany wynik & 1. Folder \texttt{src} jest wyświetlony przed plikiem \texttt{README.md}. \newline 2. Adres strony zawiera ścieżkę folderu i pliku, a na stronie widać zawartość pliku. \newline 3. Lista zawiera commit \textit{Pierwszy commit z E2E} autorstwa \textit{E2E Tester} \\ \hline
+    \end{tabularx}
+\end{table}
+
+Implementację testu przedstawiono na listingu \ref{lst:e2e-repozytorium}. Funkcja \texttt{pushFiles} tworzy
+w katalogu tymczasowym lokalne repozytorium z podanymi plikami i wypycha je na adres zwrócony przez API.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Test przeglądania kodu i historii repozytorium}, label={lst:e2e-repozytorium}]
+test('po git push widać pliki, foldery, zawartość i commity', async ({ userPage: page, user }) => {
+  const project = await createProject(user);
+  const repository = await createRepository(user, project.id);
+  pushFiles(
+    repository.cloneUrl,
+    { 'README.md': '# Projekt E2E\n', 'src/main.ts': 'export const answer = 42;\n' },
+    'Pierwszy commit z E2E',
+  );
+
+  await page.goto(`/project/${project.id}`);
+  await page.getByRole('link', { name: `Otwórz repozytorium ${repository.name}` }).click();
+
+  const files = page.getByRole('table');
+  await expect(files.getByRole('row').nth(0)).toContainText('src');
+  await expect(files.getByRole('row').nth(1)).toContainText('README.md');
+
+  await files.getByText('src', { exact: true }).click();
+  await expect(page).toHaveURL(/path=src/);
+  await files.getByText('main.ts').click();
+
+  await expect(page).toHaveURL(/file=src%2Fmain\.ts|file=src\/main\.ts/);
+  await expect(page.getByText('export const answer = 42;')).toBeVisible();
+
+  await page.getByRole('tab', { name: 'Commity' }).click();
+  await expect(page.getByText('Pierwszy commit z E2E')).toBeVisible();
+  await expect(page.getByText(/^E2E Tester · /)).toBeVisible();
+});
+\end{lstlisting}
