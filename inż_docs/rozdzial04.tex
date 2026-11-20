@@ -6,6 +6,7 @@ Każdy podprojekt ma swoją jedną odpowiedzialność, co zwiększą utrzymywaln
 Projekt jest nazwą własną ekosystemu \texttt{.Net} \cite{dotnet_docs}, który w swojej specyfikacji określa projekt
 jako folder ze swoim własnym plikiem konfiguracyjnym, specyfikacją budowania i potrzebnymi bibliotekami. 
 
+% TO DO: proszę podzielić na pól i postawić obok siebie - wtedy nie straci się tak dużo miejsca w pionie i będzie też można przeskalować w górę - bo obecnie rysunek jest nieczytelny
 \begin{figure}
     \centering
     \includegraphics[scale=0.3]{rys04/org_proj.png}
@@ -24,7 +25,7 @@ System został podzielony na dwie aplikacje - serwerową i kliencką. Aplikacja 
 Wizualizację opisową pokazano na rysunku \ref{fig:diag_opisowy}.
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys04/diag_opis.pdf}
+    \includegraphics[scale=0.7]{rys04/diag_opis.pdf}
     \caption{Diagram opisowy systemu}
     \label{fig:diag_opisowy}
 \end{figure}
@@ -35,11 +36,11 @@ Warstwa infrastruktury zawiera integracje, wydarzenia domenowe, połączenie z b
 Warstwa aplikacji zawiera logikę biznesową systemu, która jest wywoływana przez warstwę dostępową. Podzielona ona jest na moduły, gdzie każdy moduł odpowiada części domeny zawartej w warstwie domeny.
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys04/diag_komp.pdf}
+    \includegraphics[scale=0.4]{rys04/diag_komp.pdf}
     \caption{Diagram komponentów systemu}
     \label{fig:diag_komp}
 \end{figure}
-\newpage
+
 \subsection{Podejście projektowe}
 W procesie projektowania aplikacji serwerowej zastosowano elementy podejścia \textit{DDD} (ang. \textit{Domain-Driven Design}) \cite{evans2015domain, vernon2016ddd}. Koncepcja ta zakłada ścisłe powiązanie struktury oprogramowania z docelową dziedziną biznesową poprzez wypracowanie tzw. języka wszechobecnego (ang. \textit{Ubiquitous Language}). Oznacza to, że terminologia stosowana bezpośrednio w kodzie źródłowym - w nazwach klas, metod oraz modułów -
 jest tożsama z pojęciami używanymi przez ekspertów dziedzinowych oraz użytkowników końcowych. Takie podejście ułatwia zrozumienie działania systemu osobom nietechnicznym, upraszcza definiowanie nowych wymagań oraz zwiększa utrzymywalność projektu w miarę jego rozwoju.
@@ -73,6 +74,7 @@ Wzorzec \textit{Mediator} w wersji generycznej, opiera się na założeniu, że 
 Wzorzec ten pozwala na komunikację między warstwami poprzez wysyłanie zapytań i komend, które są obsługiwane przez odpowiednie klasy handlerów. Najczęstszym przypadkiem zastosowania tego wzorca jest implementacja wzorca \textit{CQRS}, który rozdziela logikę pobierania danych od logiki ich modyfikacji. W systemie zastosowano ten wzorzec, aby ograniczyć zależności między warstwami i nie korzystać z interfejsów przy komunikacji między nimi.
 Na rysunku \ref{fig:diag_mediator} przedstawiono diagram przepływu danych w systemie z wykorzystaniem wzorca \textit{Mediator} w celu lepszego zobrazowania działania tego wzorca. Jako przykład przyjęto proces inicjalizacji nowego, pustego repozytorium w projekcie.
 
+% TO DO: tego diagramu nie da się przeczytać na wydruku. Da się go zacieśnić, by później można go było przeskalować w górę (linie można prowadzić z boku bloków, nie od dołu - zyska się wtedy dużo przestrzeni w pionie)
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.3]{rys04/diag_przeplyw.pdf}

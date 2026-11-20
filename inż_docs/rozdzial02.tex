@@ -46,7 +46,6 @@ Podobnie jak w przypadku Githuba, Azure DevOps nie oferuje możliwości tworzeni
 \subsection{Podsumowanie przeglądu istniejących rozwiązań}
 \label{sec:podsumowanie-przegladu}
 Zestawienie cech omówionych platform przedstawiono w tabeli \ref{tab:porownanie-rozwiazan}.
-
 \begin{table}[htb]
     \centering
     \caption{Porównanie funkcjonalności istniejących rozwiązań}
@@ -68,10 +67,13 @@ Zestawienie cech omówionych platform przedstawiono w tabeli \ref{tab:porownanie
         \bottomrule
     \end{tabularx}
 \end{table}
-
 Z przeprowadzonego przeglądu wynika, że żadna z omówionych platform nie łączy wszystkich funkcjonalności potrzebnych do rozwiązania problemu poruszanego w niniejszej pracy.
 Platformy \emph{GitHub} i \emph{Azure DevOps} zapewniają hosting kodu i narzędzia do zarządzania zadaniami, przy czym \emph{Azure DevOps} oferuje bardziej rozbudowane wsparcie metodyki zwinnej, ale jest płatny powyżej 5 użytkowników.
 \emph{Jira} skupia się wyłącznie na zarządzaniu realizacją projektu i nie umożliwia przechowywania kodu źródłowego.
+% TO DO: tutaj proszę uważać - niektóre z Pana wniosków można podważyć:
+% - co prawda Jira to nie system wersjonowania kodu, ale system ten integruje się z repozytoriami kodu
+% - na githubie da się wdrożyć metodykę scrum (https://www.scrum.org/resources/implementing-scrum-github-projects)
+% Proszę zastanowić się, jak poprawić opis, by nikt go nie podważył (może trzeba go nieco złagodzić)
 Żadne z tych trzech narzędzi nie pozwala jednak publikować ogłoszeń o zapotrzebowaniu na osoby w projekcie.
 Funkcjonalność tę oferuje portal \emph{JustJoin.It}, który z kolei nie posiada narzędzi do pracy nad projektem i jest skierowany do profesjonalnego rynku pracy, a nie do studentów.
 W efekcie osoba chcąca zebrać zespół i prowadzić z nim projekt musi korzystać z co najmniej dwóch niezależnych platform.
@@ -173,6 +175,9 @@ Po zdefiniowaniu wymagań, na ich podstawie powstały następujące przypadki u�
 %TODO rozpisać przypadki użycia?
 
 %TODO: Skalowanie i ustawienie obu obrazków
+% TO DO: zły podpis - proszę poprawić
+% diagram da się zacieśnić, by nie zajmował tak dużo miejsca w pionie (można przesunąć aktora System pocztowy na stronę).
+% brakuje opisu diagramu przypadkó użycie. Po co tworzyć sekcję, w której jest jedynie rysunek?
 \begin{figure}[htb]
     \centering
     \includegraphics[scale=0.5]{rys02/przypadki.drawio.pdf}
