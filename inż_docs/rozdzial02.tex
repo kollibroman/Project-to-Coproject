@@ -32,14 +32,17 @@ Nie ma tam miejsca na typowo studenckie inicjatywy.
 
 \subsection{Jira}
 Jira jest platformą firmy Atlassian przeznaczoną do zarządzania zadaniami i śledzenia postępu prac w projektach \cite{Jira}. Umożliwia organizowanie pracy w backlogu, planowanie sprintów oraz monitorowanie zgłoszeń.
+Dodatkowo, integruje się z platformami takimi jak \textit{Github}, gdzie integracja ta polega na tworzeniu referencji zadań w backlogu do commitów lub pull requestów.
+Można z niej korzystać automatycznie z poziomu platformy do hostingu repozytoriów, wpisujac Id zadania do commita lub wybierająć commit lub pull request ręcznie z poziomu \textit{Jira}.
 W porównaniu z projektowanym systemem skupia się jednak na zarządzaniu realizacją projektu, a nie na wyszukiwaniu osób do zespołu i publikowaniu ogłoszeń rekrutacyjnych.
 
 \subsection{Azure DevOps}
 Zintegrowana platforma do zarządzania projektami i tworzenia oprogramowania, stworzona przez Microsoft. Oferuje ona narzędzia takie same jak Github, jednak poprzez grupę docelową (firmy) ma ona dużo bardziej rozwinięte narzędzia inne niż do hostowania kodu.
-W porównaniu do Githuba, Azure devops ma dużo bardziej rozbudowane narzędzia do zarządzania zadaniami i odpowiedzalnością w projekcie. Poprzez prosty podział na zadania, platforma ta bardzo ułatwiła pracę w metodyce zwinnej (ang. \textit{Agile}). Rozwiązanie to niestety
+Azure posiada rozbudowane narzędzia do zarządzania zadaniami i odpowiedzalnością w projekcie. Poprzez prosty podział na zadania, platforma ta bardzo ułatwiła pracę w metodyce zwinnej (ang. \textit{Agile}).
+Zadania można dzielić na kilka kategorii, takich jak \textit{Epic}, \textit{Feature}, \textit{Work Item}, które grupują zadania nie tylko według priorytetu, ale także pozwalają zagregować 
+je pod względem rozmiaru. \textit{Github} posiada milestone-y, które są odpowiednikiem sprintów i nie dzieli zadań (\textit{Issues}) na kategorie. Rozwiązanie to niestety
 jest płatne od ponad 5 użytkowników, co w kontekście projektów studencki stanowi pewne ograniczenie przy większej skali projektu. Dodatkowo studenci nie są grupą docelową takiego rozwiązania i mogą mieć problemy żeby w nim się odnaleźć.
 Podobnie jak w przypadku Githuba, Azure DevOps nie oferuje możliwości tworzenia naborów osoby do projektu. W kontekście problemu poruszanego w niniejszej pracy, to rozwiązanie jest niewystarczające, jednak ono również adresuje dużo zdefiniowanych wymagań.
-
 % TO DO: warto przegląd podsumować. można byłoby zrobić tabelę zbierającą cechy wszystkich rozwiązań (taką features table).
 % TO DO: powinny pojawić się jakieś cytowania czy też adresy do stron omawianych systemów (by czytelnik mógł znaleźć szczegóły)
 % DONE
@@ -68,17 +71,19 @@ Zestawienie cech omówionych platform przedstawiono w tabeli \ref{tab:porownanie
     \end{tabularx}
 \end{table}
 Z przeprowadzonego przeglądu wynika, że żadna z omówionych platform nie łączy wszystkich funkcjonalności potrzebnych do rozwiązania problemu poruszanego w niniejszej pracy.
-Platformy \emph{GitHub} i \emph{Azure DevOps} zapewniają hosting kodu i narzędzia do zarządzania zadaniami, przy czym \emph{Azure DevOps} oferuje bardziej rozbudowane wsparcie metodyki zwinnej, ale jest płatny powyżej 5 użytkowników.
-\emph{Jira} skupia się wyłącznie na zarządzaniu realizacją projektu i nie umożliwia przechowywania kodu źródłowego.
+Platformy \emph{GitHub} i \emph{Azure DevOps} zapewniają hosting kodu i narzędzia do zarządzania zadaniami.
+\emph{Jira} skupia się wyłącznie na zarządzaniu realizacją projektu i nie umożliwia przechowywania kodu źródłowego, ale może sie integrować z platformami do jego hostingu.
+Integracja ta nie skupia się na tym, że z poziomu tej platfomy można wykonywać operacje \textit{clone}, \textit{push}, \textit{pull} i ma charakter bardziej informacyjny
+dla deweloperów, żeby mogli poprzez odnośnik dostać się do zmian powiązanych z zadaniem.
 % TO DO: tutaj proszę uważać - niektóre z Pana wniosków można podważyć:
 % - co prawda Jira to nie system wersjonowania kodu, ale system ten integruje się z repozytoriami kodu
 % - na githubie da się wdrożyć metodykę scrum (https://www.scrum.org/resources/implementing-scrum-github-projects)
 % Proszę zastanowić się, jak poprawić opis, by nikt go nie podważył (może trzeba go nieco złagodzić)
-Żadne z tych trzech narzędzi nie pozwala jednak publikować ogłoszeń o zapotrzebowaniu na osoby w projekcie.
+% DONE - opisałem w sekcji z devopsem dokładniej o co chodzi
+Żadne z tych trzech narzędzi nie pozwala jednak publikować ogłoszeń w rozumieniu  o zapotrzebowaniu na osoby w projekcie.
 Funkcjonalność tę oferuje portal \emph{JustJoin.It}, który z kolei nie posiada narzędzi do pracy nad projektem i jest skierowany do profesjonalnego rynku pracy, a nie do studentów.
 W efekcie osoba chcąca zebrać zespół i prowadzić z nim projekt musi korzystać z co najmniej dwóch niezależnych platform.
 Projektowany system ma wypełnić tę lukę, łącząc w jednym miejscu hosting repozytoriów, zarządzanie projektem oraz publikowanie ogłoszeń naborów i obsługę aplikacji.
-
 
 \section{Założenia projektowe}
 
@@ -88,7 +93,6 @@ Oprócz kodu źródłowego użytkownik będzie mógł zarządzać projektem w me
 W momencie kiedy zespół zauważy że brakuje im osoby o konkretnych umiejętnościach, będzie mógł stworzyć ogłoszenie o zapotrzebowaniu takiej osoby. Potem,
 pod ogłoszeniem będą mogli sprawdzić kto aplikował na daną ofertę i w prosty sposób odsiać osoby które nie spełniają wymagań. W momencie kiedy zespół znajdzie pożądaną osobę,
 w prosty sposób będzie mógł ją dodać do projektu i przydzielić jej odpowiednią, zdefiniowaną wcześniej rolę.
-
 
 \subsection{Wymagania funkcjonalne i niefunkcjonalne}
 W celu rozwiązania omawianego problemu, tworzony system musi oferować połączenie kilku niezależnych od siebie funkcjonalności, takich jak hosting repozytoriów,
@@ -171,16 +175,14 @@ W celu lepszej wizualizacji wymagań funkcjonalnych, na rysunku~\ref{fig:sysml_w
 % DONE
 \subsection{Przypadki użycia}
 Po zdefiniowaniu wymagań, na ich podstawie powstały następujące przypadki użycia na rysunku~\ref{fig:przypadki}:
-\subsubsection{Diagram przypadków użycia}
-%TODO rozpisać przypadki użycia?
-
 %TODO: Skalowanie i ustawienie obu obrazków
 % TO DO: zły podpis - proszę poprawić
+% DONE
 % diagram da się zacieśnić, by nie zajmował tak dużo miejsca w pionie (można przesunąć aktora System pocztowy na stronę).
 % brakuje opisu diagramu przypadkó użycie. Po co tworzyć sekcję, w której jest jedynie rysunek?
 \begin{figure}[htb]
     \centering
     \includegraphics[scale=0.5]{rys02/przypadki.drawio.pdf}
-    \caption{Diagram SysML wymagań funkcjonalnych}
+    \caption{Diagram przypadków użycia}
     \label{fig:przypadki}
 \end{figure}

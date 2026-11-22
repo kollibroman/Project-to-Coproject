@@ -13,7 +13,6 @@ w celu lepszego oddania tego w jaki sposób została stworzona baza danych. Na r
     \caption{Diagram koncepcyjny bazy danych}
     \label{fig:diag_klas_db}
 \end{figure}
-%TODO: Dodac diagram klas na podstawie czego orm wygenerowal baze
 \newpage
 Na podstawie diagramu koncepcyjnego bazy danych stworzono odpowiednie klasy, reprezentujące encje z powyższego diagramu. Na diagramie \ref{fig:diag_klas} przedstawiono diagram klas, który został stworzony w narzędziu \textit{draw.io}. Diagram ten przedstawia wszystkie klasy wraz z ich atrybutami oraz związkami między nimi.
 Pominięto na nim klasy automatycznie wygenerowane przez biblioteki i \textit{ORM}, które nie są istotne z punktu widzenia projektowania bazy danych. Diagram ten jest również podstawą do stworzenia bazy danych, która zostanie stworzona przez \textit{ORM} na podstawie tych klas.
@@ -47,18 +46,17 @@ Makiety stworzone od razu weług docelowego stylu aplikacji, zgodnego ze specyfi
 bibliotekę \textit{Mantine}, która jest zgodna z tym style oraz udostępnia wiele gotowych komponentów, co ułatwia implementację.
 Na rysunku \ref{fig:makieta_logowanie_rejestracja} przedstawiono makiety ekranów logowania i rejestracji użytkownika. Po zalogowaniu użytkownik zostaje przeniesiony na pulpit, którego makietę przedstawiono na rysunku \ref{fig:makieta_pulpit}.
 
-% TO DO: w zaleceniach w szablonie pisałem o tym, by nie używać subfigure czy też minipage. Ten sam efekt można osiągnąć stosując tabular/tabularx
 % TO DO: proszę makiety UI robić przy zawężonym oknie - by nie było tak dużego białego marginesu - on nic nie wnosi.
 % (pisałem o tym wszystkim w zaleceniach w szablonie !!!!)
 \begin{figure}[!htbp]
     \centering
 		\begin{tabular}{ll}
 		a) & b ) \\
-     \includegraphics[width=.45\linewidth]{rys03/makiety/logowanie}
+     \includegraphics[width=.45\linewidth]{rys03/makiety/01_logowanie.pdf}
 &
       \includegraphics[width=.45\linewidth]{rys03/makiety/02_rejestracja.pdf}
     \end{tabular}
-		\caption{Makiety: a) strony lokowania, b) strony rejestracji}
+		\caption{Makiety: a) strony logowania, b) strony rejestracji}
 		\label{fig:makieta_logowanie_rejestracja}
 \end{figure}
 
@@ -71,84 +69,66 @@ Na rysunku \ref{fig:makieta_logowanie_rejestracja} przedstawiono makiety ekranó
 \end{figure}
 Z poziomu strony głównej, użytkownik może przejść do listy projektów, w których uczestniczy (niezależnie od roli), do projektów w których nieuczestniczy (sekcja odkryj) i dostępnych ofert współpracy przy projektach.
 Dodatkowo, z poziomu menu bocznego użytkownik może przejść do panelu ze swoim kontem, w którym może połączyć się do swojego konta na platformie \textit{Github} za pomocą tokena.
-Na panelu również pokazano możliwość modyfikacji motywu systemu i panel z zaproszeniami do projektów, które użytkownik może przyjąć bądź odrzucić. Makietę tą pokazano na rysunku \ref{fig:makieta_konto}
+Na panelu również pokazano możliwość modyfikacji motywu systemu i panel z zaproszeniami do projektów, które użytkownik może przyjąć bądź odrzucić. Makietę tą pokazano na rysunku \ref{fig:makieta_konto}.
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.3]{rys03/makiety/19_konto.pdf}
     \caption{Makieta strony konta użytkownika}
     \label{fig:makieta_konto}
 \end{figure}
-Ze strony głównej, lub menu panelu bocznego, użytkownik możej przejść do listy projektów w których uczestniczy, przedstawionej na rysunku \ref{fig:makieta_projekty}.
+Ze strony głównej, lub menu panelu bocznego, użytkownik możej przejść do listy projektów w których uczestniczy, przedstawionej na rysunku \ref{fig:makieta_projekty_repo}.
 Na rysunku przedstawiono widok z przykładowymi projektami, gdzie użytkownik ma kilka różnych, dynamicznie definiowanych ról. Z poziomu każdego komponentu projektu można przejść do strony
-ze szczegółami danego projektu, przedstwionej na rysunkach \ref{fig:makieta_projekt_repo}, \ref{fig:makieta_projekt_ogloszenia}, \ref{fig:makieta_projekt_czlonkowie} i \ref{fig:makieta_projekt_sprinty}.
+ze szczegółami danego projektu, przedstwionej na rysunkach \ref{fig:makieta_projekty_repo}, \ref{fig:makieta_projekt_ogloszenia}, \ref{fig:makieta_czlonkowie_role} i \ref{fig:makieta_sprinty_zadania}.
 Na stronie ze szczegółami projektu, widok został podzielony na kilka zakładek, które umożliwiają zobaczenie dedykowanych widoków do każdej funkcjonalności.
 Pierwszą z nich jest zakładka repozytoria, w której znajdują się wszystkie repozytoria z kodem do danego projektu. Z jej poziomu jest możliwość stworzenia nowego repozytorium oraz importowania istniejącego z platformy \textit{Github}.
 Komponent z repozytoriami, analogicznie jak w przypadku projektów, umożliwiają przejście do widoku repozytorium, inspirowanego tym jak wyglądają tego typu widoki na innych platformach do hostowania kodu. Po wejściu w ten widok,
-przedstawiony na rysunku \ref{fig:makieta_repo_kod}.
+przedstawiony na rysunku \ref{fig:makieta_repo}a.
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-       \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/04_projekty.pdf}
-        \caption{Makieta listy projektów użytkownika}
-        \label{fig:makieta_projekty}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/05_projekt_repozytoria.pdf}
-    \caption{Makieta strony projektu z zakładką repozytoriów}
-    \label{fig:makieta_projekt_repo}
-    \end{minipage}
+    \begin{tabular}{ll}
+        a)& b) \\
+       \includegraphics[scale=0.23]{rys03/makiety/04_projekty.pdf}
+       & 
+       \includegraphics[scale=0.23]{rys03/makiety/05_projekt_repozytoria.pdf}
+    \end{tabular}
+    \caption{a) Makieta strony projektów i b) projektu z zakładką repozytoriów}
+    \label{fig:makieta_projekty_repo}
 \end{figure}
-Na podstronie repozytorium, użytkownik może przeglądać listę plików danym repozytorium oraz listę commitów, listę widać na rysunku \ref{fig:makieta_repo_commity}. Po kliknięciu w dany plik, użytkownik może zobaczyć jego podgląd.
-Zaprezentowano to na rysunku \ref{fig:makieta_repo_plik}
+Na podstronie repozytorium, użytkownik może przeglądać listę plików danym repozytorium oraz listę commitów, listę widać na rysunku \ref{fig:makieta_repo}c. Po kliknięciu w dany plik, użytkownik może zobaczyć jego podgląd.
+Zaprezentowano to na rysunku \ref{fig:makieta_repo}b.
 \begin{figure}[!htbp]
-    \centering
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/12_repozytorium_kod.pdf}
-        \caption{Makieta strony repozytorium z listą plików}
-        \label{fig:makieta_repo_kod}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/13_repozytorium_plik.pdf}
-        \caption{Makieta podglądu pliku w repozytorium}
-        \label{fig:makieta_repo_plik}
-    \end{minipage}
-    \begin{minipage}[t]{0.8\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/14_repozytorium_commity.pdf}
-        \caption{Makieta historii commitów repozytorium}
-        \label{fig:makieta_repo_commity}
-    \end{minipage}
+   \centering
+   \begin{tabular}{ll}
+        a) & b) \\
+        \includegraphics[scale=0.2]{rys03/makiety/12_repozytorium_kod.pdf}
+        &
+        \includegraphics[scale=0.2]{rys03/makiety/13_repozytorium_plik.pdf} \\
+        c) \\
+        \includegraphics[scale=0.2]{rys03/makiety/14_repozytorium_commity.pdf}
+        &
+   \end{tabular}
+   \caption{Makiety: a) widoku kodu repozytorium, b) podglądu pliku, c) listy commitów}
+   \label{fig:makieta_repo}
 \end{figure}
 \newpage
 Kolejną zakładka na stronie projektu jest sekcja związana ze sprintami i zadaniami. W tej sekcji użytkownik może przeglądać listę sprintów oraz zadań razem z ich statusami w danym sprincie.
-Z tego poziomu użytkownik może również stworzyć nowy sprint lub zadanie. Pokazano to na rysunku \ref{fig:makieta_projekt_sprinty}.
+Z tego poziomu użytkownik może również stworzyć nowy sprint lub zadanie. Pokazano to na rysunku \ref{fig:makieta_sprinty_zadania}a, a okno tworzenia zadania na rysunku \ref{fig:makieta_sprinty_zadania}c.
 Z poziomu tego widoku, użytkownik może zobaczyć ile zadań zostało zrealizowanych, ile jest do zrobienia i ile jest w trakcie.
-Z zakładki sprintów, użytkownik może przejść do szczegółów danego sprintu pokazanego na rysunku \ref{fig:makieta_sprint}
+Z zakładki sprintów, użytkownik może przejść do szczegółów danego sprintu pokazanego na rysunku \ref{fig:makieta_sprinty_zadania}b
 Z tego poziomu zadania można również grupować według ich statusu i tak jak w poprzednim rysunku, można zarządzać ich statusami. Dostępna jest również edycja sprintu, usunięcie go i dodanie nowych zadań do niego.
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/06_projekt_sprinty.pdf}
-        \caption{Makieta strony projektu z zakładką sprintów i zadań}
-        \label{fig:makieta_projekt_sprinty}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/07_sprint.pdf}
-    \caption{Makieta strony sprintu}
-    \label{fig:makieta_sprint}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/08_dialog_nowe_zadanie.pdf}
-        \caption{Makieta okna tworzenia zadania}
-        \label{fig:makieta_dialog_zadanie}
-    \end{minipage}
+    \begin{tabular}{ll}
+        a) & b) \\
+        \includegraphics[width=.48\linewidth,height=0.35\textheight,keepaspectratio]{rys03/makiety/06_projekt_sprinty.pdf}
+        &
+        \includegraphics[width=.48\linewidth,height=0.35\textheight,keepaspectratio]{rys03/makiety/07_sprint.pdf} \\
+        c) & \\
+        \includegraphics[width=.48\linewidth,height=0.35\textheight,keepaspectratio]{rys03/makiety/08_dialog_nowe_zadanie.pdf}
+        &
+    \end{tabular}
+    \caption{Makiety: a) strony projektu z zakładką sprintów i zadań, b) strony sprintu, c) okna tworzenia zadania}
+    \label{fig:makieta_sprinty_zadania}
 \end{figure}
 Poza zakładkami repozytoriów i sprintów, użytkownik może również przejść do zakładki ogłoszeń, w której znajdują się wszystkie ogłoszenia związane z danym projektem.
 Z poziomu tej zakładki użytkownik może również stworzyć nowe ogłoszenie, które będzie widoczne dla wszystkich użytkowników, którzy nie są członkami projektu. Pokazano to na rysunku \ref{fig:makieta_projekt_ogloszenia}.
@@ -161,79 +141,63 @@ Istnieje także możliwość grupowania ogłoszeń zgodnie z ich statusem oraz d
     \label{fig:makieta_projekt_ogloszenia}
 \end{figure}
 \newpage
-Ostatnią dostępną zakładką na stronie projektu jest zakładka członków i ról. Jej makieta znajduje się na rysunku \ref{fig:makieta_projekt_czlonkowie}.
-Z jej poziomu można definiować role w projekcie i przypisywać je do członków projektu. Każda rola ma dedykowane uprawnienia, które można zdefiniować zgodnie z makietą na rysunku \ref{fig:makieta_dialog_rola}.
+Ostatnią dostępną zakładką na stronie projektu jest zakładka członków i ról. Jej makieta znajduje się na rysunku \ref{fig:makieta_czlonkowie_role}a.
+Z jej poziomu można definiować role w projekcie i przypisywać je do członków projektu. Każda rola ma dedykowane uprawnienia, które można zdefiniować zgodnie z makietą na rysunku \ref{fig:makieta_czlonkowie_role}b.
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/10_projekt_czlonkowie_role.pdf}
-        \caption{Makieta strony projektu z zakładką członków i ról}
-        \label{fig:makieta_projekt_czlonkowie}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/11_dialog_rola_uprawnienia.pdf}
-        \caption{Makieta okna edycji roli i jej uprawnień}
-        \label{fig:makieta_dialog_rola}
-    \end{minipage}
+    \begin{tabular}{ll}
+        a) & b) \\
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/10_projekt_czlonkowie_role.pdf}
+        &
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/11_dialog_rola_uprawnienia.pdf}
+    \end{tabular}
+    \caption{Makiety: a) strony projektu z zakładką członków i ról, b) okna edycji roli i jej uprawnień}
+    \label{fig:makieta_czlonkowie_role}
 \end{figure}
-Po przejściu przez stronę projektów, użytkownik może przejść do sekcji odkrywania projektów widocznej na rysunku \ref{fig:makieta_odkryj}.
+Po przejściu przez stronę projektów, użytkownik może przejść do sekcji odkrywania projektów widocznej na rysunku \ref{fig:makieta_odkryj}a.
 Na tej stronie użytkownik może przeglądać wszystkie projekty, w których nie uczestniczy i do których być może może aplikować.
-Z poziomu tej strony użytkownik może przejść do podglądu danego projektu, na którym znajdują się oferty wystawione przez jego członków. Z poziomu tej strony można na taką ofertę aplikować. 
+Z poziomu tej strony użytkownik może przejść do podglądu danego projektu (rysunek \ref{fig:makieta_odkryj}b), na którym znajdują się oferty wystawione przez jego członków. Z poziomu tej strony można na taką ofertę aplikować. 
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-       \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/15_odkryj.pdf}
-        \caption{Makieta strony odkrywania projektów}
-        \label{fig:makieta_odkryj}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/16_podglad_projektu.pdf}
-        \caption{Makieta podglądu projektu z aktywnymi ogłoszeniami}
-        \label{fig:makieta_podglad}
-    \end{minipage}
+    \begin{tabular}{ll}
+        a) & b) \\
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/15_odkryj.pdf}
+        &
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/16_podglad_projektu.pdf}
+    \end{tabular}
+    \caption{Makiety: a) strony odkrywania projektów, b) podglądu projektu z aktywnymi ogłoszeniami}
+    \label{fig:makieta_odkryj}
 \end{figure}
 \newpage
-Ostatnią dostępną stroną z poziomu strony głównej jest strona z ofertami współpracy, pokazana na rysunku \ref{fig:makieta_oferty}. Z poziomu tej strony użytkownik może przeglądać wszystkie oferty współpracy, które zostały wystawione przez członków projektów.
-Z jej poziomu można również aplikować na daną ofertę, co widać na rysunku \ref{fig:makieta_aplikuj}.
+Ostatnią dostępną stroną z poziomu strony głównej jest strona z ofertami współpracy, pokazana na rysunku \ref{fig:makieta_oferty}a. Z poziomu tej strony użytkownik może przeglądać wszystkie oferty współpracy, które zostały wystawione przez członków projektów.
+Z jej poziomu można również aplikować na daną ofertę, co widać na rysunku \ref{fig:makieta_oferty}b.
 
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-       \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/18_oferty.pdf}
-        \caption{Makieta strony ofert współpracy}
-        \label{fig:makieta_oferty}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/17_dialog_aplikuj.pdf}
-        \caption{Makieta okna zgłoszenia do ogłoszenia}
-        \label{fig:makieta_aplikuj}
-    \end{minipage}
+    \begin{tabular}{ll}
+        a) & b) \\
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/18_oferty.pdf}
+        &
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/17_dialog_aplikuj.pdf}
+    \end{tabular}
+    \caption{Makiety: a) strony ofert współpracy, b) okna zgłoszenia do ogłoszenia}
+    \label{fig:makieta_oferty}
 \end{figure}
 \newpage
-Osobny widok przygotowano dla użytkowników z kontem biznesowym. Po zalogowaniu trafiają oni na pulpit przedstawiony na rysunku \ref{fig:makieta_biznes_pulpit}.
+Osobny widok przygotowano dla użytkowników z kontem biznesowym. Po zalogowaniu trafiają oni na pulpit przedstawiony na rysunku \ref{fig:makieta_biznes}a.
 Firma nie należy do żadnego projektu, dlatego w bocznym menu zamiast pozycji \textit{Projekty} znajduje się strona odkrywania projektów.
 Z poziomu pulpitu przedstawiciel firmy może przejść do tej strony lub do ustawień konta firmy. Poniżej znajduje się lista najnowszych projektów na platformie,
-z której można od razu przejść do podglądu wybranego projektu, przedstawionego na rysunku \ref{fig:makieta_biznes_podglad}.
+z której można od razu przejść do podglądu wybranego projektu, przedstawionego na rysunku \ref{fig:makieta_biznes}b.
 W odróżnieniu od widoku zwykłego użytkownika podgląd ten nie zawiera ogłoszeń. Firma widzi wyłącznie opis projektu oraz dane kontaktowe zespołu, czyli adres e-mail i numer telefonu,
 dzięki którym może bezpośrednio nawiązać współpracę z twórcami projektu.
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/20_biznes_pulpit.pdf}
-        \caption{Makieta pulpitu użytkownika biznesowego}
-        \label{fig:makieta_biznes_pulpit}
-    \end{minipage}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/21_biznes_podglad_projektu.pdf}
-        \caption{Makieta podglądu projektu dla użytkownika biznesowego}
-        \label{fig:makieta_biznes_podglad}
-    \end{minipage}
+    \begin{tabular}{ll}
+        a) & b) \\
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/20_biznes_pulpit.pdf}
+        &
+        \includegraphics[width=.48\linewidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/21_biznes_podglad_projektu.pdf}
+    \end{tabular}
+    \caption{Makiety: a) pulpitu użytkownika biznesowego, b) podglądu projektu dla użytkownika biznesowego}
+    \label{fig:makieta_biznes}
 \end{figure}
