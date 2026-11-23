@@ -7,9 +7,10 @@ Baza danych została zaprojektowana zgodnie z podejściem \textit{Code-first}. Z
 klas, na podstawie których \textit{ORM} stworzył odpowiednią strukturę bazy danych. Oprócz diagramu klas, pojawią się również prezentacje tabel stworzonych przez biblioteki i sam \textit{ORM}
 w celu lepszego oddania tego w jaki sposób została stworzona baza danych. Na rysunku \ref{fig:diag_klas_db} przedstawiono diagram koncepcyjny bazy danych, który został stworzony w celu lepszego zrozumienia relacji między encjami. Diagram ten został stworzony w narzędziu \textit{draw.io} i przedstawia wszystkie encje wraz z ich atrybutami oraz relacje między nimi. 
 % TO DO: po co na diagramie są bulletpointy? Dlaczego niektóre są elipsami? Czy nie lepiej zrezygnować z tych bulletpointów? Niektóre linie łamią się zbyt często, niektóre tabele (Feature entity) są przykryte etykietami
+% DONE
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{rys03/koncept_db.pdf}
+    \includegraphics[width=0.8\textwidth]{rys03/db_koncept.pdf}
     \caption{Diagram koncepcyjny bazy danych}
     \label{fig:diag_klas_db}
 \end{figure}
@@ -24,13 +25,14 @@ Tabela \texttt{UserTokens} przechowuje informacje o tokenach użytkowników, a t
 % TO DO: proszę przypilnować, by rysunki były czytelne na wydrukach. Poniższy rysunek musiałem przeskalować, bo był nieczytelny. Proszę podosuwać tabele, by rysunek nie był taki szeroki. Wtedy da się go jeszcze bardziej przeskalować w górę. Opis na górze też trzeba przesunąć, by tak nie wystawał.
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys03/diag_klas-2.pdf}
+    \includegraphics[width=\textwidth]{rys03/diag_klas-2.pdf}
     \caption{Diagram klas bazy danych}
     \label{fig:diag_klas}
 \end{figure}
 
 % TO DO: proszę zrobić zrzut png z kompresją bezstratną - i nie zamieniać zrzutu na pdf, 	bo przez stratną kompresję staje się on nieczytelny 
 % TO DO: proszę o przycinanie rysunków - by nie miały białych marginesów
+% DONE
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.5]{rys03/gen_db.png}
@@ -39,7 +41,7 @@ Tabela \texttt{UserTokens} przechowuje informacje o tokenach użytkowników, a t
 \end{figure}
 \newpage
 \section{Makiety interfejsu graficznego}
-Makiety interfejsu graficznego zostały przygotowane w narzędziu \textit{Figma}. Każdą z nich przygotowano dla widoku na komputerze o szerokości ekranu 1280 pikseli, w jasnym motywie aplikacji. Każdy ekran po zalogowaniu
+Makiety interfejsu graficznego zostały przygotowane w narzędziu \textit{Figma}. Każdą z nich przygotowano dla widoku na komputerze o szerokości okna 1024 pikseli, w jasnym motywie aplikacji. Każdy ekran po zalogowaniu
 składa się z górnego paska z nazwą systemu, ikoną zaproszeń i przyciskiem wylogowania oraz z bocznego menu nawigacyjnego. Dane widoczne na makietach są przykładowe.
 Docelowo w samej aplikacji dostępny będzie również ciemny motyw, który będzie można włączyć z poziomu panelu konta użytkownika.
 Makiety stworzone od razu weług docelowego stylu aplikacji, zgodnego ze specyfikacją \textit{Material Design} w wersji 3.0. W aplikacji klienckiej do tego zastosowano 
@@ -52,15 +54,16 @@ Na rysunku \ref{fig:makieta_logowanie_rejestracja} przedstawiono makiety ekranó
     \centering
 		\begin{tabular}{ll}
 		a) & b ) \\
-     \includegraphics[width=.45\linewidth]{rys03/makiety/01_logowanie.pdf}
+     \begin{minipage}[t]{.45\linewidth}\vspace{0pt}\includegraphics[width=\linewidth]{rys03/makiety/01_logowanie.pdf}\end{minipage}
 &
-      \includegraphics[width=.45\linewidth]{rys03/makiety/02_rejestracja.pdf}
+      \begin{minipage}[t]{.45\linewidth}\vspace{0pt}\includegraphics[width=\linewidth]{rys03/makiety/02_rejestracja.pdf}\end{minipage}
     \end{tabular}
 		\caption{Makiety: a) strony logowania, b) strony rejestracji}
 		\label{fig:makieta_logowanie_rejestracja}
 \end{figure}
 
 % TO DO: niepotrzebny tak duży biały margines na dole - przypominam o zawężaniu okna przy robieniu zrzutów
+% DONE
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{rys03/makiety/03_pulpit.pdf}
@@ -72,7 +75,7 @@ Dodatkowo, z poziomu menu bocznego użytkownik może przejść do panelu ze swoi
 Na panelu również pokazano możliwość modyfikacji motywu systemu i panel z zaproszeniami do projektów, które użytkownik może przyjąć bądź odrzucić. Makietę tą pokazano na rysunku \ref{fig:makieta_konto}.
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys03/makiety/19_konto.pdf}
+    \includegraphics[width=0.9\textwidth]{rys03/makiety/19_konto.pdf}
     \caption{Makieta strony konta użytkownika}
     \label{fig:makieta_konto}
 \end{figure}
@@ -87,9 +90,9 @@ przedstawiony na rysunku \ref{fig:makieta_repo}a.
     \centering
     \begin{tabular}{ll}
         a)& b) \\
-       \includegraphics[scale=0.23]{rys03/makiety/04_projekty.pdf}
+       \includegraphics[width=.48\linewidth]{rys03/makiety/04_projekty.pdf}
        & 
-       \includegraphics[scale=0.23]{rys03/makiety/05_projekt_repozytoria.pdf}
+       \includegraphics[width=.48\linewidth]{rys03/makiety/05_projekt_repozytoria.pdf}
     \end{tabular}
     \caption{a) Makieta strony projektów i b) projektu z zakładką repozytoriów}
     \label{fig:makieta_projekty_repo}
@@ -100,11 +103,11 @@ Zaprezentowano to na rysunku \ref{fig:makieta_repo}b.
    \centering
    \begin{tabular}{ll}
         a) & b) \\
-        \includegraphics[scale=0.2]{rys03/makiety/12_repozytorium_kod.pdf}
+        \includegraphics[width=.48\linewidth]{rys03/makiety/12_repozytorium_kod.pdf}
         &
-        \includegraphics[scale=0.2]{rys03/makiety/13_repozytorium_plik.pdf} \\
+        \includegraphics[width=.48\linewidth]{rys03/makiety/13_repozytorium_plik.pdf} \\
         c) \\
-        \includegraphics[scale=0.2]{rys03/makiety/14_repozytorium_commity.pdf}
+        \includegraphics[width=.48\linewidth]{rys03/makiety/14_repozytorium_commity.pdf}
         &
    \end{tabular}
    \caption{Makiety: a) widoku kodu repozytorium, b) podglądu pliku, c) listy commitów}
@@ -136,7 +139,7 @@ Z tego poziomu, użytkownik może zobaczyć zgłoszenia na dane ogłoszenie, kt�
 Istnieje także możliwość grupowania ogłoszeń zgodnie z ich statusem oraz dodawanie nowych.
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys03/makiety/09_projekt_ogloszenia.pdf}
+    \includegraphics[width=0.9\textwidth]{rys03/makiety/09_projekt_ogloszenia.pdf}
     \caption{Makieta strony projektu z zakładką ogłoszeń}
     \label{fig:makieta_projekt_ogloszenia}
 \end{figure}

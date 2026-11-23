@@ -4,14 +4,18 @@
 Projekt został podzielony na wiele podprojektów, w których znajdują się elementy każdej warstwy systemu i obsługa pojedynczych modułów.
 Każdy podprojekt ma swoją jedną odpowiedzialność, co zwiększą utrzymywalnosc projektu i ułatwia jego rozwój w przyszłości.
 Projekt jest nazwą własną ekosystemu \texttt{.Net} \cite{dotnet_docs}, który w swojej specyfikacji określa projekt
-jako folder ze swoim własnym plikiem konfiguracyjnym, specyfikacją budowania i potrzebnymi bibliotekami. 
-
+jako folder ze swoim własnym plikiem konfiguracyjnym, specyfikacją budowania i potrzebnymi bibliotekami. Organizację przedstawiono na rysunku \ref{fig:struktura_projekt2}.
 % TO DO: proszę podzielić na pól i postawić obok siebie - wtedy nie straci się tak dużo miejsca w pionie i będzie też można przeskalować w górę - bo obecnie rysunek jest nieczytelny
-\begin{figure}
+% DONE
+\begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys04/org_proj.png}
+    \begin{tabular}{ll}
+    \includegraphics[scale=0.55]{rys04/org_proj_n.png}
+    &
+    \includegraphics[scale=0.63]{rys04/org_proj_n2.png}
+    \end{tabular}
     \caption{Struktura projektu}
-    \label{fig:struktura_projekt}
+    \label{fig:struktura_projekt2}
 \end{figure}
 
 \section{Architektura systemu}
@@ -48,7 +52,6 @@ jest tożsama z pojęciami używanymi przez ekspertów dziedzinowych oraz użytk
 Model domeny został rozdzielony na dwie części. Projekt \texttt{ProjectCowork.Domain} zawiera encje oraz typy wyliczeniowe, a projekt \texttt{ProjectCowork.Domain.Exceptions} wyjątki domenowe. Projekty te nie mają referencji do warstwy aplikacji, infrastruktury ani warstwy dostępowej, zależności w systemie są więc skierowane wyłącznie do domeny. Izolacja domeny od technologii nie jest jednak pełna. Encje \texttt{UserEntity} i \texttt{RoleEntity} dziedziczą po klasach \texttt{IdentityUser<Guid>} i \texttt{IdentityRole<Guid>} z biblioteki \texttt{ASP.NET Core Identity}, co pozwala wykorzystać gotowy mechanizm zarządzania kontami użytkowników bez tworzenia dodatkowej warstwy mapowania. Z kolei wyjątki domenowe przechowują kod statusu HTTP, który jest następnie zwracany przez warstwę dostępową. Są to świadome kompromisy, które upraszczają implementację kosztem czystości modelu.
 
 Encje mają postać modelu anemicznego: są to klasy z publicznymi właściwościami i właściwościami nawigacyjnymi wykorzystywanymi przez \texttt{Entity Framework Core}, pozbawione logiki biznesowej. Logika ta została przeniesiona do klas agregatów w projekcie \texttt{ProjectCowork.Infrastructure.Domain}. Każdy agregat opakowuje encję główną, udostępnia statyczną metodę \texttt{Create} tworzącą poprawną encję oraz metody modyfikujące jej stan, które sprawdzają reguły biznesowe przed wprowadzeniem zmiany. Agregaty znajdują się w warstwie infrastruktury, ponieważ korzystają z mechanizmu publikowania zdarzeń opartego na bibliotece \texttt{DispatchR} oraz z rozszerzeń zapytań \texttt{Entity Framework Core}, które ładują wszystkie elementy agregatu z bazy danych.
-
 W ramach projektowania w systemie wyróżniono następujące elementy wzorca DDD:
 \begin{itemize}
     \item \textbf{Moduły funkcjonalne} - logika warstwy aplikacji została podzielona na moduły (\textit{Project}, \textit{Management}, \textit{Permissions}, \textit{ProjectPosting}, \textit{Repositories}, \textit{User}, \textit{Integrations}), z których każdy odpowiada za wyodrębniony fragment dziedziny. Podział ten nawiązuje do idei ograniczonych kontekstów (ang. \textit{Bounded Contexts}), jednak moduły korzystają ze wspólnego modelu domeny i jednego kontekstu bazy danych \texttt{ProjectCoworkDbContext}, nie są więc w pełni autonomiczne.
@@ -75,9 +78,10 @@ Wzorzec ten pozwala na komunikację między warstwami poprzez wysyłanie zapyta�
 Na rysunku \ref{fig:diag_mediator} przedstawiono diagram przepływu danych w systemie z wykorzystaniem wzorca \textit{Mediator} w celu lepszego zobrazowania działania tego wzorca. Jako przykład przyjęto proces inicjalizacji nowego, pustego repozytorium w projekcie.
 
 % TO DO: tego diagramu nie da się przeczytać na wydruku. Da się go zacieśnić, by później można go było przeskalować w górę (linie można prowadzić z boku bloków, nie od dołu - zyska się wtedy dużo przestrzeni w pionie)
+% DONE
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[scale=0.3]{rys04/diag_przeplyw.pdf}
+    \includegraphics[scale=0.43]{rys04/Diag_przeplyw.pdf}
     \caption{Diagram przepływu danych w systemie z wykorzystaniem wzorca Mediator}
     \label{fig:diag_mediator}
 \end{figure}
@@ -301,9 +305,6 @@ Architektura aplikacji została podzielona na tzw. \texttt{Hooks}, gdzie zdefini
 \texttt{Features}, gdzie zdefiniowane są strony dla każdego modułu aplikacji, \texttt{Auth}, gdzie znajduje się obsługa sesji zalogowanego użytkownika
 i reszta gdzie znajdują się funkcje pomocnicze, takie jak obsługa głównego
 stylu strony i tego jak się zachowuje strona w momencie kiedy użytkownik jest zalogowany lub nie.
-
-%TODO: Dodac ss samego projektu frontu
-
 \section{Konteneryzacja}
 System został skonteneryzowany za pomocą narzędzia \texttt{Docker} \cite{docker_docs}. Każda z aplikacji, serwerowa i kliencka, posiada swój własny plik konfiguracyjny \texttt{Dockerfile}, który określa jak ma zostać zbudowany obraz kontenera.
 To wszystko jest zintegrowane poprzez konfigurację w pliku \textit{compose.yaml}, co sprawia, że żeby uruchomić system, wystarczy wykonać jedną komendę \texttt{docker compose up --build} w katalogu \textit{src}.

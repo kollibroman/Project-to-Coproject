@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800" font-family="'Liberation Sans', Arial, Helvetica, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="760" viewBox="0 0 1024 760" font-family="'Liberation Sans', Arial, Helvetica, sans-serif">
   <defs>
     <filter id="shadowSm" x="-5%" y="-10%" width="110%" height="125%">
       <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#000" flood-opacity="0.12"/>
@@ -8,31 +8,31 @@
     </filter>
   </defs>
 
-  <rect width="1280" height="800" fill="#ffffff"/>
+  <rect width="1024" height="760" fill="#ffffff"/>
 
   <!-- Górny pasek (AppShell.Header) -->
-  <line x1="0" y1="60.5" x2="1280" y2="60.5" stroke="#dee2e6"/>
+  <line x1="0" y1="60.5" x2="1024" y2="60.5" stroke="#dee2e6"/>
   <g stroke="#212529" stroke-width="2">
     <line x1="18" y1="23" x2="36" y2="23"/>
     <line x1="18" y1="29" x2="36" y2="29"/>
     <line x1="18" y1="35" x2="36" y2="35"/>
   </g>
   <text x="52" y="37.5" font-size="22" font-weight="700" fill="#212529">ProjectCowork</text>
-  <g transform="translate(1144 20)" fill="none" stroke="#228be6" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+  <g transform="translate(888 20)" fill="none" stroke="#228be6" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
     <path d="M2.5 15 C3.5 13.5 3.5 11 3.5 8.5 a5.5 5.5 0 0 1 11 0 c0 2.5 0 5 1 6.5 Z"/>
     <path d="M6.5 17.5 a2.5 2.5 0 0 0 5 0"/>
   </g>
-  <circle cx="1165" cy="18" r="8" fill="#fa5252"/>
-  <text x="1165" y="22" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
-  <text x="1223" y="35" font-size="14" font-weight="700" fill="#228be6" text-anchor="middle">Wyloguj</text>
+  <circle cx="909" cy="18" r="8" fill="#fa5252"/>
+  <text x="909" y="22" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+  <text x="967" y="35" font-size="14" font-weight="700" fill="#228be6" text-anchor="middle">Wyloguj</text>
 
   <!-- Boczne menu (AppShell.Navbar) -->
-  <line x1="260.5" y1="61" x2="260.5" y2="800" stroke="#dee2e6"/>
+  <line x1="260.5" y1="61" x2="260.5" y2="760" stroke="#dee2e6"/>
   <rect x="16" y="76" width="228" height="38" fill="#e7f5ff"/>
   <text x="28" y="100" font-size="14" fill="#228be6">Pulpit</text>
   <text x="28" y="138" font-size="14" fill="#212529">Odkryj</text>
   <text x="28" y="176" font-size="14" fill="#212529">Konto</text>
-  <text x="16" y="779" font-size="12" fill="#868e96">v0.0.0</text>
+  <text x="16" y="739" font-size="12" fill="#868e96">v0.0.0</text>
 
   <!-- Nagłówek strony -->
   <text x="284" y="114" font-size="34" font-weight="700" fill="#212529">Pulpit</text>
@@ -40,8 +40,8 @@
 
   <!-- Kafelki (SimpleGrid cols=2, Card withBorder shadow="sm") -->
   <g filter="url(#shadowSm)">
-    <rect x="284.5" y="178.5" width="479" height="180" rx="8" fill="#ffffff" stroke="#dee2e6"/>
-    <rect x="779.5" y="178.5" width="479" height="180" rx="8" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="284.5" y="178.5" width="349" height="196" rx="8" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="650.5" y="178.5" width="349" height="196" rx="8" fill="#ffffff" stroke="#dee2e6"/>
   </g>
 
   <!-- Odkryj projekty -->
@@ -51,40 +51,42 @@
     <path d="M19 9 L16.5 16.5 L9 19 L11.5 11.5 Z"/>
   </g>
   <text x="316" y="293" font-size="22" font-weight="700" fill="#212529">Odkryj projekty</text>
-  <text x="316" y="326" font-size="14" fill="#868e96">Przeglądaj projekty studentów i sprawdź ich aktywne ogłoszenia.</text>
+  <text x="316" y="326" font-size="14" fill="#868e96">Przeglądaj projekty studentów i sprawdź</text>
+  <text x="316" y="346" font-size="14" fill="#868e96">ich aktywne ogłoszenia.</text>
 
   <!-- Konto firmy -->
-  <rect x="811" y="211" width="48" height="48" rx="8" fill="#e7f5ff"/>
-  <g transform="translate(821 221)" fill="none" stroke="#228be6" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+  <rect x="682" y="211" width="48" height="48" rx="8" fill="#e7f5ff"/>
+  <g transform="translate(692 221)" fill="none" stroke="#228be6" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
     <path d="M2 26 H26"/>
     <path d="M4 26 V4 H16 V26"/>
     <path d="M16 12 H24 V26"/>
     <path d="M8 9 H12 M8 14 H12 M8 19 H12 M20 17 V17.5 M20 21 V21.5"/>
   </g>
-  <text x="811" y="293" font-size="22" font-weight="700" fill="#212529">Konto firmy</text>
-  <text x="811" y="326" font-size="14" fill="#868e96">Dane firmy, ustawienia konta i wygląd aplikacji.</text>
+  <text x="682" y="293" font-size="22" font-weight="700" fill="#212529">Konto firmy</text>
+  <text x="682" y="326" font-size="14" fill="#868e96">Dane firmy, ustawienia konta</text>
+  <text x="682" y="346" font-size="14" fill="#868e96">i wygląd aplikacji.</text>
 
   <!-- Najnowsze projekty -->
-  <text x="284" y="412" font-size="26" font-weight="700" fill="#212529">Najnowsze projekty</text>
+  <text x="284" y="428" font-size="26" font-weight="700" fill="#212529">Najnowsze projekty</text>
 
   <g filter="url(#shadowMd)">
-    <rect x="284.5" y="432.5" width="973" height="116" rx="4" fill="#ffffff" stroke="#dee2e6"/>
-    <rect x="284.5" y="564.5" width="973" height="116" rx="4" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="284.5" y="448.5" width="717" height="116" rx="4" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="284.5" y="580.5" width="717" height="116" rx="4" fill="#ffffff" stroke="#dee2e6"/>
   </g>
 
-  <text x="316" y="482" font-size="22" font-weight="700" fill="#212529">System rezerwacji sal</text>
-  <text x="316" y="510" font-size="14" fill="#868e96">Aplikacja webowa do rezerwacji sal wykładowych na uczelni.</text>
-  <rect x="1190" y="464" width="34" height="34" rx="4" fill="#228be6"/>
-  <g transform="translate(1199 473)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <text x="316" y="498" font-size="22" font-weight="700" fill="#212529">System rezerwacji sal</text>
+  <text x="316" y="526" font-size="14" fill="#868e96">Aplikacja webowa do rezerwacji sal wykładowych na uczelni.</text>
+  <rect x="934" y="480" width="34" height="34" rx="4" fill="#228be6"/>
+  <g transform="translate(943 489)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M2 8 H14 M9 3 L14 8 L9 13"/>
   </g>
 
-  <text x="316" y="614" font-size="22" font-weight="700" fill="#212529">Analiza danych pogodowych</text>
-  <text x="316" y="642" font-size="14" fill="#868e96">Pipeline ETL i panel z danymi meteorologicznymi z całej Polski.</text>
-  <rect x="1190" y="596" width="34" height="34" rx="4" fill="#228be6"/>
-  <g transform="translate(1199 605)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <text x="316" y="630" font-size="22" font-weight="700" fill="#212529">Analiza danych pogodowych</text>
+  <text x="316" y="658" font-size="14" fill="#868e96">Pipeline ETL i panel z danymi meteorologicznymi z całej Polski.</text>
+  <rect x="934" y="612" width="34" height="34" rx="4" fill="#228be6"/>
+  <g transform="translate(943 621)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M2 8 H14 M9 3 L14 8 L9 13"/>
   </g>
 
-  <text x="284" y="720" font-size="14" font-weight="700" fill="#228be6">Zobacz wszystkie projekty</text>
+  <text x="284" y="736" font-size="14" font-weight="700" fill="#228be6">Zobacz wszystkie projekty</text>
 </svg>
