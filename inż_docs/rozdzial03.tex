@@ -36,7 +36,7 @@ Tabela \texttt{UserTokens} przechowuje informacje o tokenach użytkowników, a t
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.5]{rys03/gen_db.png}
-    \caption{Wygenerowane tabele przez ORM}
+    \caption{Wygenerowane tabele przez ORM} % TO DO - to chyba fragment schematu?
     \label{fig:wygenerowane_tabele}
 \end{figure}
 \newpage
@@ -75,17 +75,11 @@ Dodatkowo, z poziomu menu bocznego użytkownik może przejść do panelu ze swoi
 Na panelu również pokazano możliwość modyfikacji motywu systemu i panel z zaproszeniami do projektów, które użytkownik może przyjąć bądź odrzucić. Makietę tą pokazano na rysunku \ref{fig:makieta_konto}.
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{rys03/makiety/19_konto.pdf}
+    \includegraphics[width=0.88\textwidth]{rys03/makiety/19_konto.pdf}
     \caption{Makieta strony konta użytkownika}
     \label{fig:makieta_konto}
 \end{figure}
 Ze strony głównej, lub menu panelu bocznego, użytkownik możej przejść do listy projektów w których uczestniczy, przedstawionej na rysunku \ref{fig:makieta_projekty_repo}.
-Na rysunku przedstawiono widok z przykładowymi projektami, gdzie użytkownik ma kilka różnych, dynamicznie definiowanych ról. Z poziomu każdego komponentu projektu można przejść do strony
-ze szczegółami danego projektu, przedstwionej na rysunkach \ref{fig:makieta_projekty_repo}, \ref{fig:makieta_projekt_ogloszenia}, \ref{fig:makieta_czlonkowie_role} i \ref{fig:makieta_sprinty_zadania}.
-Na stronie ze szczegółami projektu, widok został podzielony na kilka zakładek, które umożliwiają zobaczenie dedykowanych widoków do każdej funkcjonalności.
-Pierwszą z nich jest zakładka repozytoria, w której znajdują się wszystkie repozytoria z kodem do danego projektu. Z jej poziomu jest możliwość stworzenia nowego repozytorium oraz importowania istniejącego z platformy \textit{Github}.
-Komponent z repozytoriami, analogicznie jak w przypadku projektów, umożliwiają przejście do widoku repozytorium, inspirowanego tym jak wyglądają tego typu widoki na innych platformach do hostowania kodu. Po wejściu w ten widok,
-przedstawiony na rysunku \ref{fig:makieta_repo}a.
 \begin{figure}[!htbp]
     \centering
     \begin{tabular}{ll}
@@ -97,9 +91,16 @@ przedstawiony na rysunku \ref{fig:makieta_repo}a.
     \caption{a) Makieta strony projektów i b) projektu z zakładką repozytoriów}
     \label{fig:makieta_projekty_repo}
 \end{figure}
+Na rysunku przedstawiono widok z przykładowymi projektami, gdzie użytkownik ma kilka różnych, dynamicznie definiowanych ról. Z poziomu każdego komponentu projektu można przejść do strony
+ze szczegółami danego projektu, przedstwionej na rysunkach \ref{fig:makieta_projekty_repo}, \ref{fig:makieta_projekt_ogloszenia}, \ref{fig:makieta_czlonkowie_role} i \ref{fig:makieta_sprinty_zadania}.
+Na stronie ze szczegółami projektu, widok został podzielony na kilka zakładek, które umożliwiają zobaczenie dedykowanych widoków do każdej funkcjonalności.
+Pierwszą z nich jest zakładka repozytoria, w której znajdują się wszystkie repozytoria z kodem do danego projektu. Z jej poziomu jest możliwość stworzenia nowego repozytorium oraz importowania istniejącego z platformy \textit{Github}.
+Komponent z repozytoriami, analogicznie jak w przypadku projektów, umożliwiają przejście do widoku repozytorium, inspirowanego tym jak wyglądają tego typu widoki na innych platformach do hostowania kodu. Po wejściu w ten widok,
+przedstawiony na rysunku \ref{fig:makieta_repo}a.
+
 Na podstronie repozytorium, użytkownik może przeglądać listę plików danym repozytorium oraz listę commitów, listę widać na rysunku \ref{fig:makieta_repo}c. Po kliknięciu w dany plik, użytkownik może zobaczyć jego podgląd.
 Zaprezentowano to na rysunku \ref{fig:makieta_repo}b.
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
    \centering
    \begin{tabular}{ll}
         a) & b) \\
@@ -107,13 +108,13 @@ Zaprezentowano to na rysunku \ref{fig:makieta_repo}b.
         &
         \includegraphics[width=.48\linewidth]{rys03/makiety/13_repozytorium_plik.pdf} \\
         c) \\
-        \includegraphics[width=.48\linewidth]{rys03/makiety/14_repozytorium_commity.pdf}
+        \includegraphics[width=.48\linewidth]{rys03/makiety/14_repozytorium_commity-2.pdf} % TO DO: proszę odciąć ostatnią pozycję z listy, by obrazek był niższy - ja to obciąłem, ale w innym programie i pozmieniało mi czcionki, trzeba więc podmienić na Pana rysunek po modyfikacji
         &
    \end{tabular}
    \caption{Makiety: a) widoku kodu repozytorium, b) podglądu pliku, c) listy commitów}
    \label{fig:makieta_repo}
 \end{figure}
-\newpage
+
 Kolejną zakładka na stronie projektu jest sekcja związana ze sprintami i zadaniami. W tej sekcji użytkownik może przeglądać listę sprintów oraz zadań razem z ich statusami w danym sprincie.
 Z tego poziomu użytkownik może również stworzyć nowy sprint lub zadanie. Pokazano to na rysunku \ref{fig:makieta_sprinty_zadania}a, a okno tworzenia zadania na rysunku \ref{fig:makieta_sprinty_zadania}c.
 Z poziomu tego widoku, użytkownik może zobaczyć ile zadań zostało zrealizowanych, ile jest do zrobienia i ile jest w trakcie.
@@ -137,13 +138,13 @@ Poza zakładkami repozytoriów i sprintów, użytkownik może również przejś�
 Z poziomu tej zakładki użytkownik może również stworzyć nowe ogłoszenie, które będzie widoczne dla wszystkich użytkowników, którzy nie są członkami projektu. Pokazano to na rysunku \ref{fig:makieta_projekt_ogloszenia}.
 Z tego poziomu, użytkownik może zobaczyć zgłoszenia na dane ogłoszenie, które zostały złożone i na ich podstawie wybrać pożądaną osobę. Ogłoszenia również można edytować i ustawiać ich statusy (aktywne, nieaktywne).
 Istnieje także możliwość grupowania ogłoszeń zgodnie z ich statusem oraz dodawanie nowych.
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.9\textwidth]{rys03/makiety/09_projekt_ogloszenia.pdf}
+    \includegraphics[width=0.88\textwidth]{rys03/makiety/09_projekt_ogloszenia.pdf}
     \caption{Makieta strony projektu z zakładką ogłoszeń}
     \label{fig:makieta_projekt_ogloszenia}
 \end{figure}
-\newpage
+
 Ostatnią dostępną zakładką na stronie projektu jest zakładka członków i ról. Jej makieta znajduje się na rysunku \ref{fig:makieta_czlonkowie_role}a.
 Z jej poziomu można definiować role w projekcie i przypisywać je do członków projektu. Każda rola ma dedykowane uprawnienia, które można zdefiniować zgodnie z makietą na rysunku \ref{fig:makieta_czlonkowie_role}b.
 \begin{figure}[!htbp]
@@ -157,10 +158,11 @@ Z jej poziomu można definiować role w projekcie i przypisywać je do członkó
     \caption{Makiety: a) strony projektu z zakładką członków i ról, b) okna edycji roli i jej uprawnień}
     \label{fig:makieta_czlonkowie_role}
 \end{figure}
+
 Po przejściu przez stronę projektów, użytkownik może przejść do sekcji odkrywania projektów widocznej na rysunku \ref{fig:makieta_odkryj}a.
 Na tej stronie użytkownik może przeglądać wszystkie projekty, w których nie uczestniczy i do których być może może aplikować.
 Z poziomu tej strony użytkownik może przejść do podglądu danego projektu (rysunek \ref{fig:makieta_odkryj}b), na którym znajdują się oferty wystawione przez jego członków. Z poziomu tej strony można na taką ofertę aplikować. 
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
     \centering
     \begin{tabular}{ll}
         a) & b) \\
@@ -171,11 +173,10 @@ Z poziomu tej strony użytkownik może przejść do podglądu danego projektu (r
     \caption{Makiety: a) strony odkrywania projektów, b) podglądu projektu z aktywnymi ogłoszeniami}
     \label{fig:makieta_odkryj}
 \end{figure}
-\newpage
+
 Ostatnią dostępną stroną z poziomu strony głównej jest strona z ofertami współpracy, pokazana na rysunku \ref{fig:makieta_oferty}a. Z poziomu tej strony użytkownik może przeglądać wszystkie oferty współpracy, które zostały wystawione przez członków projektów.
 Z jej poziomu można również aplikować na daną ofertę, co widać na rysunku \ref{fig:makieta_oferty}b.
-
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
     \centering
     \begin{tabular}{ll}
         a) & b) \\
@@ -186,6 +187,7 @@ Z jej poziomu można również aplikować na daną ofertę, co widać na rysunku
     \caption{Makiety: a) strony ofert współpracy, b) okna zgłoszenia do ogłoszenia}
     \label{fig:makieta_oferty}
 \end{figure}
+
 \newpage
 Osobny widok przygotowano dla użytkowników z kontem biznesowym. Po zalogowaniu trafiają oni na pulpit przedstawiony na rysunku \ref{fig:makieta_biznes}a.
 Firma nie należy do żadnego projektu, dlatego w bocznym menu zamiast pozycji \textit{Projekty} znajduje się strona odkrywania projektów.
@@ -193,7 +195,8 @@ Z poziomu pulpitu przedstawiciel firmy może przejść do tej strony lub do usta
 z której można od razu przejść do podglądu wybranego projektu, przedstawionego na rysunku \ref{fig:makieta_biznes}b.
 W odróżnieniu od widoku zwykłego użytkownika podgląd ten nie zawiera ogłoszeń. Firma widzi wyłącznie opis projektu oraz dane kontaktowe zespołu, czyli adres e-mail i numer telefonu,
 dzięki którym może bezpośrednio nawiązać współpracę z twórcami projektu.
-\begin{figure}[!htbp]
+
+\begin{figure}[!htb]
     \centering
     \begin{tabular}{ll}
         a) & b) \\

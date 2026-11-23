@@ -34,11 +34,12 @@ Wizualizację opisową pokazano na rysunku \ref{fig:diag_opisowy}.
     \label{fig:diag_opisowy}
 \end{figure}
 
+% TO DO: przypominam o konieczności zadbania o samotne literki na końcach linii
 \subsection{Diagram komponentów}
 System został podzielony na kilka warstw, które dzielą się na podprojekty, które mają swoje pojedyncze odpowiedzialności. Warstwa domeny opisuje encje systemowe, enumy i wyjątki domenowe.
 Warstwa infrastruktury zawiera integracje, wydarzenia domenowe, połączenie z bazą danych, konfigurację encji, uwierzytelnianie i pomniejsze klasy wspomagające.
-Warstwa aplikacji zawiera logikę biznesową systemu, która jest wywoływana przez warstwę dostępową. Podzielona ona jest na moduły, gdzie każdy moduł odpowiada części domeny zawartej w warstwie domeny.
-\begin{figure}[!htbp]
+Warstwa aplikacji zawiera logikę biznesową systemu, która jest wywoływana przez warstwę dostępową. Podzielona ona jest na moduły, gdzie każdy moduł odpowiada części domeny zawartej w warstwie domeny. Widać to na rysunku~\ref{fig:diag_komp}.
+\begin{figure}[!htb]
     \centering
     \includegraphics[scale=0.46]{rys04/diag_komp.pdf}
     \caption{Diagram komponentów systemu}
