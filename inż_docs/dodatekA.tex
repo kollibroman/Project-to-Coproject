@@ -1,1 +1,71 @@
 \chapter{Instrukcja wdrożeniowa}
+Niniejszy dodatek opisuje proces wdrożenia systemu na serwerze. Wdrożenie obejmuje zarówno aplikację serwerową, jak i kliencką.
+
+\section{Wdrożenie ręczne na serwerze}
+Ręczne wdrożenie systemu, bez korzystania z konteneryzacji, wymaga od administratora wcześniejszego przygotowania środowiska.
+Na serwerze muszą być zainstalowane następujące narzędzia:
+\begin{itemize}
+    \item \textbf{.NET SDK 11.0} - \url{https://dotnet.microsoft.com/en-us/download/dotnet/11.0},
+    \item Silnik bazy danych \textbf{PostgreSQL} - \url{https://www.postgresql.org/download/},
+    \item \textbf{Node.js} oraz menedżer pakietów \textbf{npm} lub \textbf{pnpm} - \url{https://nodejs.org/en/download},
+    \item \textbf{Git} - \url{https://git-scm.com/install/},
+    \item \textbf{Azurite} (emulator) lub aktywny zasób \textbf{Azure Blob Storage} w chmurze - \url{https://learn.microsoft.com/en-us/azure/storage/common/storage-install-azurite?tabs=visual-studio%2Cblob-storage},
+    \item \textbf{Nginx} - \url{https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-plus/}.
+\end{itemize}
+
+Po zainstalowaniu powyższych narzędzi należy wykonać następujące kroki:
+\begin{enumerate}
+    \item Pobrać repozytorium z kodem źródłowym systemu z serwisu \textit{GitHub}.
+    \item Uruchomić serwer bazy danych PostgreSQL (oraz emulator Azurite, jeśli nie jest używana chmura Azure).
+    \item W pliku \texttt{appsettings.json} (w katalogu \texttt{/src/Web/ProjectCowork.Api}) uzupełnić sekcje konfiguracyjne bazując na obecnych tam szablonach:
+    \begin{itemize}
+        \item \texttt{ConnectionStrings:DefaultConnection} -- dane dostępowe do bazy danych,
+        \item \texttt{Integrations:BlobStorage:ConnectionString} oraz \texttt{ContainerName} -- dane dostępowe do magazynu plików i nazwa kontenera dla załączników ze zgłoszeń,
+        \item \texttt{Integrations:Email} (\texttt{Host}, \texttt{Port}, \texttt{Username}, \texttt{Password}) -- dane serwera SMTP do wysyłki powiadomień,
+        \item \texttt{Jwt:Key} -- losowy ciąg znaków o długości minimum 16 znaków (oraz opcjonalnie adresy URL dla pól \texttt{Issuer} i \texttt{Audience}).
+    \end{itemize}
+    \item W terminalu przejść do katalogu \texttt{/src/Web/ProjectCowork.Api} i opublikować aplikację poleceniem:
+    \begin{lstlisting}[language=bash]
+dotnet publish -c Release -o ./Publish
+    \end{lstlisting}
+    \item Przejść do wygenerowanego katalogu \texttt{Publish} i uruchomić aplikację serwerową poleceniem \texttt{dotnet ProjectCowork.Api.dll} (w środowisku produkcyjnym zaleca się skonfigurowanie jej jako usługi systemowej, np. \texttt{systemd}). Przy pierwszym uruchomieniu aplikacja automatycznie utworzy bazę danych i wykona migracje.
+    \item Przejść do katalogu aplikacji klienckiej \texttt{/src/Web/ProjectCowork.App}, skonfigurować w pliku środowiskowym (np. \texttt{.env}) adres URL do API, najlepiej http://localhost:5000, a następnie zainstalować zależności i zbudować wersję produkcyjną:
+    \begin{lstlisting}[language=bash]
+        npm install
+        npm run build
+    \end{lstlisting}
+    \item Skonfigurować serwer \textbf{Nginx}, aby serwował wygenerowane pliki z katalogu \texttt{/src/Web/ProjectCowork.App/dist} oraz przekierowywał zapytania API do działającego backendu:
+    \begin{lstlisting}[language=bash]
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        root /path/to/ProjectCowork.App/dist;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:5000/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Wdrożenie na serwerze z wykorzystaniem Docker-compose}
+Wdrożenie systemu z wykorzystaniem Docker-compose w przeciwieństwie do ręcznego wdrażania aplikacji ogranicza się tylko i wyłącznie do 
+tego, czy serwer posiada zainstalowanego Docker-a.
+W celu wdrożenia aplikacji w taki sposób, należy tylko zmienić konfigurację w pliku \texttt{appsettings.json}:
+\begin{enumerate}
+    \item W sekcji \texttt{Integrations:Email}, należy ustawić odpowiednie dane serwera SMTP w polach \texttt{Host}, \texttt{Port}, \texttt{Username} oraz \texttt{Password}.
+    \item Jeżeli aplikacja będzie korzystać z Blob storage w chmurze Azure, należy ustawić odpowiednie dane w polach \texttt{Integrations:BlobStorage:ConnectionString} oraz \texttt{ContainerName}. W przeciwnym wypadku, jeżeli aplikacja będzie korzystać z emulatora Azurite, z gotowymi ustawieniami. 
+\end{enumerate}
+Następnie, wystarczy w terminalu serwera wykonać polecenie:
+\begin{lstlisting}[language=bash]
+    docker compose up
+\end{lstlisting}
+I kontener ze wszystkimi zależnościami zostanie uruchomiony. Żeby aplikacja kliencka działała publicznie, należy jeszcze dodać przekierowanie odpowiedniego portu do portu, na którym działa serwer Nginx.

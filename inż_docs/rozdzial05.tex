@@ -289,7 +289,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncInitializ
 \end{lstlisting}
 
 \subsection{Scenariusz 1: rotacja tokena odświeżania}
-Token odświeżania (\textit{refresh token}) jest przechowywany w ciasteczku \texttt{HttpOnly}. Przy każdym odświeżeniu
+Token odświeżania jest przechowywany w ciasteczku \texttt{HttpOnly}. Przy każdym odświeżeniu
 sesji API wydaje nowy token i unieważnia poprzedni. Dzięki temu skradziony token można wykorzystać najwyżej raz.
 Scenariusz sprawdza, czy po odświeżeniu sesji stary token przestaje działać. Opis scenariusza zawiera tabela
 \ref{tab:it-rotacja}.
@@ -771,8 +771,7 @@ test('nowe zadanie w sprincie, zmiana statusu na „Zrobione”', async ({ userP
 \end{lstlisting}
 
 \subsection{Scenariusz 5: przeglądanie kodu repozytorium}
-Scenariusz łączy pracę programisty w wierszu poleceń z interfejsem aplikacji. Przed testem do repozytorium projektu
-wypychane są pliki poleceniem \texttt{git push}, tak jak zrobiłby to programista. Następnie użytkownik przegląda
+Przed testem do repozytorium projektu wypychane są pliki poleceniem \texttt{git push}, tak jak zrobiłby to programista. Następnie użytkownik przegląda
 w aplikacji strukturę katalogów, otwiera plik i sprawdza historię commitów. Opis scenariusza zawiera tabela
 \ref{tab:e2e-repozytorium}.
 
