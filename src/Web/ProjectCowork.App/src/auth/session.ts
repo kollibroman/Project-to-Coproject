@@ -3,7 +3,7 @@ import { postApiAuthLogout, postApiAuthTokenRefresh } from '../client/sdk.gen';
 
 // Bazowy adres API. Nadpisywalny przez zmienną środowiskową Vite VITE_API_URL.
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? 'http://localhost:5298';
+  import.meta.env.DEV ? '' : import.meta.env.VITE_API_URL ?? 'http://localhost:5298';
 
 // credentials: 'include' jest wymagane, żeby przeglądarka przyjmowała ciasteczko
 // z refresh tokenem (Set-Cookie) i odsyłała je do API działającego na innym originie.

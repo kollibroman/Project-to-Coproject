@@ -7,7 +7,7 @@ RUN npm ci
 COPY ["Web/ProjectCowork.Api/project-cowork.json", "/src/Web/ProjectCowork.Api/project-cowork.json"]
 COPY ["Web/ProjectCowork.App/", "./"]
 
-ARG VITE_API_URL=http://localhost:8080
+ARG VITE_API_URL=
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build

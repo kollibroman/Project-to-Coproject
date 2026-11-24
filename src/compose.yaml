@@ -58,8 +58,6 @@
     build:
       context: .
       dockerfile: Web/ProjectCowork.App/Dockerfile
-      args:
-        VITE_API_URL: "http://localhost:${API_PORT:-8080}"
     restart: unless-stopped
     depends_on:
       - projectcowork.api
