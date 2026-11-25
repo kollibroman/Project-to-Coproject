@@ -41,7 +41,7 @@ Warstwa infrastruktury zawiera integracje, wydarzenia domenowe, połączenie z b
 Warstwa aplikacji zawiera logikę biznesową systemu, która jest wywoływana przez warstwę dostępową. Podzielona ona jest na moduły, gdzie każdy moduł odpowiada części domeny zawartej w warstwie domeny. Widać to na rysunku~\ref{fig:diag_komp}.
 \begin{figure}[!htb]
     \centering
-    \includegraphics[scale=0.46]{rys04/diag_komp.pdf}
+    \includegraphics[scale=0.55]{rys04/diag_komp(1).pdf}
     \caption{Diagram komponentów systemu}
     \label{fig:diag_komp}
 \end{figure}
@@ -66,28 +66,24 @@ W modelu nie zastosowano obiektów wartości (ang. \textit{Value Objects}). Pros
 Uzupełnieniem opisanych elementów w warstwie aplikacji jest zastosowanie wzorca \textit{CQRS} (ang. \textit{Command Query Responsibility Segregation}), który rozdziela operacje modyfikujące stan systemu (komendy) od operacji odczytujących dane (zapytania). Każdy moduł zawiera osobne katalogi \texttt{Commands} i \texttt{Queries}, a komendy i zapytania są obsługiwane przez osobne handlery. Rozdział ten ma charakter logiczny: obie strony korzystają z tej samej bazy danych i tego samego modelu, a zapytania nie przechodzą przez agregaty, tylko odczytują dane bezpośrednio z kontekstu bazy danych.
 
 \section{Aplikacja serwerowa}
-Aplikacja serwerowa, napisana w języku \texttt{C\#} opiera się na koncepcji architektury heksagonalnej z elementami DDD. Do komunikacji między warstwą dostępową API, a resztą warstw,
-w celu lepszej enkapsulacji logiki, został użyty wzorzec \texttt{Mediator} \cite{mediator_pattern}. Wzorzec ten pozwala na komunikację między warstwami poprzez wysyłanie zapytań i komend, które są obsługiwane przez odpowiednie klasy handlerów.
-Ogranicza to zależności między warstwami i nie korzystanie z interfejsów przy komunikacji między nimi. Wykorzystanie tego wzorca pozwoliło na 
+Aplikacja serwerowa, napisana w języku \texttt{C\#} opiera się na koncepcji architektury heksagonalnej z elementami DDD. Do komunikacji między warstwą dostępową API, a~resztą warstw,
+w~celu lepszej enkapsulacji logiki, został użyty wzorzec \texttt{Mediator} \cite{mediator_pattern}. Wzorzec ten pozwala na komunikację między warstwami poprzez wysyłanie zapytań i komend, które są obsługiwane przez odpowiednie klasy handlerów.
+Ogranicza to zależności między warstwami i nie korzystanie z~interfejsów przy komunikacji między nimi. Wykorzystanie tego wzorca pozwoliło na 
 zmiejszenie zależności między warstwami i wyczyściło metody w kontrolerach API, które teraz jedynie wykorzystują interfejs \texttt{IMediator} do wywoływania metod logiki biznesowej systemu.
-Oprócz tego wzorca, system bardzo mocno wykorzystuje wbudowany we framework \texttt{.Net} mechanizm wstrzykiwania zależności, który pozwala na łatwe podmienianie implementacji interfejsów w systemie i ułatwia testowanie jednostkowe.
+Oprócz tego wzorca, system bardzo mocno wykorzystuje wbudowany we framework \texttt{.Net} mechanizm wstrzykiwania zależności, który pozwala na łatwe podmienianie implementacji interfejsów w~systemie i ułatwia testowanie jednostkowe.
 Instancje każdej klasy implementującej dany interfejs są tworzone w momencie uruchomienia aplikacji i wstrzykiwane do klas, które ich potrzebują. Każda z nich ma określony czas życia, co pozwala zoptymalizować wykorzystanie zasobów przy działaniu systemu.
 
 \subsection{Diagram przepływu ze wzorcem Mediator-a}
 Wzorzec \textit{Mediator} w wersji generycznej, opiera się na założeniu, że klasa żądająca danego zasobu lub chcąca zmodyfikować jakiś zasób, nie powinna znać implementacji klasy realizujacej takie żądanie.
-Wzorzec ten pozwala na komunikację między warstwami poprzez wysyłanie zapytań i komend, które są obsługiwane przez odpowiednie klasy handlerów. Najczęstszym przypadkiem zastosowania tego wzorca jest implementacja wzorca \textit{CQRS}, który rozdziela logikę pobierania danych od logiki ich modyfikacji. W systemie zastosowano ten wzorzec, aby ograniczyć zależności między warstwami i nie korzystać z interfejsów przy komunikacji między nimi.
-Na rysunku \ref{fig:diag_mediator} przedstawiono diagram przepływu danych w systemie z wykorzystaniem wzorca \textit{Mediator} w celu lepszego zobrazowania działania tego wzorca. Jako przykład przyjęto proces inicjalizacji nowego, pustego repozytorium w projekcie.
-
-% TO DO: tego diagramu nie da się przeczytać na wydruku. Da się go zacieśnić, by później można go było przeskalować w górę (linie można prowadzić z boku bloków, nie od dołu - zyska się wtedy dużo przestrzeni w pionie)
-% DONE
+Wzorzec ten pozwala na komunikację między warstwami poprzez wysyłanie zapytań i~komend, które są obsługiwane przez odpowiednie klasy handlerów. Najczęstszym przypadkiem zastosowania tego wzorca jest implementacja wzorca \textit{CQRS}, który rozdziela logikę pobierania danych od logiki ich modyfikacji. W systemie zastosowano ten wzorzec, aby ograniczyć zależności między warstwami i nie korzystać z interfejsów przy komunikacji między nimi.
+Na rysunku \ref{fig:diag_mediator} przedstawiono diagram przepływu danych w systemie z wykorzystaniem wzorca \textit{Mediator} w~celu lepszego zobrazowania działania tego wzorca. Jako przykład przyjęto proces inicjalizacji nowego, pustego repozytorium w projekcie.
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.43]{rys04/Diag_przeplyw.pdf}
-    \caption{Diagram przepływu danych w systemie z wykorzystaniem wzorca Mediator}
+    \caption{Diagram przepływu danych w systemie z wykorzystaniem wzorca \texttt{Mediator}}
     \label{fig:diag_mediator}
 \end{figure}
-W celu uzupełnienia wizualizacji, w listingu \ref{lst:repo} przedstawiono fragment kodu odpowiedzialnego za inicjalizacje pustego repozytorium \textit{Git}. Realizowane jest to poprzez
-nakładkę na bibliotekę \textit{LibGit2} \cite{libGit2}.
+Na listingu \ref{lst:repo} przedstawiono fragment kodu odpowiedzialnego za inicjalizacje pustego repozytorium \textit{Git}. Realizowane jest to poprzez nakładkę na bibliotekę \textit{LibGit2} \cite{libGit2}.
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily, captionpos=t, caption={Fragment usługi obsługującej inicjalizację pustego repozytorium}, label={lst:repo}]
   public async Task<string> InitBareRepositoryAsync(string repositoryName, Guid projectId)
   {
@@ -253,8 +249,7 @@ public async Task<string> UploadAndCreateRemoteRepositoryAsync(Guid projectId, s
   }
 
   private static (SequencePosition Position, bool IsFinished) ReadHeaders(
-      HttpContext httpContext,
-      in ReadOnlySequence<byte> sequence)
+      HttpContext httpContext, in ReadOnlySequence<byte> sequence)
   {
       var reader = new SequenceReader<byte>(sequence);
       while (!reader.End)

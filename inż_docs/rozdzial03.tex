@@ -1,23 +1,18 @@
 \chapter{Projekt bazy danych i makiety interfejsu graficznego}
-Baza danych powinna zapewniać obsługę wszystkich funkcjonalności i wymagań opisanych wcześniej w pracy.
-W tym celu stworzono model koncepcyjny i następnie model fizyczny bazy danych. Według założeń, centrum bazy danych jest encja Projektu, która jako centrum domeny
-łączy wszystkie inne pozostałe funkcjonalności.
+Baza danych powinna zapewniać obsługę wszystkich zaplanowanych funkcji zgodnie z postawionymi wymaganiami.
+Jej projektowanie rozpoczęto od stworzenia modelu koncepcyjny, a następnie, poprzez zastosowanie podejścia obiektowego oraz mechanizmów \textit{ORM} uzyskano model fizyczny bazy danych. Według założeń, centrum bazy danych jest encja Projektu, która jako centrum domeny łączy wszystkie inne pozostałe funkcjonalności.
 \section{Projekt bazy danych}
-Baza danych została zaprojektowana zgodnie z podejściem \textit{Code-first}. Ze względu na to podejście, nie został stworzony diagram fizyczny bazy danych. Zamiast niego stworzony został diagram
-klas, na podstawie których \textit{ORM} stworzył odpowiednią strukturę bazy danych. Oprócz diagramu klas, pojawią się również prezentacje tabel stworzonych przez biblioteki i sam \textit{ORM}
-w celu lepszego oddania tego w jaki sposób została stworzona baza danych. Na rysunku \ref{fig:diag_klas_db} przedstawiono diagram koncepcyjny bazy danych, który został stworzony w celu lepszego zrozumienia relacji między encjami. Diagram ten został stworzony w narzędziu \textit{draw.io} i przedstawia wszystkie encje wraz z ich atrybutami oraz relacje między nimi. 
-% TO DO: po co na diagramie są bulletpointy? Dlaczego niektóre są elipsami? Czy nie lepiej zrezygnować z tych bulletpointów? Niektóre linie łamią się zbyt często, niektóre tabele (Feature entity) są przykryte etykietami
-% DONE
+Baza danych została zaprojektowana zgodnie z podejściem \textit{Code-first}. W podejściu tym schemat bazy danych jest wynikiem mapowania utworzonego modelu obiektowego na model relacyjny za pomocą narzędzi \textit{ORM}. Projektowanie zaś zaczyna się od stworzenia struktury klas encji zamiast modelowania za pomocą diagramów encji. 
+Jednak do lepszego zrozumienia istoty problemu dobrze jest stworzyć przynajmniej diagram koncepcyjny. Dlatego stworzono taki diagram i pokazano go na rysunku~\ref{fig:diag_klas_db}. Przedstawia on wszystkie istotne encje wraz z atrybutami oraz związki między nimi.
+% TO DO: proszę pamiętać - między encjami występują związki (!!!!), fizyczną reprezentacją relacji znanej z algebry relacyjnej jest tabala
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=0.44]{rys03/db_koncept.pdf}
     \caption{Diagram koncepcyjny bazy danych}
     \label{fig:diag_klas_db}
 \end{figure}
-\newpage
-Na podstawie diagramu koncepcyjnego bazy danych stworzono odpowiednie klasy, reprezentujące encje z powyższego diagramu. Na diagramie \ref{fig:diag_klas} przedstawiono diagram klas, który został stworzony w narzędziu \textit{draw.io}. Diagram ten przedstawia wszystkie klasy wraz z ich atrybutami oraz związkami między nimi.
-Pominięto na nim klasy automatycznie wygenerowane przez biblioteki i \textit{ORM}, które nie są istotne z punktu widzenia projektowania bazy danych. Diagram ten jest również podstawą do stworzenia bazy danych, która zostanie stworzona przez \textit{ORM} na podstawie tych klas.
-W celu uzupełnienia wizualizacji, na rysunku \ref{fig:wygenerowane_tabele} przedstawiono wygenerowane tabele przez \textit{ORM}.
+Wszystkie encje widniejące na diagramie zostały pokryte przez zaimplementowane klasy. Przedstawiono je, wraz z ich atrybutami oraz związkami między nimi, na diagramie widocznym na rysunku \ref{fig:diag_klas}. Finalny schemat bazy danych został wygenerowany automatycznie przez \textit{ORM} na podstawie tych klas. Na rysunku \ref{fig:wygenerowane_tabele} przedstawiono utworzone tabele, z pominięciem tych, które nie są istotne z punktu widzenia projektowania bazy danych. 
+
 Tabela \texttt{\_EFMigrationsHistory} jest tabelą domyślnie generowaną przez \texttt{Entity Framework Core} i przechowuje historię migracji bazy danych.
 Pozostałe tabele na rysunku są tabelami tworzonymi przez bibliotekę \texttt{Microsoft.Extensions.Identity} i przechowują informacje o użytkownikach, rolach i ich powiązaniach. Tabele te są wykorzystywane do zarządzania dostępem do systemu i jego funkcjonalnościami. 
 Tabela \texttt{UserEntity} dziedziczy po klasie \texttt{IdentityUser} i przechowuje informacje o użytkownikach systemu. Tabela \texttt{RoleEntity} dziedziczy po klasie \texttt{IdentityRole} i przechowuje informacje o rolach w systemie. Tabela \texttt{UserRoles} jest tabelą łączącą użytkowników z rolami i przechowuje informacje o przypisanych rolach do użytkowników. Tabela \texttt{UserClaims} przechowuje informacje o roszczeniach użytkowników, a tabela \texttt{UserLogins} przechowuje informacje o logowaniach użytkowników. 
