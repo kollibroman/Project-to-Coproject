@@ -1,2 +1,20 @@
 \chapter{Podsumowanie}
 \label{chap:podsumowanie}
+Niniejsza praca miała na celu stworzenie projektu aplikacji ułatwiającej współpracę przy grupowych projektach studenckich oraz pozyskiwanie potencjalnych inwestorów.
+
+\section{Rezultat pracy}
+Rezultatem pracy jest prototyp platformy wspierającej studentów w~prowadzeniu wspólnych projektów programistycznych. 
+System łączy funkcje zarządzania projektami i~członkami zespołu, definiowania ról i~uprawnień, planowania pracy w~sprintach, obsługi repozytoriów Git oraz publikowania ogłoszeń naboru i~przyjmowania aplikacji. W~odróżnieniu od narzędzi skupionych na pojedynczym obszarze, zaprojektowana aplikacja integruje te funkcje w~jednym systemie.
+
+\section{Wnioski}
+Podczas implementacji projektu aplikacji autor poznał dokładniej podejście projektowe \textit{Domain-Driven Design}. Podejście to nie zostało wdrożone w~pełni, natomiast wykorzystano kilka jego głównych elementów, które pozwoliły na lepsze odzwierciedlenie domeny problemu. Pierwotnie planowano zastosować tę metodę ortodoksyjnie, lecz w~trakcie prac zauważono, że nadmiernie skomplikuje to proces tworzenia oprogramowania i~utrudni późniejsze utrzymanie projektu. W~podejściu tym sprawdziły się agregaty, encje oraz zdarzenia domenowe, które uzupełniają model anemiczny. Nie znaleziono natomiast odpowiedniego zastosowania dla obiektów wartości (\textit{Value Objects}), które w~tym przypadku okazały się zbędne. Zrezygnowano również z~rozbudowanych, bogatych modeli domenowych, gdyż agregaty w~zupełności wystarczyły do spójnego odwzorowania domeny i~przechowywania logiki biznesowej.
+
+Elementem, który bardzo dobrze sprawdził się w~tym projekcie, było wykorzystanie architektury warstwowej z~użyciem wzorca \textit{CQRS}. Podział na komendy i~zapytania pozwolił na czystsze odseparowanie warstwy prezentacji od warstwy aplikacji. Implementacja kontrolerów w~API została znacząco uproszczona i~stała się mniej zależna od usług w~warstwie aplikacji. Uzyskano również większą czytelność kodu oraz łatwiejszą utrzymywalność projektu, dzięki rezygnacji z~tworzenia obszernych interfejsów usług. Skorzystanie z~wzorca \textit{CQRS} pozwoliło także na uproszczenie implementacji zdarzeń domenowych, które zostały utworzone z~użyciem wbudowanego mechanizmu powiadomień we wzorcu \textit{Mediator}. W~trakcie realizacji projektu nie zauważono istotnych wad tego podejścia.
+
+Podczas tworzenia aplikacji największe wyzwanie stanowiła poprawna obsługa usługi repozytoriów kodu źródłowego, co wymagało od autora dogłębnego zrozumienia działania systemu kontroli wersji \textit{Git} oraz zapoznania się z~jego dokumentacją i~API. Była to jedna z~kluczowych funkcjonalności systemu, dlatego jej implementacja pochłonęła najwięcej czasu. Jednocześnie moduł ten może stanowić w~przyszłości pewne ograniczenie aplikacji --- miejsce na dysku serwera może stosunkowo szybko się wyczerpać i~spowodować błędy w~działaniu systemu. Przypadek ten nie został jeszcze zabezpieczony, jednak problem został zidentyfikowany i~w~razie dalszego rozwoju oprogramowania zostanie odpowiednio obsłużony.
+
+\section{Dalsze kierunki rozwoju} 
+Przed wdrożeniem produkcyjnym konieczne byłoby dalsze rozwinięcie systemu, w~szczególności zapewnienie skalowalnego przechowywania repozytoriów oraz dodanie wyszukiwania i~tagowania projektów. 
+Kolejnym ważnym krokiem byłoby opracowanie wbudowanego systemu komunikacji pomiędzy inwestorami a~członkami projektu, tak aby obie strony nie były zmuszone do korzystania z~zewnętrznych kanałów, takich jak telefony komórkowe czy poczta elektroniczna. 
+Istotny byłby również rozwój modułu repozytoriów w~kierunku umożliwienia użytkownikom tworzenia nowych gałęzi, wystawiania tzw. \emph{Pull Requests} oraz przeprowadzania procesu \emph{Code Review}. 
+W~przyszłych pracach należałoby także ustalić priorytety funkcjonalności oraz zweryfikować wymagania dotyczące wydajności i~bezpieczeństwa.
