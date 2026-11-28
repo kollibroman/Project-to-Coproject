@@ -12,14 +12,33 @@
 %%%Nam id nulla a adipiscing tortor, dictum ut, lobortis urna. Donec non dui. Cras tempus orci ipsum, molestie quis, lacinia varius nunc, rhoncus purus, consectetuer congue risus. 
 %\mbox{}\vspace{2cm} % można przesunąć, w zależności od długości streszczenia
 \begin{abstract}
-
+Celem pracy jest stworzenie projektu oraz implementacja aplikacji ułatwiającej współpracę przy grupowych projektach studenckich oraz pozyskiwanie potencjalnych inwestorów.
+Dziedzina problemu została podzielona na kilka podproblemów takich jak hosting repozytoriów kodu źródłowego, tworzenie sprintów i zadań,
+proces rekrutacji do projektów oraz możliwość odkrywania projektów przez biznes. Na podstawie podziału problemu zdefiniowano wymagania funkcjonalne i~niefunkcjonalne oraz przypadki użycia.
+Projekt zakłada stworzenie dwóch aplikacji, serwerowej i klienckiej webowej.
+Aplikację serwerową zaimplementowano zgodnie z elementami podejścia projektowego \textit{DDD} \cite{evans2015domain} z wykorzystaniem wzorca projektowego \textit{CQRS} \cite{CQRS}.
+Aplikacja kliencka została oparta o \textit{React.js} w oparciu o specyfikację \textit{Material Design} w wersji trzeciej \cite{MaterialDesign}. Największym wyzwaniem projektu była obsługa repozytoriów \textit{Git},
+która wymgała od Autora głębokiej analizy dokumentacji \textit{Git} oraz opracowania odpowiedniej struktury systemu przechowywania ich. 
+Do obu aplikacji utworzono testy jednostkowe, integracyjne i akceptacyjne w formule \textit{E2E}. Testowano między innymi zachowanie repozytorium po wypchnięciu na serwer
+oraz mechanizmy uwierzytelniania. Testy zaimplementowano za pomocą narzędzi \textit{TUnit} oraz \textit{Playwright}.
+Implementację projektu zrealizowano zgodnie z powstałymi wymaganiami, wyciągnięto wnioski na temat repozytoriów oraz zdefiniowano przyszłe kierunki rozwoju,
+takie jak na przykład wyszukiwarka projektów, tagi i~implementacja wewnętrznego mechanizmu komunikacji między biznesem a wykonawcami projektu. 
 \end{abstract}
 \mykeywords
 
 {
 \selectlanguage{english}
 \begin{abstract}
-
+The main goal of this thesis is creation of project and implementation of application which will faciliate
+collaboration on student group projects and and attract potential investors. Field of the problem was divided into smaller
+subproblems consisting of repository hosting, sprint and task creation, recrutation process and project exploration for business. Based on subproblem definition
+unctional requirements, non-functional requirements and use cases were defined. The project assumes that there will be created client web application and server one.
+The server app was created with elements of Domain-Driven-Design and heavy usage of \textit{CQRS} \cite{CQRS}. Client app was created with
+\textit{React.js}, largely based on \textit{Material Design} specification in third version. The biggest challenge of implemetation was to handle \textit{Git} repositories appropriately,
+which demanded from Author to deeply analyze \textit{Git} documentation and work out appropriate solution to the system of repository storage. Unit, integration and acceptance in E2E formula tests were created for both applications.
+Testing consisted of for example behaviour of repository after pushing it to the server and authorization mechanism. The tests were implemented 
+using \textit{TUnit} and \textit{Playwright} frameworks. Implementation of the project was made according to previously defined requirements, the conclusions were made and possible future path was defined.
+Future path can possibly consist of project search engine, tags and implementation of internal communication system between business and project members.
 \end{abstract}
 \mykeywords
 }
